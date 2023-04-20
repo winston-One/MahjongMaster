@@ -10,10 +10,11 @@ import lombok.Data;
  **/
 @Data
 public class ConsumeResult {
+
     public Integer code;
 
     public String msg;
 
-//    public DianPingVorcherDTO Data;
     public JSONArray Data;
+
 }

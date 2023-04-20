@@ -3,9 +3,10 @@ package com.queshen.service;
 import com.queshen.pojo.bo.Result;
 
 /**
- * @author VioletQin
- * @since 2022/12/2
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 public interface ReservationInfoService {
 
     /**

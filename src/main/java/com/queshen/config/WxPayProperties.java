@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author winston
- * @create 15:24
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Data
 @ConfigurationProperties(prefix = "wx.pay")

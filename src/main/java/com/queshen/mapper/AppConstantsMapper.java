@@ -1,9 +1,8 @@
 package com.queshen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.queshen.utils.AppConstants;
+import com.queshen.pojo.po.AppConstants;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
 
 /**
  * @author WinstonYv

@@ -18,16 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-//@Component注解用于对那些比较中立的类进行注释；
-//相对与在持久层、业务层和控制层分别采用 @Repository、@Service 和 @Controller 对分层中的类进行注释
+/**
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Log4j2
 @Component
 @EnableScheduling   // 1.开启定时任务
-@EnableAsync        // 2.开启多线程
+@EnableAsync        // 2.开启异步
 public class RedisScheduleTask {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
     @Autowired
     OrderService orderService;
 

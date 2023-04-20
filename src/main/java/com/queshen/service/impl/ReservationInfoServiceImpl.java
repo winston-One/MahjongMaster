@@ -8,7 +8,7 @@ import com.queshen.pojo.po.Room;
 import com.queshen.service.IRoomService;
 import com.queshen.service.OrderService;
 import com.queshen.service.ReservationInfoService;
-import com.queshen.utils.TimeRange;
+import com.queshen.pojo.bo.TimeRange;
 import com.queshen.utils.TimeRangeUtil;
 import com.queshen.pojo.vo.ReservationInfo;
 import com.queshen.pojo.vo.RoomInfoVO;
@@ -27,9 +27,10 @@ import static com.queshen.utils.TimeRangeUtil.halfHour;
 
 
 /**
- * @author VioletQin
- * @since 2022/11/21
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Service
 @Slf4j
 public class ReservationInfoServiceImpl implements ReservationInfoService {

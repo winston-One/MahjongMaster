@@ -9,8 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.Resource;
 
 /**
- * @author WinstonYv
- * @since 2022/11/14
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {

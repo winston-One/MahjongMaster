@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.po.DianPingVoucherOrder;
 import org.springframework.stereotype.Service;
-
+/**
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Service
 public interface DianPingVoucherService extends IService<DianPingVoucherOrder> {
 

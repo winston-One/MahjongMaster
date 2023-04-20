@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author winston
- * @create 15:24
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Configuration
 @ConditionalOnClass(WxPayService.class)

@@ -7,9 +7,11 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
+ *  * @author WinstonYv
+ *  * @create 2022/11/14
+ *  * @Description:
  * 卡券订单实体类
  */
-
 @TableName("tb_voucher_order")
 @Data
 public class VoucherOrder {

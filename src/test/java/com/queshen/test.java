@@ -1,15 +1,13 @@
 package com.queshen;
 
 import com.queshen.pojo.dto.VoucherOrderDTO;
-import com.queshen.pojo.po.Voucher;
-import com.queshen.pojo.po.VoucherOrder;
 import com.queshen.mapper.VoucherMapper;
 import com.queshen.mapper.VoucherOrderMapper;
 import com.queshen.service.DianPingVoucherService;
 import com.queshen.service.ICalc;
 import com.queshen.service.IVoucherOrderService;
 import com.queshen.service.IVoucherService;
-import com.queshen.utils.TimeRange;
+import com.queshen.pojo.bo.TimeRange;
 import com.queshen.utils.TimeRangeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -15,7 +15,7 @@ import com.queshen.pojo.vo.DianPingVoucherVO;
 import com.queshen.pojo.vo.OrderSelectByUserVO;
 import com.queshen.service.AppConstantsService;
 import com.queshen.service.DianPingVoucherService;
-import com.queshen.utils.AppConstants;
+import com.queshen.pojo.po.AppConstants;
 import com.queshen.utils.RequestUtil;
 import com.queshen.utils.SignUtil;
 import lombok.extern.log4j.Log4j2;

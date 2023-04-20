@@ -1,5 +1,6 @@
 package com.queshen.utils;
 
+import com.queshen.pojo.bo.TimeRange;
 import com.queshen.pojo.po.Order;
 
 import java.time.LocalDateTime;
@@ -9,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author WinstonYv
- * @since 2022/12/16
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 public class TimeRangeUtil {
     /** 半小时对应毫秒数*/
     public static final long halfHour = 30 * 60 * 1000;

@@ -7,9 +7,10 @@ import java.io.Serializable;
 
 /**
  * 用户实体类
- * @author VioletQin
- * @since 2022/11/10
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Data
 @TableName("tb_user")
 public class User implements Serializable {

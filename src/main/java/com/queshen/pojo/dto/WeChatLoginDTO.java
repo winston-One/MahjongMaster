@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author winston
- * @create 16:26
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Data
 @AllArgsConstructor

@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author winston
- * @create 11:12
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Data
 @AllArgsConstructor

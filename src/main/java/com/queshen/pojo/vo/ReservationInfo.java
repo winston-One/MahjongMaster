@@ -4,9 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * @author VioletQin
- * @since 2022/12/18
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Data
 @Builder
 public class ReservationInfo {

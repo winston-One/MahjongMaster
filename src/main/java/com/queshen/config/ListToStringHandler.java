@@ -13,9 +13,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * @author WinstonYv
- * @since 2022/11/14
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 public class ListToStringHandler  extends BaseTypeHandler<List> {
 
     @Override

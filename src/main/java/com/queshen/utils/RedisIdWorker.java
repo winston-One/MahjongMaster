@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * @author winston
- * @create 18:26
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Component
 public class RedisIdWorker {
@@ -19,6 +19,7 @@ public class RedisIdWorker {
      * 开始时间戳
      */
     private static final long BEGIN_TIMESTAMP = 1668354840L;
+
     /**
      * 序列号位数
      */

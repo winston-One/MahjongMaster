@@ -4,10 +4,10 @@ import com.queshen.pojo.dto.UserDTO;
 
 /**
  * 记录当前线程执行的用户 的线程类
- * @author WinstonYv
- * @since 2022/11/14
- * @Description:
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 public class UserHolder {
 
     private static final ThreadLocal<UserDTO> tl = new ThreadLocal<>();

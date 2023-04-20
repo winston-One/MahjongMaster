@@ -2,8 +2,8 @@ package com.queshen.utils;
 
 /**
  * @author winston
- * @create 18:26
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 public class OrderStatus {
 
@@ -21,4 +21,5 @@ public class OrderStatus {
      * 未支付
      */
     public static final int ORDER_NOT_PAID = 3;
+
 }

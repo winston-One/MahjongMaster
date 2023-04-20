@@ -7,8 +7,8 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author winston
- * @create 22:16
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Configuration
 @ComponentScan("com.queshen")

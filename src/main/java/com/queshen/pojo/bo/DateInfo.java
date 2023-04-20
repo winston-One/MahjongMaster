@@ -1,4 +1,4 @@
-package com.queshen.utils;
+package com.queshen.pojo.bo;
 
 import lombok.Data;
 
@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class DateInfo {
+
     /**
      * 当日日期
      */
@@ -21,4 +22,5 @@ public class DateInfo {
      * 当天的预约信息
      */
     private List<TimeRange> timeRanges;
+
 }

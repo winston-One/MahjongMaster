@@ -17,9 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * token拦截器
  * 用于 token 访问中的拦截
- * @author WinstonYv
- * @since 2022/11/10
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Slf4j
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
@@ -56,4 +57,5 @@ public class TokenInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         UserHolder.removeUser();
     }
+
 }

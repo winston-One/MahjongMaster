@@ -25,6 +25,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Slf4j
 @Service
 public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, VoucherOrder> implements IVoucherOrderService {

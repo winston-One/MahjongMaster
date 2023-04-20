@@ -1,9 +1,9 @@
 package com.queshen.utils;
 
 /**
- * @author WinstonYv
- * @create 19:03
- * @Description:
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 public interface ResultCode {
 

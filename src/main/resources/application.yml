@@ -1,5 +1,5 @@
 server:
-  port: 7777
+  port: 9790
 
 mybatis-plus:
   configuration:
@@ -10,7 +10,7 @@ mybatis-plus:
 
 spring:
   application:
-    name: queshen
+    name: HiMahjong
   profiles:
     active: dev #默认为开发环境
   jackson:

@@ -8,9 +8,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * @author VioletQin
- * @since 2022/12/2
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @TableName("tb_room")
 @Data
 public class Room {

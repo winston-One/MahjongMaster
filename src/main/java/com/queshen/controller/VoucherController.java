@@ -14,7 +14,6 @@ import javax.annotation.Resource;
  * @author WinstonYv
  * @since 2022/11/14
  */
-
 @Slf4j
 @RestController
 @RequestMapping("/voucher")
@@ -80,4 +79,5 @@ public class VoucherController {
         int result = voucherService.getBaseMapper().deleteById(voucherId);
         return Result.ok(result);
     }
+
 }

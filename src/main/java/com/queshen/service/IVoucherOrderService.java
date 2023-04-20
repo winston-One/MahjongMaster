@@ -8,7 +8,10 @@ import java.math.BigDecimal;
 
 /**
  * 卡券订单相关服务
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 public interface IVoucherOrderService extends IService<VoucherOrder> {
 
     Result voucherBooking(String voucherId,String orderId,String openid);

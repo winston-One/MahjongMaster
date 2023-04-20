@@ -22,10 +22,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 用户相关服务实现
- *
- * @author VioletQin
- * @since 2022/11/10
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {

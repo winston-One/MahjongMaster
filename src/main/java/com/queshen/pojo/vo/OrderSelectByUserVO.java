@@ -2,6 +2,11 @@ package com.queshen.pojo.vo;
 
 import lombok.Data;
 
+/**
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 //用户查询订单VO
 @Data
 public class OrderSelectByUserVO {

@@ -1,4 +1,4 @@
-package com.queshen.utils;
+package com.queshen.pojo.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class TimeRange {
+
     /**
      * 对应时间戳
      */
@@ -23,4 +24,5 @@ public class TimeRange {
      * 是否被预定
      */
     private Integer isReservation;
+
 }

@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author WinstonYv
- * @create 18:26
- * @Description:
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 //北极星平台签名工具类
 public class SignUtil {
+
     /**
      * 生成签名
      * @param params     api请求参数
@@ -89,4 +90,5 @@ public class SignUtil {
         }
         return sign.toString();
     }
+
 }

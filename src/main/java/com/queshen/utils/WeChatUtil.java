@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author winston
- * @create 18:26
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Component
 @Data
@@ -18,4 +18,5 @@ public class WeChatUtil {
 
     @Value("${wechat.secret}")
     private String secret;
+
 }

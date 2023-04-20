@@ -7,9 +7,10 @@ import com.queshen.service.IRoomService;
 import org.springframework.stereotype.Service;
 
 /**
- * @author VioletQin
- * @since 2022/12/2
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Service
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements IRoomService {
 

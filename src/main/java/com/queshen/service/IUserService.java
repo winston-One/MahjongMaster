@@ -7,10 +7,10 @@ import com.queshen.pojo.bo.WeChatLoginResponse;
 
 /**
  * 用户相关服务
- *
- * @author VioletQin
- * @since 2022/11/10
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 public interface IUserService extends IService<User> {
 
      /**

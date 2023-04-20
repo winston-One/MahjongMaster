@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 
 /**
  * 实体类基类
- * @author VioletQin
- * @since 2022/11/8
- */
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Data
 public abstract class BaseEntity implements Serializable {
 

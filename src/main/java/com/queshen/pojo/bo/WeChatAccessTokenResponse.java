@@ -4,8 +4,8 @@ import lombok.Data;
 
 /**
  * @author winston
- * @create 17:06
- * @Description:
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Data
 public class WeChatAccessTokenResponse {

@@ -8,7 +8,11 @@ import com.queshen.pojo.vo.OrderSaveVo;
 import com.queshen.pojo.vo.OrderSelectByUserVO;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Service
 public interface OrderService extends IService<Order> {
 

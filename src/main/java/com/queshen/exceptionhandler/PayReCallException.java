@@ -9,7 +9,9 @@ import lombok.Data;
  **/
 @Data
 public class PayReCallException extends RuntimeException{
+
     private Integer code;//状态码
+
     private String msg;//异常信息
 
     public PayReCallException() {

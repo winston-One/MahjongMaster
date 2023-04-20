@@ -13,8 +13,10 @@ import java.time.LocalDateTime;
 
 /**
  * 卡券实体类
- */
-
+ * @author winston
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @TableName("tb_voucher")
 @Data
 @AllArgsConstructor
