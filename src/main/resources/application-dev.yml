@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://43.143.88.250:52514/queshen?useUnicode=true&useSSL=false&serverTimezone=GMT&characterEncoding=UTF-8&rewriteBatchedStatements=true
+    username: 141-user-525
+    password: u?5*2%e-5/r+
+  redis:
+    host: 43.143.88.250
+    port: 52515
+    password: u?5*2%e-5/r+
+    # 连接池配置
+    lettuce:
+      pool:
+        max-active: 100
+        max-idle: 100
+        min-idle: 10
+        time-between-eviction-runs: 100s
+  #Servlet配置信息
+  servlet:
+    multipart:
+      #最大传输 MultipartFile 大小 和 最大请求大小
+      max-file-size: 10MB
+      max-request-size: 10MB
+#小程序信息
+wechat:
+  appid: wx9643514640a291dc
+  secret: bae673cdd211796ae622ce91732de442
+
+wx:
+  pay:
+    appId: wx9643514640a291dc #微信公众号或者小程序等的appid
+    mchId: 1634252700 #微信支付商户号
+    mchKey: Mjmk1524fjuimnv74256sueiinju741f #微信支付商户密钥
+    #    subAppId: #服务商模式下的子商户公众账号ID
+    #    subMchId: #服务商模式下的子商户号
+    keyPath: classpath:apiclient_cert.p12
+    # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）

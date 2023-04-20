@@ -1,0 +1,363 @@
+package com.queshen.service.impl;
+
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.queshen.pojo.dto.OrderDTO;
+import com.queshen.pojo.dto.OrderTime;
+import com.queshen.pojo.bo.Result;
+import com.queshen.pojo.po.Order;
+import com.queshen.pojo.po.Room;
+import com.queshen.pojo.po.Store;
+import com.queshen.mapper.OrderMapper;
+import com.queshen.service.IRoomService;
+import com.queshen.service.OrderService;
+import com.queshen.service.StoreService;
+import com.queshen.utils.IdUtil;
+import com.queshen.utils.UserHolder;
+import com.queshen.pojo.vo.OrderSaveVo;
+import com.queshen.pojo.vo.OrderSelectByUserVO;
+import com.queshen.pojo.vo.OrderSelectReturnVO;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+@Log4j2
+@Component
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+
+
+    @Autowired
+    private IdUtil idUtil;
+
+    @Resource
+    private IRoomService iRoomService;
+
+    @Resource
+    private StoreService storeService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    //查询该用户所有订单信息
+    public Result getAllOrderByUser(OrderSelectByUserVO orderSelectByUserVO){
+        //查询进行中的订单信息
+        if (orderSelectByUserVO.getOrderStatus()!=0){
+            if (orderSelectByUserVO.getOrderStatus() == 2) {
+                Result orderInRedis = getOrderInRedisBySelect(orderSelectByUserVO);
+                List<Order> data = (ArrayList) orderInRedis.getData();
+                IPage<Order> page = new Page<>(orderSelectByUserVO.getPageNum(), 10);
+                page.setRecords(data);
+//                return Result.ok(page);
+                return doSelectData(page);
+            }
+        }
+        List<Order> data=null;
+        if (orderSelectByUserVO.getOrderStatus()==0){
+            Result orderInRedis = getOrderInRedisBySelect(orderSelectByUserVO);
+            data = (ArrayList<Order>) orderInRedis.getData();
+        }
+
+        //查询已完成或者已取消的订单信息
+        //分页查询1页十条数据
+        IPage<Order> page=new Page<>(orderSelectByUserVO.getPageNum(),10);
+        LambdaQueryWrapper<Order> lqw=new LambdaQueryWrapper<>();
+
+        lqw.eq(Order::getUserId,orderSelectByUserVO.getOpenId());
+        //是否查询该门店的订单，否的话就查询所有门店的订单
+        if (orderSelectByUserVO.getStoreId()!=null)
+            lqw.eq(Order::getStoreId,orderSelectByUserVO.getStoreId());
+        //是否查询有状态的订单，否的就查询所有类型的订单
+        if (orderSelectByUserVO.getOrderStatus()!=null&&orderSelectByUserVO.getOrderStatus()!=0)
+            lqw.eq(Order::getStatus,orderSelectByUserVO.getOrderStatus());
+        //按照时间顺序倒序
+        lqw.orderByDesc(Order::getStartTime);
+
+        IPage<Order> orderPage = this.page(page, lqw);
+        log.info(orderPage.getClass());
+        if (data!=null) {
+            List<Order> records = orderPage.getRecords();
+            ArrayList<Order> arrayList=new ArrayList<>(records);
+            arrayList.addAll(data);
+            orderPage.setRecords(arrayList);
+            orderPage.setTotal(arrayList.size());
+            log.info(orderPage.getRecords().toString());
+        }
+//        return Result.ok(orderPage);
+          return doSelectData(orderPage);
+    }
+
+    //处理查询的数据返回
+    private Result doSelectData(IPage<Order> page){
+        IPage<OrderSelectReturnVO> orderSelectReturnVOIPage=new Page<>(page.getCurrent(),10);
+        List<Order> records = page.getRecords();
+        List<OrderSelectReturnVO> orderSelectReturnVOS=new ArrayList<>();
+        List<Store> storeList = storeService.list();
+        List<Room> roomList = iRoomService.list();
+        for (Order order:records){
+            OrderSelectReturnVO orderSelectReturnVO=new OrderSelectReturnVO();
+            for(Store store:storeList){
+                if (order.getStoreId().equals(store.getStoreId())){
+                    orderSelectReturnVO.setStoreName(store.getStoreName());
+                    break;
+                }
+            }
+            for(Room room:roomList){
+                if (order.getRoomId().equals(room.getRoomId())){
+                    orderSelectReturnVO.setRoomName(room.getRoomName());
+                    break;
+                }
+            }
+            Duration duration=Duration.between(order.getStartTime(),order.getEndTime());
+
+            Long l1 = duration.toMinutes()%60;
+            Long l2 = duration.toHours();
+            String durationString= l2.toString()+"小时"+l1.toString()+"分钟";
+
+            orderSelectReturnVO.setOrderStatus(order.getStatus());
+            orderSelectReturnVO.setDuration(durationString);
+            orderSelectReturnVO.setImgUrl(order.getImage());
+            orderSelectReturnVO.setIsVoucher(order.getIsVoucher());
+            orderSelectReturnVO.setVoucherId(order.getVoucherId());
+            orderSelectReturnVO.setPrice(order.getPrice());
+            orderSelectReturnVO.setStartTime(order.getStartTime());
+            orderSelectReturnVO.setEndTime(order.getEndTime());
+            orderSelectReturnVO.setOrderId(order.getId());
+            if (order.getPayTime()!=null)
+                orderSelectReturnVO.setPayTime(order.getPayTime());
+            else
+                orderSelectReturnVO.setPayTime(null);
+            orderSelectReturnVO.setCreatTime(order.getCreateTime());
+            orderSelectReturnVOS.add(orderSelectReturnVO);
+        }
+        orderSelectReturnVOIPage.setRecords(orderSelectReturnVOS);
+        orderSelectReturnVOIPage.setTotal(orderSelectReturnVOS.size());
+        return Result.ok(orderSelectReturnVOIPage);
+    }
+
+
+    /**
+     * 支付成功后调用，处理redis中的数据到Mysql中
+     * @param orderSaveVo
+     * @return
+     */
+    public Result userPointOrder(OrderSaveVo orderSaveVo){
+        //在redis中查询到支付完成的订单
+        String key= orderSaveVo.getUserId()+"||"+orderSaveVo.getId();
+        String value = stringRedisTemplate.opsForValue().get(key);
+        Order order = JSONUtil.toBean(value, Order.class);
+        String keyOrderTime=order.getStoreId()+order.getRoomId()+"+"+ order.getStartTime().toEpochSecond(ZoneOffset.of("+8"));
+
+        //将订单状态改变成已支付
+        order.setStatus(1);
+        //增加支付时间
+        order.setPayTime(LocalDateTime.now());
+        //删除redis中的已支付订单
+        stringRedisTemplate.delete(key);
+        //修改时间
+        String s = stringRedisTemplate.opsForValue().get(keyOrderTime);
+        OrderTime orderTime = JSONUtil.toBean(s, OrderTime.class);
+        long l1 = orderTime.getEndTime().toEpochSecond(ZoneOffset.of("+8"));
+        long l2 = System.currentTimeMillis() / 1000;
+        stringRedisTemplate.opsForValue().set(keyOrderTime,JSONUtil.toJsonStr(orderTime),l1-l2,TimeUnit.SECONDS);
+        //存入mysql中
+//        this.save(order);
+        this.updateById(order);
+        return Result.ok();
+
+    }
+
+
+    /**
+     * 处理redis中的订单(查询中使用)
+     * @param orderSelectByUserVO
+     * @return
+     */
+    private Result getOrderInRedisBySelect(OrderSelectByUserVO orderSelectByUserVO){
+        String keys = orderSelectByUserVO.getOpenId() + "||" + "*";
+        Set<String> keysList = stringRedisTemplate.keys(keys);
+        List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
+        List<Order> expireOrderList = new ArrayList<>();
+        List<Order> unExpireOrderList = new ArrayList<>();
+        for (String s : strings) {
+            Order order = new Order();
+            log.info(s);
+            OrderDTO orderDTO = JSONUtil.toBean(s, OrderDTO.class);
+            BeanUtils.copyProperties(orderDTO, order, "expireTime");
+            //处理过期订单
+            if (orderDTO.getExpireTime().getTime() < System.currentTimeMillis()) {
+                order.setStatus(3);
+                expireOrderList.add(order);
+                stringRedisTemplate.delete(orderDTO.getUserId() + "||" + orderDTO.getId());
+            } else {
+                unExpireOrderList.add(order);
+            }
+        }
+        if (expireOrderList != null)
+            doOrderToMysql(expireOrderList);
+        return Result.ok(unExpireOrderList);
+    }
+
+    /**
+     * 下单
+     * 处理未完成支付订单
+     * @param orderSaveVO
+     * @return
+     */
+    @Override
+    @Transactional
+    public Result saveOneUserOrder(OrderSaveVo orderSaveVO) {
+        //获取订单图片
+        String byRoomId= getImge(orderSaveVO.getRoomId());
+        //获得订单id
+        String orderId=idUtil.getOrderId(orderSaveVO.getUserId());
+        //设置orderid
+        orderSaveVO.setId(orderId);
+
+        //将orderSaveVo复制给orderDTO,到达将接收date类型数据的效果
+        OrderDTO orderDTO=new OrderDTO();
+        //订单过期时间为15分钟
+        long l = System.currentTimeMillis()+(15*60*1000);//15*60*1000
+        Date date=new Date(l);
+        orderDTO.setExpireTime(date);
+        BeanUtils.copyProperties(orderSaveVO,orderDTO,"startTime","endTime");
+        orderDTO.setStartTime(LocalDateTime.ofInstant(orderSaveVO.getStartTime().toInstant(), ZoneId.systemDefault()));
+        orderDTO.setEndTime(LocalDateTime.ofInstant(orderSaveVO.getEndTime().toInstant(), ZoneId.systemDefault()));
+        //创建key
+        String key = orderDTO.getUserId() + "||" + orderDTO.getId();
+
+
+        //设置订单图片
+        orderDTO.setImage(byRoomId);
+        log.info(orderDTO);
+        stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(orderDTO));
+        String s = stringRedisTemplate.opsForValue().get(key);
+        OrderDTO orderDTO1 = JSONUtil.toBean(s, OrderDTO.class);
+        log.info(orderDTO1);
+        Order order=new Order();
+        BeanUtils.copyProperties(orderDTO,order,"expireTime");
+        order.setStatus(2);
+        saveTimeToRedis(order);
+        this.save(order);
+        return Result.ok(order.getId());
+    }
+
+    private String getImge(String RoomId){
+        return iRoomService.getById(RoomId).getImage();
+    }
+
+    /**
+     * 将redis中的订单数据加入Mysql数据库
+     * @param orderList
+     * @return
+     */
+    private boolean doOrderToMysql(List<Order> orderList){
+//        this.saveBatch(orderList);
+        this.updateBatchById(orderList);
+        return true;
+    }
+
+    /**
+     *
+     * @param orderSaveVo
+     * @return
+     */
+    public Result deleteOrder(OrderSaveVo orderSaveVo){
+        String key=orderSaveVo.getUserId()+"||"+orderSaveVo.getId();
+        String s = stringRedisTemplate.opsForValue().get(key);
+        Order order = JSONUtil.toBean(s, Order.class);
+        Boolean delete = stringRedisTemplate.delete(key);
+        if (delete) {
+            String keyOrderTime=order.getStoreId()+order.getRoomId()+"+"+ order.getStartTime().toEpochSecond(ZoneOffset.of("+8"));
+            order.setStatus(3);
+            this.updateById(order);
+            stringRedisTemplate.delete(keyOrderTime);
+            return Result.ok("删除成功");
+        }
+        else
+            return Result.fail("删除失败");
+    }
+
+    /**
+     * 下单时时间数据存redis里
+     */
+    private Boolean saveTimeToRedis(Order order){
+        OrderTime orderTime=new OrderTime();
+        orderTime.setStoreId(order.getStoreId());
+        orderTime.setRoomId(order.getRoomId());
+        orderTime.setEndTime(order.getEndTime());
+        orderTime.setStartTme(order.getStartTime());
+        //命名规则  门店号+房间号+|+|+开始时间
+        String key=order.getStoreId()+order.getRoomId()+"+"+ order.getStartTime().toEpochSecond(ZoneOffset.of("+8"));
+        long timeout=60*15;
+        String value = JSONUtil.toJsonStr(orderTime);
+        log.info(value);
+        log.info(key);
+        stringRedisTemplate.opsForValue().set(key,value,timeout,TimeUnit.SECONDS);
+        return true;
+    }
+
+    /**
+     * 查询时间是否存在
+     */
+    public Boolean judgeTimeExist(OrderSaveVo orderSaveVo){
+        String key=orderSaveVo.getStoreId()+orderSaveVo.getRoomId()+"+"+"*";
+        Set<String> keysList = stringRedisTemplate.keys(key);
+        LocalDateTime startTime=LocalDateTime.ofInstant(orderSaveVo.getStartTime().toInstant(), ZoneId.systemDefault());
+        LocalDateTime endTime=LocalDateTime.ofInstant(orderSaveVo.getEndTime().toInstant(), ZoneId.systemDefault());
+        long l1=startTime.toEpochSecond(ZoneOffset.of("+8"));
+        long l2=endTime.toEpochSecond(ZoneOffset.of("+8"));
+        if (keysList.size()!=0){
+            List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
+
+            for (String s: strings){
+                OrderTime orderTime = JSONUtil.toBean(s, OrderTime.class);
+                log.info(orderTime);
+                long l3=orderTime.getStartTme().toEpochSecond(ZoneOffset.of("+8"));
+                long l4=orderTime.getEndTime().toEpochSecond(ZoneOffset.of("+8"));
+                if (l1>=l3 && l1<=l4)
+                    return false;
+                if (l2>=l3 && l2<=l4)
+                    return false;
+            }
+            return true;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkPaySuccess(WxPayOrderNotifyResult result) {
+        String success = "SUCCESS";
+        if (success.equals(result.getReturnCode())) {
+            if (success.equals(result.getResultCode())) {
+                return true;
+            }
+        }
+        log.info("微信支付checkPaySuccess失败 {}", result.getReturnCode());
+        return false;
+    }
+
+    public Boolean selectIsDoingOrder(){
+        //1.根据用户id是否存在redis中
+        String userId= UserHolder.getUser().getOpenid();
+        String key=userId+"||*";
+        Set<String> keysList = stringRedisTemplate.keys(key);
+        if (keysList.size()==0)
+            return true;
+        else
+            return false;
+    }
+}

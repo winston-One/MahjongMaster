@@ -1,0 +1,21 @@
+package com.queshen.service.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.queshen.pojo.bo.Result;
+import com.queshen.pojo.po.Store;
+import com.queshen.mapper.StoreMapper;
+import com.queshen.service.StoreService;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public class StoreServiceImpl extends ServiceImpl<StoreMapper, Store> implements StoreService {
+
+    @Override
+    public Result selectAllStore() {
+        List<Store> list = this.list();
+        return Result.ok(list);
+    }
+
+}

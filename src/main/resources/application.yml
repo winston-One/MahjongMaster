@@ -1,0 +1,23 @@
+server:
+  port: 7777
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations:
+    - classpath:mapper/**/*.xml
+    - classpath*:com/**/mapper/*.xml
+
+spring:
+  application:
+    name: queshen
+  profiles:
+    active: dev #默认为开发环境
+  jackson:
+    default-property-inclusion: non_null #json处理时忽略非空字段
+
+logging:
+  level:
+    com.queshen: debug
+  pattern:
+    dateformat: mm:ss.SSS
