@@ -27,7 +27,7 @@ public class VoucherCache {
      * 用于做优惠券的本地缓存处理
      * @return
      */
-    @Bean("voucherCache")
+    @Bean("voucherListCache")
     public LoadingCache<String, List<Voucher>> getCache(){
         return Caffeine.newBuilder()
                 .expireAfterWrite(3, TimeUnit.DAYS)

@@ -3,11 +3,15 @@ package com.queshen.utils;
 import com.queshen.pojo.bo.TimeRange;
 import com.queshen.pojo.po.Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * @author winston
@@ -96,7 +100,16 @@ public class TimeRangeUtil {
         List<TimeRange> timeRanges = new ArrayList<>(48);
         //对应当天的起始值并解析成对应时间戳时间戳
         String startAt = date + " 00:00:00";
-        long l = LocalDateTime.parse(startAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
+        Date conversionDate = null;
+        try {
+            conversionDate = sdf.parse(startAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long l = conversionDate.getTime();
+//        long l = LocalDateTime.parse(startAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
         for (int i = 1; i <= 48; i++) {
             timeRanges.add(new TimeRange(l + i * halfHour, 0));
         }

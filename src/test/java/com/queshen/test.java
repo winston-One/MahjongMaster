@@ -1,13 +1,12 @@
 package com.queshen;
 
-import com.queshen.pojo.dto.VoucherOrderDTO;
 import com.queshen.mapper.VoucherMapper;
 import com.queshen.mapper.VoucherOrderMapper;
+import com.queshen.pojo.bo.TimeRange;
 import com.queshen.service.DianPingVoucherService;
 import com.queshen.service.ICalc;
 import com.queshen.service.IVoucherOrderService;
 import com.queshen.service.IVoucherService;
-import com.queshen.pojo.bo.TimeRange;
 import com.queshen.utils.TimeRangeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.baomidou.mybatisplus.core.toolkit.Wrappers.query;
+import java.util.TimeZone;
 
 /**
  * @author winston
@@ -61,9 +62,21 @@ public class test {
 
     @Test
     public void test2(){
-        String id ="o2eui5ZuZQt2eEsO7lyq0psWFXYg";
-        List<VoucherOrderDTO> voucherOrderDTOS = voucherOrderMapper.listVoucherOrder(id);
-        voucherOrderDTOS.forEach(System.out::println);
+        String date = "2023-4-24";
+        String startAt = date + " 00:00:00";
+//        long l = LocalDateTime.parse(startAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+//        System.out.println(l);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
+        Date conversionDate = null;
+        try {
+            conversionDate = sdf.parse(startAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long l = conversionDate.getTime();
+        System.out.println(l);
     }
 
     @Test

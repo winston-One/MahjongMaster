@@ -15,12 +15,16 @@ import com.queshen.pojo.vo.RoomInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.queshen.utils.OrderStatus.ORDER_NOT_PAID;
 import static com.queshen.utils.TimeRangeUtil.halfHour;
@@ -96,8 +100,19 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
 
         //获取明日时段
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        long l = LocalDateTime.parse(date + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+//        DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
+        Date conversionDate = null;
+        try {
+            conversionDate = sdf.parse(date + " 00:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long l = conversionDate.getTime();
+//        long l = LocalDateTime.parse(date + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+
         //24小时，一小时60分钟，一分钟60秒，一秒60毫秒
         l = l + 24 * 60 * 60 * 1000;
         String nextDate = dateFormat.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.of("+8")));

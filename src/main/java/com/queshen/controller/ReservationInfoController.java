@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/reservation")
 public class ReservationInfoController {
+
     @Resource
     private ReservationInfoService reservationInfoService;
 
@@ -24,7 +25,8 @@ public class ReservationInfoController {
     @GetMapping("/getAll")
     public Result getAllInfo(@RequestParam("storeId") String storeId,
                              @RequestParam("date") String date) {
-
+        System.out.println(storeId);
+        System.out.println(date);
         return reservationInfoService.getAllInfo(storeId, date);
     }
 
@@ -32,7 +34,8 @@ public class ReservationInfoController {
     @GetMapping("/get")
     public Result getInfoByRoom(@RequestParam("roomId") String roomId,
                                 @RequestParam("date") String date) {
-
+        System.out.println(roomId);
+        System.out.println(date);
         return reservationInfoService.getInfoByRoom(roomId, date);
     }
 }
