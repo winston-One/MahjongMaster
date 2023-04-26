@@ -26,7 +26,6 @@ public class OrderSaveVo extends BaseEntity {
     //金额
     private BigDecimal price;
 
-
     //订单开始时间
     private Date startTime;
 
@@ -44,7 +43,9 @@ public class OrderSaveVo extends BaseEntity {
 
     private String voucherId;
 
+    // 该订单是否使用过优惠券
     private Integer isVoucher;
+
 }
 
 

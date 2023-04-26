@@ -27,6 +27,11 @@ public class WxPayConfiguration {
     private final WxPayProperties properties;
 
     @Bean
+    public ProfitSharingService profitSharingService(WxPayService wxPayService) {
+        return new ProfitSharingServiceImpl(wxPayService);
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     public WxPayService wxService() {
         WxPayConfig payConfig = new WxPayConfig();
@@ -36,17 +41,10 @@ public class WxPayConfiguration {
         payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
         payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
         payConfig.setKeyPath(StringUtils.trimToNull(this.properties.getKeyPath()));
-
-        // 可以指定是否使用沙箱环境
         payConfig.setUseSandboxEnv(false);
         WxPayService wxPayService = new WxPayServiceImpl();
         wxPayService.setConfig(payConfig);
         return wxPayService;
-    }
-
-    @Bean
-    public ProfitSharingService profitSharingService(WxPayService wxPayService) {
-        return new ProfitSharingServiceImpl(wxPayService);
     }
 
 }

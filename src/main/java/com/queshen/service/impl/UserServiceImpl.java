@@ -75,7 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 如果可以从缓存中获取微信接口调用凭证，就不需要重复发送请求获取凭证
         access_token = stringRedisTemplate.opsForValue().get("access_token");
         if (access_token == null) {
-            // 获取接口凭证
+            // 获取接口凭证 yaml配置类中关于小程序信息属于私密信息，小伙伴可以自行配置自己注册的小程序进行测试
             String url = "https://api.weixin.qq.com/cgi-bin/token?appid="+weChatUtil.getAppid()+"" +
                     "&secret="+weChatUtil.getSecret()+""+
                     "&grant_type=client_credential";

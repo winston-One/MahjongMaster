@@ -2,8 +2,8 @@ package com.queshen.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.queshen.pojo.po.Voucher;
-import com.queshen.service.IVoucherService;
+import com.queshen.mapper.VoucherOrderMapper;
+import com.queshen.pojo.dto.VoucherOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,17 +21,17 @@ import java.util.concurrent.TimeUnit;
 public class VoucherCache {
 
     @Autowired
-    IVoucherService voucherService;
+    VoucherOrderMapper voucherOrderMapper;
 
     /**
-     * 用于做优惠券的本地缓存处理
+     * 用于做优惠券的本地缓存处理，将openid作为缓存key
      * @return
      */
     @Bean("voucherListCache")
-    public LoadingCache<String, List<Voucher>> getCache(){
+    public LoadingCache<String, List<VoucherOrderDTO>> getCache(){
         return Caffeine.newBuilder()
                 .expireAfterWrite(3, TimeUnit.DAYS)
-                .build(key -> voucherService.list());
+                .build(key -> voucherOrderMapper.listVoucherOrder(key));
     }
 
 }

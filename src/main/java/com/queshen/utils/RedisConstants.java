@@ -8,9 +8,10 @@ package com.queshen.utils;
  **/
 public class RedisConstants {
 
+    // Redis中存放登录功能中所有用户的token消息的文件包
     public static final String LOGIN_USER_KEY = "login:token:";
 
-    // 登录有效期。30天
+    // 登录有效期30天,根据业务场景自行调整
     public static final Long LOGIN_USER_TTL = 30L;
 
 }

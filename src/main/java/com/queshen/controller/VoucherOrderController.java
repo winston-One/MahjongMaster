@@ -1,12 +1,16 @@
 package com.queshen.controller;
 
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.queshen.pojo.bo.Result;
+import com.queshen.pojo.dto.VoucherOrderDTO;
+import com.queshen.pojo.po.Voucher;
 import com.queshen.service.IVoucherOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 前端控制器
@@ -22,6 +26,9 @@ public class VoucherOrderController {
     @Resource
     private IVoucherOrderService voucherOrderService;
 
+    @Resource(name = "voucherListCache")
+    LoadingCache<String, List<VoucherOrderDTO>> voucherListCache;
+
     /**
      * 卡券下单功能
      * @Param 卡券id
@@ -31,7 +38,8 @@ public class VoucherOrderController {
     public Result voucherBooking(@RequestParam("voucherId") String voucherId,
                                  @RequestParam("orderId") String orderId,
                                  @RequestParam("openid") String openid){
-
+        // 该用户所拥有的卡券发生变化，所以清除对应的本地缓存，通过key进行清除
+        voucherListCache.invalidate(openid);
         return voucherOrderService.voucherBooking(voucherId,orderId,openid);
     }
 
@@ -52,7 +60,9 @@ public class VoucherOrderController {
      */
     @PostMapping("/queryvoucher")
     public Result queryVoucherById(@RequestParam("openId") String openId){
-        return  voucherOrderService.queryVoucherById(openId);}
+        List<VoucherOrderDTO> vouchers = voucherListCache.get(openId);
+        return Result.ok(vouchers);
+    }
 
     /**
      * 根据条件（房间是否适用，时长是否超时）判断卡券是否适用

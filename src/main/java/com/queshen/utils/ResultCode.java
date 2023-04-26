@@ -4,6 +4,7 @@ package com.queshen.utils;
  * @author winston
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
+ * 全局封装请求返回状态码信息
  **/
 public interface ResultCode {
 

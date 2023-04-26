@@ -22,9 +22,6 @@ public class VoucherController {
     @Resource
     private IVoucherService voucherService;
 
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
-
     /**
      * 新增卡券功能
      * @Param voucher 卡券信息

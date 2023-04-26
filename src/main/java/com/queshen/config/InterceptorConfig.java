@@ -21,7 +21,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //所有需要登录才能使用的请求都带上/authority
+        //所有需要登录才能使用的请求都带上/authority，已经登录的用户才能发请求，本次开发中均未携带该前缀O(∩_∩)O
         registry.addInterceptor(TokenInterceptor).addPathPatterns("/**/authority/**");
     }
 }

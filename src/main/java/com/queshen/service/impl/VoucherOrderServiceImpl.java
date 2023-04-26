@@ -44,9 +44,6 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     private VoucherOrderMapper voucherOrderMapper;
 
     @Resource
-    private RedisIdWorker redisIdWorker;
-
-    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     @Resource

@@ -38,18 +38,13 @@ public class UserController {
     @Resource(name = "loginCache")
     RedisCache<User> cache;
 
-    @GetMapping("/login1")
-    public Result login(String username,String Password) {
-        
-        return Result.ok();
-    }
     /**
      * 微信登录功能
      * @param loginDTO 登录参数，包含微信凭证code和头像和昵称
      */
     @PostMapping("/login")
     public Result login(@RequestBody WeChatLoginDTO loginDTO) {
-
+        // 对前端微信登录获得的code参数进行处理，以至于获得openid和头像和昵称信息
         WeChatLoginResponse loginResponse = userService.getLoginResponse(loginDTO.getCode());
         if (loginResponse == null) {
             return Result.fail("解析用户凭证失败");
@@ -120,28 +115,6 @@ public class UserController {
         return Result.ok(phone);
     }
 
-    // 更新用户的昵称和微信头像
-    @PostMapping("/update")
-    public Result updateNickNameAndAvatarUrl(@RequestBody WeChatLoginDTO updateUser){
-
-//        String openid = updateUser.getCode();
-//
-//        User user = userService.getById(openid);
-//        BeanUtils.copyProperties(updateUser,user);
-//        userService.updateById(user);
-//        cache.remove(openid);
-
-        return Result.ok();
-    }
-
-    /**
-     * 获取个人openId
-     */
-    @GetMapping("/getOpenId")
-    public Result getOpenId(){
-        return Result.ok(UserHolder.getUser().getOpenid());
-    }
-
     @GetMapping("/current")
     public Result current() {
         //获取当前用户的登录信息并返回
@@ -150,21 +123,14 @@ public class UserController {
     }
 
     /**
-     * logout
+     * 退出登录还需要清除前端的缓存
      * @return
      */
     @GetMapping("/logout")
     public Result logout(@RequestParam("openid") String openid) {
-
         cache.remove(openid);
         UserHolder.removeUser();
         return Result.ok("退出登录成功");
-
-    }
-
-    @GetMapping("/test")
-    public Result test() {
-        return Result.ok("test Success");
     }
 
 }

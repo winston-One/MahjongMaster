@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 前端控制器
  * @author WinstonYv
  * @since 2022/11/14
+ * 如果使用的美团券或者商家券，支付完成之后需要将该券标明已用
  */
 @Log4j2
 @RequestMapping("/PointAfter")
@@ -28,25 +29,28 @@ public class PointAfterController {
 
     @Autowired
     OrderService orderService;
+
     @Autowired
     DianPingVoucherService dianPingVoucherService;
+
     @Autowired
     IVoucherOrderService voucherOrderService;
+
     @PostMapping("/pointAfterDo")
     public Result pointAfterDo(@RequestBody PointAfterDTO pointAfterDTO){
         //用了美团券,支付完之后调用
-        if (pointAfterDTO.getIsVoucher()==1){
-            DianPingVoucherOrder dianPingVoucherOrder=new DianPingVoucherOrder();
+        if (pointAfterDTO.getIsVoucher() == 1){
+            DianPingVoucherOrder dianPingVoucherOrder = new DianPingVoucherOrder();
             dianPingVoucherOrder.setUserId(pointAfterDTO.getUserId());
             dianPingVoucherOrder.setId(pointAfterDTO.getVoucherId());
             dianPingVoucherService.doDPOrderToMysql(dianPingVoucherOrder);
         }
         //用了平台券 支付完之后调用
-        if(pointAfterDTO.getIsVoucher()==2){
+        if(pointAfterDTO.getIsVoucher() == 2){
             voucherOrderService.changeOrderStatus(pointAfterDTO.getVoucherId());
         }
         //支付完之后调用
-        OrderSaveVo orderSaveVo=new OrderSaveVo();
+        OrderSaveVo orderSaveVo = new OrderSaveVo();
         orderSaveVo.setId(pointAfterDTO.getOrderId());
         orderSaveVo.setUserId(pointAfterDTO.getUserId());
         orderService.userPointOrder(orderSaveVo);

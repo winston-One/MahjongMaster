@@ -12,12 +12,16 @@ import lombok.Data;
 @AllArgsConstructor
 public class QuickLoginVO {
 
+    // openid是微信小程序登录的用户标识
     private String openid;
 
+    // 头像
     private String avatarUrl;
 
+    // code解析出的微信昵称
     private String nickname;
 
+    // 通过openid设置的token
     private String Authority;
 
 }

@@ -46,4 +46,5 @@ public class Room {
      */
     @TableField("room_remarks")
     private String remarks;
+
 }

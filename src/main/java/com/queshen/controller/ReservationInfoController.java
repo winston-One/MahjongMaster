@@ -12,6 +12,7 @@ import javax.annotation.Resource;
  * 前端控制器
  * @author WinstonYv
  * @since 2022/11/14
+ * 预约房间接口
  */
 @Slf4j
 @RestController
@@ -21,21 +22,17 @@ public class ReservationInfoController {
     @Resource
     private ReservationInfoService reservationInfoService;
 
-
+    // 查询出该门店所有可以预约的房间
     @GetMapping("/getAll")
     public Result getAllInfo(@RequestParam("storeId") String storeId,
                              @RequestParam("date") String date) {
-        System.out.println(storeId);
-        System.out.println(date);
         return reservationInfoService.getAllInfo(storeId, date);
     }
 
-
+    // 查询出该房间可以预约的24个时间段，分为当天和次日
     @GetMapping("/get")
     public Result getInfoByRoom(@RequestParam("roomId") String roomId,
                                 @RequestParam("date") String date) {
-        System.out.println(roomId);
-        System.out.println(date);
         return reservationInfoService.getInfoByRoom(roomId, date);
     }
 }

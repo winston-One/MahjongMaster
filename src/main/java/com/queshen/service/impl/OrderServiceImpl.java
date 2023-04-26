@@ -45,7 +45,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
-
     @Autowired
     private IdUtil idUtil;
 
@@ -66,7 +65,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 List<Order> data = (ArrayList) orderInRedis.getData();
                 IPage<Order> page = new Page<>(orderSelectByUserVO.getPageNum(), 10);
                 page.setRecords(data);
-//                return Result.ok(page);
                 return doSelectData(page);
             }
         }
@@ -101,7 +99,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             orderPage.setTotal(arrayList.size());
             log.info(orderPage.getRecords().toString());
         }
-//        return Result.ok(orderPage);
           return doSelectData(orderPage);
     }
 

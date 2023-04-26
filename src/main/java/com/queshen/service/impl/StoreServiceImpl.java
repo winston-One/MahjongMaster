@@ -16,11 +16,4 @@ import java.util.List;
  **/
 @Component
 public class StoreServiceImpl extends ServiceImpl<StoreMapper, Store> implements StoreService {
-
-    @Override
-    public Result selectAllStore() {
-        List<Store> list = this.list();
-        return Result.ok(list);
-    }
-
 }

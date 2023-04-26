@@ -10,7 +10,12 @@ import lombok.Data;
  **/
 @Data
 public class DianPingVoucherVO {
+
+    // 美团券实体
     private DianPingVoucherOrder dianPingVoucherOrder;
+
     private String receiptCode;
+
     private Integer count;
+
 }

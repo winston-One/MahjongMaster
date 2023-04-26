@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IdUtil {
 
-    //生成订单id工具类，当前用户id[1-5]+时间戳+queshen
+    //生成订单id工具类，当前用户id[1-5]+时间戳+queshen,生成的id属于项目的专属id
     public String getOrderId(String userId){
         long  l= System.currentTimeMillis();
         String currentTime = String.valueOf(l);

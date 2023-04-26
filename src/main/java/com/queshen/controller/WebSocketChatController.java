@@ -9,21 +9,21 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ServerEndpoint("/IM/chat/{myOpenid}")
+@ServerEndpoint("/IM/chat/{sendId}/{recvId}")
 @Component
 @Slf4j
 public class WebSocketChatController {
 
     /**
-     * 存放所有在线的客户端
+     * 存放所有在线的客户端 ConcurrentHashMap是线程安全的
      */
     private static final Map<String, Session> clients = new ConcurrentHashMap<>();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("myOpenid") String myOpenid) {
+    public void onOpen(Session session, @PathParam("sendId") String sendId) {
         //将新用户存入在线的组
-        log.info("有新的客户端连接了: {}", myOpenid);
-        clients.put(myOpenid, session);
+        log.info("有新的客户端连接了: {}", sendId);
+        clients.put(sendId, session);
     }
 
     /**
@@ -31,9 +31,11 @@ public class WebSocketChatController {
      * @param session session
      */
     @OnClose
-    public void onClose(Session session, @PathParam("myOpenid") String myOpenid) {
-        log.info("有用户断开了, openid为:{}", myOpenid);
-        clients.remove(myOpenid);
+    public void onClose(Session session,
+                        @PathParam("sendId") String sendId,
+                        @PathParam("recvId") String recvId) {
+        log.info("有用户断开了, openid为:{}", sendId);
+        clients.remove(sendId);
     }
 
     /**
@@ -51,10 +53,9 @@ public class WebSocketChatController {
      */
     @OnMessage
     public void onMessage(String message,
-                          @PathParam("myOpenid") String myOpenid,
+                          @PathParam("sendId") String sendId,
                           Session mySession) {
         log.info("服务端收到客户端发来的消息: {}", message);
-//        OnMessageHandler handler = SpringUtils.getBean(OnMessageHandler.class);
-//        handler.handle(message,myOpenid,getType,university,mySession,clients);
+        // todo,通过spring的bean工厂获取消息处理类，处理消息，例如存入数据库，让接收者看到消息
     }
 }

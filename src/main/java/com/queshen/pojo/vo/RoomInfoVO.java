@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RoomInfoVO {
+
     /** 房间号*/
     private String roomId;
 

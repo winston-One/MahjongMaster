@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BusinessOrderDTO {
+public class MahjongOrderDTO {
 
     private String openid;
 

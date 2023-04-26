@@ -1,6 +1,5 @@
 package com.queshen.controller;
 
-import com.queshen.config.RedisConfig;
 import com.queshen.pojo.bo.Result;
 import com.queshen.service.OrderService;
 import com.queshen.pojo.vo.OrderSaveVo;
@@ -13,17 +12,15 @@ import org.springframework.web.bind.annotation.*;
  * 前端控制器
  * @author WinstonYv
  * @since 2022/11/14
+ * 和订单相关的控制器
  */
 @Slf4j
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+
     @Autowired
     OrderService orderService;
-
-    @Autowired
-    RedisConfig redisConfig;
-
 
 
     /**
@@ -43,29 +40,6 @@ public class OrderController {
 
     /**
      * 下单
-     *
-     * @param orderSaveVo
-     *    ["roomId" : 房间id,
-     *     "userId" : 用户id ,
-     *     "status" : 订单状态 ,
-     *     "storeId" : 门店号 ,
-     *     "price" : 价格,
-     *     "startTime" :订单开始时间,
-     *     "endTime": 订单结束时间]
-     * @return List[order[
-     *                  "createTime": 创建时间
-     *                 "createUser": 创建用户
-     *                 "updateTime": 更新时间
-     *                 "id": 订单id
-     *                 "userId": 用户id
-     *                 "roomId": 房间id
-     *                 "price": 66.00,
-     *                 "startTime": 开始时间
-     *                 "endTime": 结束时间
-     *                 "storeId": 门店号
-     *                 "status": 订单状态
-     *
-     * ]]
      */
     @PostMapping("/saveOneUserOrder")
     public Result saveOneUserOrder(@RequestBody OrderSaveVo orderSaveVo){
@@ -86,16 +60,6 @@ public class OrderController {
         return orderService.deleteOrder(orderSaveVo);
     }
 
-//    /**
-//     * 支付完成后调用
-//     * @param OrderSaveVo [userId:用户id  id:订单id]
-//     * @return
-//     */
-//    @PostMapping("/userPointOrder")
-//    public Result userPointOrder(@RequestBody OrderSaveVo OrderSaveVo){
-//        return  orderService.userPointOrder(OrderSaveVo);
-//    }
-
     /**
      * 查询用户是否存在进行中订单
      * @return
@@ -104,6 +68,5 @@ public class OrderController {
     public Result selectIsDoingOrder(){
         return Result.ok(orderService.selectIsDoingOrder());
     }
-
 
 }

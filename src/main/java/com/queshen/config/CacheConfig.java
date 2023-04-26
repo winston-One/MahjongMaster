@@ -17,8 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class CacheConfig {
     /**
      * 配置缓存管理器
-     *
-     * @return 缓存管理器
      */
     @Bean
     public CacheManager cacheManager() {

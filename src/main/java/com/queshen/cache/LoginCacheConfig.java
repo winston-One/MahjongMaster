@@ -1,4 +1,4 @@
-package com.queshen.config;
+package com.queshen.cache;
 
 import com.queshen.cache.RedisCache;
 import com.queshen.cache.RedisCacheBuilder;

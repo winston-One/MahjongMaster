@@ -36,7 +36,7 @@ public class RedisScheduleTask {
     OrderService orderService;
 
     /**
-     * 定时删除redis中过期订单，每五分钟进行一次
+     * 定时删除redis中过期订单，后期整合rabbitMQ，就不需要使用这种轮询定时任务
      */
     @Async
     @Scheduled(fixedDelay = 1000*5*60)  //间隔1秒 300000

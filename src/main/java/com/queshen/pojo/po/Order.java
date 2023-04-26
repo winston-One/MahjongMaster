@@ -1,8 +1,14 @@
 package com.queshen.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.queshen.pojo.po.base.BaseEntity;
 import lombok.Data;
 
@@ -14,6 +20,7 @@ import java.time.LocalDateTime;
  * @author winston
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
+ * 数据库订单实体
  **/
 
 @TableName("tb_order")
@@ -60,5 +67,8 @@ public class Order extends BaseEntity {
     private String image;
 
     //支付时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime payTime;
 }

@@ -1,7 +1,14 @@
 package com.queshen.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -29,6 +36,10 @@ public class VoucherOrder {
     // 订单状态(1.有效2.无效3.已使用)
     private Integer orderStatus;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @TableField(fill = FieldFill.INSERT)
     // 下单时间
     private LocalDateTime createTime;
 

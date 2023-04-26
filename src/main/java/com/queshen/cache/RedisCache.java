@@ -30,6 +30,7 @@ public class RedisCache<T> {
      * 返回key对应的value
      * @param key
      * @return
+     * 在Redis中设置前缀prefix并且使用冒号与key隔开，相当于新建一层文件夹目录
      */
     public T get(String key){
 

@@ -13,6 +13,4 @@ import org.springframework.stereotype.Service;
 @Service
 public interface StoreService extends IService<Store> {
 
-    Result selectAllStore();
-
 }

@@ -9,6 +9,7 @@ import lombok.Data;
  **/
 @Data
 public class DianPingSessionDTO {
+
     //即为session
     private String access_token;
 

@@ -4,7 +4,6 @@ import com.queshen.mapper.VoucherMapper;
 import com.queshen.mapper.VoucherOrderMapper;
 import com.queshen.pojo.bo.TimeRange;
 import com.queshen.service.DianPingVoucherService;
-import com.queshen.service.ICalc;
 import com.queshen.service.IVoucherOrderService;
 import com.queshen.service.IVoucherService;
 import com.queshen.utils.TimeRangeUtil;
@@ -23,7 +22,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 23:25
  * @Description:
  **/
@@ -46,18 +45,10 @@ public class test {
     @Resource
     private IVoucherService voucherService;
 
-    @Autowired
-    private Map<String, ICalc> calcMap;
 
     @Test
     public void test(){
-        ICalc calc = calcMap.getOrDefault("sub", null);
-        if (null == calc) {
-            System.out.println("没有找到正确的策略");
-        }
-        int i = 1;
-        int j = 2;
-        System.out.println(calc.operation(i, j) + "");
+
     }
 
     @Test

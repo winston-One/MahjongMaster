@@ -34,7 +34,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 将标题处理成内容
+     * 将标题处理成内容，通过美团第三方sdk获得关于该门店给券定义的标题，通过对该标题进行解析获取美团券的信息
      * @param orderId
      * @param tittle
      * @return
@@ -65,7 +65,6 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         }else{
             room.add(s3);
         }
-        //NumberFormatException
         try {
             BigDecimal price=new BigDecimal(s1);
             BigDecimal duration=new BigDecimal(s2);
@@ -75,14 +74,10 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
             e.printStackTrace();
             return null;
         }
-
-
         dianPingVoucherOrder.setId(s8);
-
         dianPingVoucherOrder.setUserId(userId);
         dianPingVoucherOrder.setRoom(room);
         dianPingVoucherOrder.setPS(s5);
-
         return dianPingVoucherOrder;
     }
 
@@ -118,13 +113,11 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
      * @return
      */
     public Result selectDPOrderInRedis(String userid,int pageNum){
-
         String key = userid + "*";
         Set<String> keysList = stringRedisTemplate.keys(key);
         List<DianPingVoucherOrder> voucherOrderList = new ArrayList<>();
         if (keysList.size() == 0)
             return Result.ok(null);
-
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
 
         DianPingVoucherOrder voucherOrder;
@@ -177,16 +170,13 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         List<DianPingVoucherOrder> voucherOrderList = new ArrayList<>();
         if (keysList.size() != 0) {
             List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
-
-
             DianPingVoucherOrder voucherOrder= new DianPingVoucherOrder();
-
             for (String s : strings) {
                 voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
                 voucherOrderList.add(voucherOrder);
             }
         }
-
+        // 使用mybatis-plus的分页查询
         IPage<DianPingVoucherOrder> iPage=new Page<>(pageNum,10);
         LambdaQueryWrapper<DianPingVoucherOrder> lqw=new LambdaQueryWrapper<>();
         lqw.eq(DianPingVoucherOrder::getUserId,userid);

@@ -36,6 +36,7 @@ import java.util.Map;
  * 前端控制器
  * @author WinstonYv
  * @since 2022/11/14
+ * 美团验券的前端控制器
  */
 @Log4j2
 @RequestMapping("/DianPing")

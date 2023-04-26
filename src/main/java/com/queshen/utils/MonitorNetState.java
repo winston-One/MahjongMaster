@@ -11,6 +11,7 @@ import java.util.Date;
  * @author winston
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
+ * 监控网络状态工具类，暂时为集成到业务中
  **/
 public class MonitorNetState {
 
