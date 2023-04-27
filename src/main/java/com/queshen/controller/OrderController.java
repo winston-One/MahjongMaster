@@ -22,16 +22,8 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-
     /**
      * 获取该用户所有类型订单信息（可按类型）
-     * @param orderSelectByUserVO
-     *        [ "openId" : 用户id,
-     *          "orderStatus" : 订单状态 ,
-     *          "storeId" : 门店号 ,
-     *          "pageNum" : 当前页数
-     *        ]
-     * @return
      */
     @PostMapping("/getAllOrderByUser")
     public Result getAllOrderByUser(@RequestBody OrderSelectByUserVO orderSelectByUserVO){

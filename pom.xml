@@ -19,6 +19,7 @@
         <velocity.version>2.0</velocity.version>
     </properties>
     <dependencies>
+
         <!-- FastDFS dependency -->
         <dependency>
             <groupId>net.oschina.zcx7878</groupId>
@@ -32,19 +33,20 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+        <!-- 定时任务quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>2.3.0</version>
         </dependency>
 
+        <!-- mongodb的数据库操作工具 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
-        <!--中文分词器-->
+        <!--中文分词器，便于分析评论中是否有违规和敏感词汇-->
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
@@ -58,13 +60,14 @@
             <version>${velocity.version}</version>
         </dependency>
 
+        <!-- mybatis-plus的代码生成器 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>3.5.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+        <!-- 本地缓存 -->
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
@@ -103,6 +106,8 @@
             <artifactId>lettuce-core</artifactId>
             <version>6.1.6.RELEASE</version>
         </dependency>
+
+        <!-- Apache的操作java的工具包，例如集合等等 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
@@ -114,12 +119,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- json解析工具 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.80</version>
         </dependency>
-
 
         <!--Mysql与lombok等依赖-->
         <dependency>
@@ -179,6 +184,7 @@
             <version>3.13.6</version>
         </dependency>
 
+        <!-- 自定义注解，AOP开发，例如进行接口限流，接口日志打印统一处理 -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -201,6 +207,8 @@
             <artifactId>fluent-hc</artifactId>
             <version>4.5.8</version>
         </dependency>
+
+        <!-- 工具类 -->
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>

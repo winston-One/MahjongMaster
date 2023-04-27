@@ -39,7 +39,7 @@ public class RedisScheduleTask {
      * 定时删除redis中过期订单，后期整合rabbitMQ，就不需要使用这种轮询定时任务
      */
     @Async
-    @Scheduled(fixedDelay = 1000*5*60)  //间隔1秒 300000
+    @Scheduled(fixedDelay = 1000 * 10 * 60)  //间隔1秒 300000
     public void deleteExpireOrder() {
         log.info("定时任务开始");
         //在redis中查找所有的订单信息

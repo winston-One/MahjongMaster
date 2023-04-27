@@ -73,6 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         String access_token = null;
         // 如果可以从缓存中获取微信接口调用凭证，就不需要重复发送请求获取凭证
+        // 第一次登录都会将解析的token存入到Redis缓存中，并有过期时间，频繁发起网络请求时很耗cpu资源的。
         access_token = stringRedisTemplate.opsForValue().get("access_token");
         if (access_token == null) {
             // 获取接口凭证 yaml配置类中关于小程序信息属于私密信息，小伙伴可以自行配置自己注册的小程序进行测试
@@ -103,8 +104,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 通过接口凭证获取用户电话号码
         String url1 = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN";
         WeChatLoginPhoneRequest request = new WeChatLoginPhoneRequest(access_token, code);
-
+        // 使用restTemplate发起网路请求第三方接口
         String phoneRequest = restTemplate.postForObject(url1,request,String.class);
+        // 将获取的结果集进行JSON解析映射到自定义WeChatLoginPhoneResponse实体类中
         WeChatLoginPhoneResponse phoneResponse = JSON.parseObject(phoneRequest, WeChatLoginPhoneResponse.class);
 
         Integer pErrcode = phoneResponse.getErrcode();

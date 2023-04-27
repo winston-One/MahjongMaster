@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/file")
 public class FileController {
+
     //测试文件存储
     @PostMapping("/upload")
     public Result uploadFile(MultipartFile file) {
@@ -50,4 +51,5 @@ public class FileController {
 
         return Result.fail("文件上传失败");
     }
+
 }

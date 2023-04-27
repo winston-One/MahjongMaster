@@ -13,6 +13,7 @@ import com.queshen.exceptionhandler.PayReCallException;
 import com.queshen.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,19 +51,20 @@ public class PayController {
         WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
         orderRequest.setBody("国粹娱乐中心");
         orderRequest.setOutTradeNo(id);
-        orderRequest.setTotalFee(BaseWxPayRequest.yuanToFen(realPrice.toString()));//元转成分
+        // 将金钱精确到两位小数
+        orderRequest.setTotalFee(BaseWxPayRequest.yuanToFen(realPrice.toString()));
         orderRequest.setOpenid(currentOpenid);
         orderRequest.setSpbillCreateIp(mahjongOrderDTO.getIp());
         String startTime = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String expireTime = now.plusHours(1).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         orderRequest.setTimeStart(startTime);
         orderRequest.setTimeExpire(expireTime);
-        orderRequest.setNotifyUrl("http://localhost:7777/business/payRecall");
+        orderRequest.setNotifyUrl("http://localhost:9790/business/callback");
         orderRequest.setTradeType("JSAPI");
         return Result.ok(wxPayService.createOrder(orderRequest));
     }
 
-    @PostMapping("/payRecall")
+    @PostMapping("/callback")
     public String payNotify(HttpServletRequest request) {
         try {
             String xmlResult = IOUtils.toString(request.getInputStream(), request.getCharacterEncoding());
@@ -70,7 +72,7 @@ public class PayController {
             String orderId = result.getOutTradeNo();
             Order order = orderService.getById(orderId);
             log.info("微信支付回调，订单号 {}", orderId);
-            if (order != null) {
+            if (StringUtils.isNotEmpty(orderId)) {
                 return WxPayNotifyResponse.success("支付成功");
             }
             if (order.getStatus() == 2) {

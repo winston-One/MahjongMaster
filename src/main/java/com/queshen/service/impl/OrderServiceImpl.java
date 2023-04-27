@@ -267,13 +267,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @return
      */
     private boolean doOrderToMysql(List<Order> orderList){
-//        this.saveBatch(orderList);
         this.updateBatchById(orderList);
         return true;
     }
 
     /**
-     *
+     * 删除订单
      * @param orderSaveVo
      * @return
      */

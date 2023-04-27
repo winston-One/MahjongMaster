@@ -10,10 +10,13 @@ import lombok.Data;
 @Data
 public class ReceiptCodeDTO {
 
+    // 用户id
     private String userId;
 
+    // 券码
     private String receiptCode;
 
+    // 需要验券的数量
     private Integer count;
 
 }

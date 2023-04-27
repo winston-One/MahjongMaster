@@ -131,7 +131,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
     }
 
     /**
-     * 查询可用券 （新）
+     * 查询可用券——跟是一个接口的区别是返回的结果集不一样
      * @param userid
      * @return
      */
@@ -157,12 +157,8 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         return Result.ok(dianPingCanDoVoucherList);
     }
 
-
     /**
      * 查询所有的大众券
-     * @param userid
-     * @param pageNum
-     * @return IPage<DianPingVoucherOrder>
      */
     public Result selectAllDPOrder(String userid,int pageNum) {
         String key = userid + "*";
@@ -186,5 +182,4 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         iPage.setRecords(voucherOrderList);
         return Result.ok(iPage);
     }
-
 }

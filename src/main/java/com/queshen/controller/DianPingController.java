@@ -51,22 +51,10 @@ public class DianPingController {
 
     @Autowired
     public StringRedisTemplate stringRedisTemplate;
+
     /**
      * 验券接口
      * @param receiptCode [userId:用户id ，receiptCode：券码]
-     * @return  dianPingVoucherVO
-     * [
-     *     id: 订单id
-     *     userId：用户id
-     *     price ：价格
-     *     duration：时长
-     *     room：适用房型  List中填大 中 小 所有房型
-     *     PS：备注
-     *     status：状态 1已经使用 0未使用
-     *
-     *     receiptCode:券码
-     *     count :张数
-     *     ]
      */
     @PostMapping("/verification")
     public Result verification(@RequestBody ReceiptCodeDTO receiptCode){
@@ -97,15 +85,15 @@ public class DianPingController {
                     .execute().returnContent().asString();
             log.info(s);
             PreparemtRecordResultDTO preparemtRecordResult;
-            JSONObject jsonStr=JSONObject.parseObject(s);
-            preparemtRecordResult=JSONObject.toJavaObject(jsonStr,PreparemtRecordResultDTO.class);
-            if (preparemtRecordResult.code==200){
-                PreparemtRecordDTO preparemtRecord=preparemtRecordResult.Data;
+            JSONObject jsonStr = JSONObject.parseObject(s);
+            preparemtRecordResult = JSONObject.toJavaObject(jsonStr,PreparemtRecordResultDTO.class);
+            if (preparemtRecordResult.code == 200){
+                PreparemtRecordDTO preparemtRecord = preparemtRecordResult.Data;
                 log.info(preparemtRecord);
                 DianPingVoucherOrder dianPingVoucherOrder = dianPingVoucherService.doDianPingTittle(receiptCode.getReceiptCode(), preparemtRecord.deal_title,receiptCode.getUserId());
-                if (dianPingVoucherOrder==null)
+                if (dianPingVoucherOrder == null)
                     return Result.fail("抱歉，目前暂时不支持该类型的券");
-                DianPingVoucherVO dianPingVoucherVO =new DianPingVoucherVO();
+                DianPingVoucherVO dianPingVoucherVO = new DianPingVoucherVO();
                 dianPingVoucherVO.setDianPingVoucherOrder(dianPingVoucherOrder);
                 dianPingVoucherVO.setReceiptCode(receiptCode.getReceiptCode());
                 dianPingVoucherVO.setCount(preparemtRecord.count);
@@ -123,16 +111,17 @@ public class DianPingController {
         return Result.fail("系统错误");
     }
 
-
-
+    // 二维码验券
     @PostMapping("/verificationByQRCode")
     public Result verificationByQRCode(@RequestBody ReceiptCodeDTO receiptCode){
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, String> requestParam = new HashMap<>();
+        // 获取session和refresh_session
         AppConstants sessionAndRefresh = getSessionAndRefresh();
+        // 以下是请求第三方验券接口所需要的参数，具体参数的
         requestParam.put("app_key",AppConstants.APP_KEY);
         requestParam.put("timestamp",format.format(System.currentTimeMillis()));
-        requestParam.put("format","json");
+        requestParam.put("format","json");// 请求参数的格式是json
         requestParam.put("sign_method",AppConstants.SIGN_METHOD_MD5);
         requestParam.put("session",sessionAndRefresh.session);
         requestParam.put("open_shop_uuid",AppConstants.OPEM_SHOP_UUID);
@@ -147,6 +136,7 @@ public class DianPingController {
             form.add(entry.getKey(), entry.getValue());
         }
         try {
+            // 请求美团验券接口，代入前面封装好的参数（app密钥，时间戳会话，店铺id等等）
             String s = Request.Post("https://openapi.dianping.com/router/tuangou/receipt/scanprepare")
                     .bodyForm(form.build())
                     .setHeader("Content-Type", ContentType.create("application/x-www-form-urlencoded", "UTF-8").toString())
@@ -154,15 +144,17 @@ public class DianPingController {
 
             log.info(s);
             PreparemtRecordResultDTO preparemtRecordResult;
-            JSONObject jsonStr=JSONObject.parseObject(s);
-            preparemtRecordResult=JSONObject.toJavaObject(jsonStr,PreparemtRecordResultDTO.class);
-            if (preparemtRecordResult.code==200){
-                PreparemtRecordDTO preparemtRecord=preparemtRecordResult.Data;
+            // 将请求结果集进行JSON解析
+            JSONObject jsonStr = JSONObject.parseObject(s);
+            // 将结果集映射到PreparemtRecordResultDTO自定义实体对象中
+            preparemtRecordResult = JSONObject.toJavaObject(jsonStr,PreparemtRecordResultDTO.class);
+            if (preparemtRecordResult.code == 200){
+                PreparemtRecordDTO preparemtRecord = preparemtRecordResult.Data;
                 log.info(preparemtRecord);
                 DianPingVoucherOrder dianPingVoucherOrder = dianPingVoucherService.doDianPingTittle(receiptCode.getReceiptCode(), preparemtRecord.deal_title,receiptCode.getUserId());
-                if (dianPingVoucherOrder==null)
+                if (dianPingVoucherOrder == null)
                     return Result.fail("抱歉，目前暂时不支持该类型的券");
-                DianPingVoucherVO dianPingVoucherVO =new DianPingVoucherVO();
+                DianPingVoucherVO dianPingVoucherVO = new DianPingVoucherVO();
                 dianPingVoucherVO.setDianPingVoucherOrder(dianPingVoucherOrder);
                 dianPingVoucherVO.setReceiptCode(receiptCode.getReceiptCode());
                 return Result.ok(dianPingVoucherVO);
@@ -219,10 +211,10 @@ public class DianPingController {
                     .execute().returnContent().asString();
 
             log.info(s);
-            JSONObject jsonStr=JSONObject.parseObject(s);
+            JSONObject jsonStr = JSONObject.parseObject(s);
             ConsumeResult consumeResult = JSONObject.toJavaObject(jsonStr, ConsumeResult.class);
             log.info(consumeResult);
-            if(consumeResult.code==200){
+            if(consumeResult.code == 200){
                 JSONArray data = consumeResult.Data;
                 String dataString = JsonUtils.toJson(data);
                 DianPingVorcherDTO dianPingVorcherDTO = JsonUtils.toBean(dataString, DianPingVorcherDTO.class);
@@ -247,16 +239,6 @@ public class DianPingController {
     /**
      * 查询所有美团券（订单）
      * @param orderSelectByUserVO [openId：用户id，pageNum:目前多少页]
-     * @return IPage<DianPingVoucherOrder>
-     *     [
-     *      id: 订单id
-     *      userId：用户id
-     *      price ：价格
-     *      duration：时长
-     *      room：适用房型  List中填大 中 小 所有房型
-     *      PS：备注
-     *      status：状态 1已经使用 0未使用
-     *      ]
      */
     @PostMapping("/selectAllDPOrder")
     public Result selectAllDPOrder(@RequestBody OrderSelectByUserVO orderSelectByUserVO){
@@ -266,46 +248,20 @@ public class DianPingController {
     /**
      * 查看可用美团券（在redis中的）
      * @param orderSelectByUserVO [openId:用户id pageNum：当前页数]
-     * @return IPage<DianPingVoucherOrder>
-     *     [
-     *            id: 订单id
-     *            userId：用户id
-     *            price ：价格
-     *            duration：时长
-     *            room：适用房型  List中填大 中 小 所有房型
-     *            PS：备注
-     *            status：状态 1已经使用 0未使用
-     *            ]
      */
     @PostMapping("/selectDPOrderInRedis")
     public Result selectDPOrderInRedis(@RequestBody OrderSelectByUserVO orderSelectByUserVO){
         return dianPingVoucherService.selectDPOrderInRedis(orderSelectByUserVO.getOpenId(),orderSelectByUserVO.getPageNum());
     }
 
-    /** 新
+    /**
      * 查看可用美团券（在redis中的）
      * @param  userId:用户id
-     * @return IPage<DianPingVoucherOrder>
-     *     [
-     *            id: 订单id
-     *            price ：价格
-     *            duration：时长
-     *            ]
      */
     @GetMapping("/selectCanDoDPOrderInRedis")
     public Result selectCanDoDPOrderInRedis(@RequestParam("userId") String userId){
         return dianPingVoucherService.selectCandoDPVoucherInRedis(userId);
     }
-//    /**
-//     *支付完之后调用
-//     * @param dianPingVoucherOrder [userId:用户id,id：券的id]
-//     * @return
-//     */
-//    @PostMapping("/pointAfterDoDianPing")
-//    public Result pointAfterDoDianPing(@RequestBody DianPingVoucherOrder dianPingVoucherOrder){
-//        dianPingVoucherService.doDPOrderToMysql(dianPingVoucherOrder);
-//        return Result.ok();
-//    }
 
     /**
      * 获取session和refresh_session
@@ -313,10 +269,11 @@ public class DianPingController {
      */
     private  AppConstants getSessionAndRefresh(){
         String appKey = AppConstants.APP_KEY;
+        // 会话数据是存储在Redis里的
         String s = stringRedisTemplate.opsForValue().get(appKey);
         DianPingSessionDTO dianPingSessionDTO = JSONUtil.toBean(s, DianPingSessionDTO.class);
         log.info(dianPingSessionDTO);
-        AppConstants appConstants =new AppConstants();
+        AppConstants appConstants = new AppConstants();
         appConstants.setSession(dianPingSessionDTO.getAccess_token());
         appConstants.setRefresh_token(dianPingSessionDTO.getRefresh_token());
         log.info(appConstants);
@@ -366,20 +323,6 @@ public class DianPingController {
         log.info(dianPingSessionDTO);
         return Result.ok();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @PostMapping("/selectStoreScope")
     public String selectStoreScope()  {
