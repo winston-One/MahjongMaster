@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.queshen.cache.RedisCache;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.UserDTO;
-import com.queshen.pojo.dto.WeChatLoginDTO;
-import com.queshen.pojo.dto.WeChatPhoneDTO;
+import com.queshen.pojo.dto.WxLoginDTO;
+import com.queshen.pojo.dto.WxPhoneDTO;
 import com.queshen.pojo.po.User;
-import com.queshen.pojo.bo.WeChatLoginPhoneResponse;
-import com.queshen.pojo.bo.WeChatLoginResponse;
+import com.queshen.pojo.bo.WxLoginPhoneResponse;
+import com.queshen.pojo.bo.WxLoginResponse;
 import com.queshen.service.IUserService;
 import com.queshen.utils.JwtUtils;
 import com.queshen.utils.UserHolder;
@@ -18,6 +18,7 @@ import com.queshen.pojo.vo.UserLoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,9 +44,9 @@ public class UserController {
      * @param loginDTO 登录参数，包含微信凭证code和头像和昵称
      */
     @PostMapping("/login")
-    public Result login(@RequestBody WeChatLoginDTO loginDTO) {
+    public Result login(@RequestBody WxLoginDTO loginDTO) {
         // 对前端微信登录获得的code参数进行处理，以至于获得openid和头像和昵称信息
-        WeChatLoginResponse loginResponse = userService.getLoginResponse(loginDTO.getCode());
+        WxLoginResponse loginResponse = userService.getLoginResponse(loginDTO.getCode());
         if (loginResponse == null) {
             return Result.fail("解析用户凭证失败");
         }
@@ -56,7 +57,7 @@ public class UserController {
         UserDTO userHold = new UserDTO(openid, loginDTO.getNickname(), loginDTO.getAvatarUrl());
         UserHolder.saveUser(userHold);
         User user = cache.get(openid);
-        if (user == null) {
+        if (StringUtils.isEmpty(user)) {
             user = new User();
             BeanUtils.copyProperties(loginDTO,user);
             user.setOpenid(openid);
@@ -73,8 +74,8 @@ public class UserController {
     }
 
     @PostMapping("/quickLogin")
-    public Result quickLogin(@RequestBody WeChatLoginDTO weChatLoginDTO) {
-        WeChatLoginResponse loginResponse = userService.getLoginResponse(weChatLoginDTO.getCode());
+    public Result quickLogin(@RequestBody WxLoginDTO weChatLoginDTO) {
+        WxLoginResponse loginResponse = userService.getLoginResponse(weChatLoginDTO.getCode());
         String openid = loginResponse.getOpenid();
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("openid", openid);
@@ -97,12 +98,12 @@ public class UserController {
      * @param phoneDTO 获取用户电话号码的请求参数
      */
     @PostMapping("/savePhone")
-    public Result savePhone(@RequestBody WeChatPhoneDTO phoneDTO) {
+    public Result savePhone(@RequestBody WxPhoneDTO phoneDTO) {
         String phone = userService.getById(phoneDTO.getOpenid()).getPhone();
         if(phone != null){
             return Result.ok(phone);
         }
-        WeChatLoginPhoneResponse phoneResponse = userService.getPhoneResponse(phoneDTO.getCode());
+        WxLoginPhoneResponse phoneResponse = userService.getPhoneResponse(phoneDTO.getCode());
         if(phoneResponse == null){
             return Result.fail("解析手机号凭证失败");
         }

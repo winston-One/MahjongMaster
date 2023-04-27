@@ -25,23 +25,16 @@ public class LocalDateTimeSerializerConfig {
 
     private static final String DATE_PATTERN = "yyyy-MM-dd";
 
-    /**
-     * string转localdate
-     */
     @Bean
-    public Converter<String, LocalDate> localDateConverter() {
-        return new Converter<String, LocalDate>() {
-            @Override
-            public LocalDate convert(String source) {
-                if (source.trim().length() == 0) {
-                    return null;
-                }
-                try {
-                    return LocalDate.parse(source);
-                } catch (Exception e) {
-                    return LocalDate.parse(source, DateTimeFormatter.ofPattern(DATE_PATTERN));
-                }
-            }
+    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+        JavaTimeModule module = new JavaTimeModule();
+        LocalDateTimeDeserializer localDateTimeDeserializer = new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer);
+        return builder -> {
+            builder.simpleDateFormat(DATE_TIME_PATTERN);
+            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_PATTERN)));
+            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
+            builder.modules(module);
         };
     }
 
@@ -67,18 +60,22 @@ public class LocalDateTimeSerializerConfig {
     }
 
     /**
-     * 统一配置
+     * string转localdate
      */
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
-        JavaTimeModule module = new JavaTimeModule();
-        LocalDateTimeDeserializer localDateTimeDeserializer = new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer);
-        return builder -> {
-            builder.simpleDateFormat(DATE_TIME_PATTERN);
-            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_PATTERN)));
-            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
-            builder.modules(module);
+    public Converter<String, LocalDate> localDateConverter() {
+        return new Converter<String, LocalDate>() {
+            @Override
+            public LocalDate convert(String source) {
+                if (source.trim().length() == 0) {
+                    return null;
+                }
+                try {
+                    return LocalDate.parse(source);
+                } catch (Exception e) {
+                    return LocalDate.parse(source, DateTimeFormatter.ofPattern(DATE_PATTERN));
+                }
+            }
         };
     }
 }

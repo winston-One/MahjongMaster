@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WeChatLoginDTO {
+public class WxLoginDTO {
 
     /**
      * 更新:传入的是openid，

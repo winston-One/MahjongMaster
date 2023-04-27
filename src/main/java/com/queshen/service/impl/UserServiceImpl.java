@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.queshen.exceptionhandler.LoginException;
 import com.queshen.mapper.UserMapper;
-import com.queshen.pojo.bo.WeChatAccessTokenResponse;
-import com.queshen.pojo.bo.WeChatLoginPhoneRequest;
-import com.queshen.pojo.bo.WeChatLoginPhoneResponse;
-import com.queshen.pojo.bo.WeChatLoginResponse;
+import com.queshen.pojo.bo.WxAccessTokenRes;
+import com.queshen.pojo.bo.WxLoginPhoneReq;
+import com.queshen.pojo.bo.WxLoginPhoneResponse;
+import com.queshen.pojo.bo.WxLoginResponse;
 import com.queshen.pojo.po.User;
 import com.queshen.service.IUserService;
 import com.queshen.utils.WeChatUtil;
@@ -40,13 +40,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     WeChatUtil weChatUtil;
 
     @Override
-    public WeChatLoginResponse getLoginResponse(String code) {
+    public WxLoginResponse getLoginResponse(String code) {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid="+weChatUtil.getAppid()+"" +
                 "&secret="+weChatUtil.getSecret()+"" +
                 "&js_code="+code+"" +
                 "&grant_type=authorization_code";
         String response = restTemplate.getForObject(url,String.class);
-        WeChatLoginResponse loginResponse = JSON.parseObject(response, WeChatLoginResponse.class);
+        WxLoginResponse loginResponse = JSON.parseObject(response, WxLoginResponse.class);
         Integer errcode = loginResponse.getErrcode();
         if (errcode != null && errcode != 0){
             LoginException loginException = new LoginException();
@@ -69,7 +69,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
     @Override
-    public WeChatLoginPhoneResponse getPhoneResponse(String code) {
+    public WxLoginPhoneResponse getPhoneResponse(String code) {
 
         String access_token = null;
         // 如果可以从缓存中获取微信接口调用凭证，就不需要重复发送请求获取凭证
@@ -81,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                     "&secret="+weChatUtil.getSecret()+""+
                     "&grant_type=client_credential";
             String response = restTemplate.getForObject(url,String.class);
-            WeChatAccessTokenResponse tokenResponse = JSON.parseObject(response, WeChatAccessTokenResponse.class);
+            WxAccessTokenRes tokenResponse = JSON.parseObject(response, WxAccessTokenRes.class);
             Integer errcode = tokenResponse.getErrcode();
             if (errcode != null && errcode != 0){
                 LoginException loginException = new LoginException();
@@ -103,11 +103,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         // 通过接口凭证获取用户电话号码
         String url1 = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN";
-        WeChatLoginPhoneRequest request = new WeChatLoginPhoneRequest(access_token, code);
+        WxLoginPhoneReq request = new WxLoginPhoneReq(access_token, code);
         // 使用restTemplate发起网路请求第三方接口
         String phoneRequest = restTemplate.postForObject(url1,request,String.class);
         // 将获取的结果集进行JSON解析映射到自定义WeChatLoginPhoneResponse实体类中
-        WeChatLoginPhoneResponse phoneResponse = JSON.parseObject(phoneRequest, WeChatLoginPhoneResponse.class);
+        WxLoginPhoneResponse phoneResponse = JSON.parseObject(phoneRequest, WxLoginPhoneResponse.class);
 
         Integer pErrcode = phoneResponse.getErrcode();
         if (pErrcode != null && pErrcode != 0){

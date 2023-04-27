@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WeChatPhoneDTO {
+public class WxPhoneDTO {
 
     // 微信允许获取电话的凭证
     private String code;

@@ -12,12 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WeChatLoginPhoneResponse {
+public class WxLoginPhoneReq {
 
-    private PhoneInfo phone_info;
+    private String access_token;
 
-    private Integer errcode;
-
-    private String errmsg;
+    private String code;
 
 }

@@ -1,20 +1,19 @@
 package com.queshen.pojo.bo;
 
 import lombok.Data;
+
 /**
  * @author winston
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
- * 微信授权登录之后返回的凭证code，可以将code解析成下面几个参数
  **/
 @Data
-public class WeChatLoginResponse {
+public class WxAccessTokenRes {
 
-    private String openid;
+    private String access_token;
 
-    private String session_key;
-
-    private String unionid;
+    // access_token 的过期时间，一般是2个小时，7200秒，存入的是
+    private Long expires_in;
 
     private Integer errcode;
 

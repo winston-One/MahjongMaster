@@ -14,11 +14,4 @@ public class PayReCallException extends RuntimeException{
 
     private String msg;//异常信息
 
-    public PayReCallException() {
-    }
-
-    public PayReCallException(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
 }

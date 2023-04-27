@@ -48,28 +48,28 @@ public class PayController {
         //保存订单到数据库
         String id = mahjongOrderDTO.getOrderNo();
         BigDecimal realPrice = mahjongOrderDTO.getRealPrice();
-        WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
-        orderRequest.setBody("国粹娱乐中心");
-        orderRequest.setOutTradeNo(id);
+        WxPayUnifiedOrderRequest orderReq = new WxPayUnifiedOrderRequest();
+        orderReq.setBody("国粹娱乐中心");
+        orderReq.setOutTradeNo(id);
         // 将金钱精确到两位小数
-        orderRequest.setTotalFee(BaseWxPayRequest.yuanToFen(realPrice.toString()));
-        orderRequest.setOpenid(currentOpenid);
-        orderRequest.setSpbillCreateIp(mahjongOrderDTO.getIp());
-        String startTime = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        orderReq.setOpenid(currentOpenid);
+        orderReq.setSpbillCreateIp(mahjongOrderDTO.getIp());
+        orderReq.setTotalFee(BaseWxPayRequest.yuanToFen(realPrice.toString()));
         String expireTime = now.plusHours(1).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        orderRequest.setTimeStart(startTime);
-        orderRequest.setTimeExpire(expireTime);
-        orderRequest.setNotifyUrl("http://localhost:9790/business/callback");
-        orderRequest.setTradeType("JSAPI");
-        return Result.ok(wxPayService.createOrder(orderRequest));
+        String startTime = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        orderReq.setTimeExpire(expireTime);
+        orderReq.setTimeStart(startTime);
+        orderReq.setNotifyUrl("http://localhost:9790/business/callback");
+        orderReq.setTradeType("JSAPI");
+        return Result.ok(wxPayService.createOrder(orderReq));
     }
 
     @PostMapping("/callback")
     public String payNotify(HttpServletRequest request) {
         try {
             String xmlResult = IOUtils.toString(request.getInputStream(), request.getCharacterEncoding());
-            WxPayOrderNotifyResult result = wxPayService.parseOrderNotifyResult(xmlResult);
-            String orderId = result.getOutTradeNo();
+            WxPayOrderNotifyResult payRes = wxPayService.parseOrderNotifyResult(xmlResult);
+            String orderId = payRes.getOutTradeNo();
             Order order = orderService.getById(orderId);
             log.info("微信支付回调，订单号 {}", orderId);
             if (StringUtils.isNotEmpty(orderId)) {
@@ -79,7 +79,7 @@ public class PayController {
                  log.info("订单已支付=={}", orderId);
                 return WxPayNotifyResponse.success("支付成功");
             }
-            if (!orderService.checkPaySuccess(result)) {
+            if (!orderService.checkPaySuccess(payRes)) {
                  log.info("未交易成功=={}", orderId);
                 return WxPayNotifyResponse.success("未交易成功回调");
             }
