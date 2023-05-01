@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @create 2022/11/14
  * @Description:
  **/
-@Service
 public interface StoreService extends IService<Store> {
 
 }

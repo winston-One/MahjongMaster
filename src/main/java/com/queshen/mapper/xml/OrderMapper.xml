@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.queshen.mapper.OrderMapper">
+
+    <select id="isExistReserveTime" resultType="java.lang.String">
+        SELECT order_id FROM tb_order WHERE
+        (start_time &gt;= #{startTime} AND start_time &lt; #{endTime})
+        OR(start_time &lt;= #{startTime} AND end_time &gt; #{startTime})
+        and is_delete=0 and order_status &lt;&gt; 3
+    </select>
+</mapper>

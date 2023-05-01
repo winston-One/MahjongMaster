@@ -4,9 +4,7 @@ server:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations:
-    - classpath:mapper/**/*.xml
-    - classpath*:com/**/mapper/*.xml
+  mapper-locations: classpath:com/queshen/mapper/xml/*.xml
 
 spring:
   application:

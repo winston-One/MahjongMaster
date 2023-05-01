@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.queshen.mapper.AppConstantsMapper;
 import com.queshen.service.AppConstantsService;
 import com.queshen.pojo.po.AppConstants;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author winston
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
-@Component
+@Service
 public class AppConstantsServiceImpl extends ServiceImpl<AppConstantsMapper, AppConstants> implements AppConstantsService {
 }

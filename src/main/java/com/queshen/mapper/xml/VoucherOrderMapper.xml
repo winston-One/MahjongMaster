@@ -26,4 +26,5 @@
         FROM tb_voucher t1 LEFT JOIN tb_voucher_order t2 ON t1.voucher_id = t2.voucher_id
         WHERE t2.user_id = #{user_id} AND available_range LIKE concat('%', #{room_name}, '%') AND duration &lt;= #{duration}
     </select>
+
 </mapper>

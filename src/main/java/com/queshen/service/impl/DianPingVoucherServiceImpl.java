@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.Set;
  * @Description: Man can conquer nature
  **/
 @Log4j2
-@Component
+@Service
 public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrderMapper, DianPingVoucherOrder> implements DianPingVoucherService {
 
     @Autowired

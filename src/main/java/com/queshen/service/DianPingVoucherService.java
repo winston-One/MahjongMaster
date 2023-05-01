@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
-@Service
 public interface DianPingVoucherService extends IService<DianPingVoucherOrder> {
 
     DianPingVoucherOrder doDianPingTittle(String orderId,String tittle,String userId);

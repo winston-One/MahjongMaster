@@ -1,6 +1,7 @@
 package com.queshen.controller;
 
 import com.queshen.pojo.bo.Result;
+import com.queshen.pojo.dto.CommentInfoDTO;
 import com.queshen.pojo.dto.CommentLikeDTO;
 import com.queshen.pojo.dto.ReceiptCodeDTO;
 import com.queshen.pojo.po.Comment;
@@ -22,18 +23,19 @@ public class CommentController {
 
     // 获取评论
     @PostMapping("/getComment")
-    public Result getStoreCommentList(@RequestBody Comment receiptCode){
+    public Result getStoreCommentList(@RequestParam() String storeId,
+                                      @RequestParam() Integer roomId){
 
         return Result.ok();
     }
 
     /**
      * 发布评论
-     * @param receiptCode
+     * @param commentInfo
      * @return
      */
     @PostMapping("/publishComment")
-    public Result publishComment(@RequestBody ReceiptCodeDTO receiptCode){
+    public Result publishComment(@RequestBody CommentInfoDTO commentInfo){
 
         return Result.ok();
     }
@@ -80,25 +82,25 @@ public class CommentController {
         return Result.ok();
     }
 
-    // 获取用户自己在某个帖子下的点赞列表
+    // 获取门店自己在某个门店下的点赞列表
     @GetMapping("/commentLike")
-    public Result getSelfCommentLikeList(@RequestParam("planetId") String planetId){
+    public Result getSelfCommentLikeList(@RequestParam("storeId") String storeId){
         return Result.ok();
     }
 
     // 把评论标为已读
     @PostMapping("/readComment")
-    public Result readComment(@RequestBody Integer id) {
+    public Result readComment(@RequestBody Integer commentId) {
         return Result.ok();
     }
 
     // 获取消息列表
     @GetMapping("/conversationList")
-    public Result getConversationList(@RequestParam Integer getType){
+    public Result getConversationList(@RequestParam Integer type){
         return Result.ok();
     }
 
-    // 商家端获取未读消息总数
+    // 门店管理人获取未读消息总数
     @GetMapping("/shopUnreadCount")
     public Result getUnreadCount(@RequestParam Integer storeId){
         return Result.ok();
@@ -106,10 +108,12 @@ public class CommentController {
 
     // 获取历史聊天记录
     @GetMapping("/history")
-    public Result getHistoryMsg(@RequestParam(required = false) String conversationId,
+    public Result getHistoryMsg(
+                           @RequestParam(required = false) String conversationId,
                            @RequestParam(required = false) String otherId,
                            @RequestParam int page,
                            @RequestParam int size){
         return Result.ok();
     }
+
 }

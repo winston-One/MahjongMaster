@@ -41,7 +41,7 @@ public class RedisScheduleTask {
     @Async
     @Scheduled(fixedDelay = 1000 * 10 * 60)  //间隔1秒 300000
     public void deleteExpireOrder() {
-        log.info("定时任务开始");
+        log.info("订单清理定时任务开始");
         //在redis中查找所有的订单信息
         String key = "*||*";
         Set<String> keysList = stringRedisTemplate.keys(key);
@@ -66,8 +66,6 @@ public class RedisScheduleTask {
         if (!expireOrderList.isEmpty()) {
                 orderService.updateBatchById(expireOrderList);
             }
-
         }
-        return;
     }
 }

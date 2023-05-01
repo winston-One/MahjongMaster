@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
-@Service
 public interface OrderService extends IService<Order> {
 
     Result getAllOrderByUser(OrderSelectByUserVO orderSelectByUserVO);
@@ -24,11 +23,7 @@ public interface OrderService extends IService<Order> {
 
     Result deleteOrder(OrderSaveVo orderSaveVo);
 
-    /**
-     * 检查是否是交易成功
-     * @param result
-     * @return
-     */
+    // 检查是否是交易成功
     boolean checkPaySuccess(WxPayOrderNotifyResult result);
 
     Boolean judgeTimeExist(OrderSaveVo orderSaveVo);

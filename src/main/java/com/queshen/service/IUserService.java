@@ -13,18 +13,10 @@ import com.queshen.pojo.bo.WxLoginResponse;
  **/
 public interface IUserService extends IService<User> {
 
-     /**
-      * 解析微信凭证code
-      * @param code
-      * @return
-      */
+     // 解析微信凭证code
      WxLoginResponse getLoginResponse(String code);
 
-     /**
-      * 获取电话号码
-      * @param code
-      * @return
-      */
+     // 获取电话号码
      WxLoginPhoneResponse getPhoneResponse(String code);
 
 }

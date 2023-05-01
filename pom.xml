@@ -218,6 +218,23 @@
     </dependencies>
 
     <build>
+        <resources>
+            <!--项目打包把xml也打包进去-->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <!--                    两颗星代表多层目录-->
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
 <!--        <plugins>-->
 <!--            <plugin>-->
 <!--                <groupId>org.springframework.boot</groupId>-->

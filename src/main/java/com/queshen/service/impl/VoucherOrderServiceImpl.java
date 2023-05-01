@@ -49,7 +49,6 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     private DianPingVoucherService dianPingVoucherService;
 
     @Override
-    @Transactional
     public Result voucherBooking(String voucherId,String orderId,String openid) {
         // 1.查询卡券信息
         Voucher voucher = voucherService.getById(voucherId);
@@ -58,30 +57,18 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
             // 返回错误信息
             return Result.fail("订单已下架！");
         }
-        // 3.获取当前用户id
-        String userId = openid;
-        // 4.创建订单
-        VoucherOrder voucherOrder = new VoucherOrder();
-        // 4.1.用户id
-        voucherOrder.setUserId(userId);
-        // 4.2.卡券id
-        voucherOrder.setVoucherId(voucherId);
-        // 4.3.订单状态
-        voucherOrder.setOrderStatus(1);
-        // 4.4.创建时间
-        voucherOrder.setCreateTime(LocalDateTime.now());
-        // 5.存入Redis（设置过期时间）和Mysql中
-        // 5.1.存入Redis并设置过期时间
-        saveVoucherOrderToRedis(orderId,voucherOrder,voucher.getTerm());
-        // 5.2.存入Mysql
-        voucherOrder.setId(orderId);
-        voucherOrderService.save(voucherOrder);
-        // 6.返回成功
-        return Result.ok("下单成功");
+        // 创建订单
+        VoucherOrder voucherOrder = new VoucherOrder(orderId,voucherId,openid,1,LocalDateTime.now());
+        boolean save = voucherOrderService.save(voucherOrder);
+        if (save) {
+            // 存入Redis并设置过期时间
+            saveVoucherOrderToRedis(orderId,voucherOrder,voucher.getTerm());
+            return Result.ok("下单成功");
+        }
+        return Result.fail("下单失败");
     }
 
     @Override
-    @Transactional
     public Result countVoucherById(String openId) {
         // 根据用户id查询用户拥有卡券进行计数
         int count = query()
@@ -91,22 +78,10 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         // 调用dianPingVoucherService中的查看用户可用美团券
         Result result = dianPingVoucherService.selectDPOrderInRedis(openId, 1);
         if (result.getTotal() == null){
-            int total = 0;
             return Result.ok(count);
         }else{
             int total = result.getTotal().intValue();
             return Result.ok(count + total);
-        }
-    }
-
-    @Override
-    @Transactional
-    public Result queryVoucherById(String openId) {
-        List<VoucherOrderDTO> voucherOrderDTOS = voucherOrderMapper.listVoucherOrder(openId);
-        if (voucherOrderDTOS ==null){
-            return null;
-        }else{
-            return Result.ok(voucherOrderDTOS);
         }
     }
 
@@ -139,12 +114,9 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         // 设置key
         String key = "cache:vou_order:" + orderId;
         // 1.获取卡券的有效期
-        // 2.判断term的值
-        if (term == 0){
-            // 3.0为不限制
+        if (term == 0){ // term为0表示不限制
             stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(voucherOrder));
         }else {
-            // 4.其余值，存入Redis，设置TTL的值为term，单位为天
             stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(voucherOrder),term, TimeUnit.DAYS);
         }
 

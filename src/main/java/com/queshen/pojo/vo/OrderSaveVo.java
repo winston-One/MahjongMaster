@@ -30,7 +30,6 @@ public class OrderSaveVo extends BaseEntity {
     private Date startTime;
 
     //订单结束时间
-
     private Date endTime;
 
     //门店号

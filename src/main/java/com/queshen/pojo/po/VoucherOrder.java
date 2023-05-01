@@ -46,4 +46,11 @@ public class VoucherOrder {
     // 支付时间
     private LocalDateTime payTime;
 
+    public VoucherOrder(String id, String voucherId, String userId, Integer orderStatus, LocalDateTime createTime) {
+        this.id = id;
+        this.voucherId = voucherId;
+        this.userId = userId;
+        this.orderStatus = orderStatus;
+        this.createTime = createTime;
+    }
 }

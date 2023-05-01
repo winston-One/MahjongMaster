@@ -30,14 +30,14 @@ public class VoucherOrderController {
     LoadingCache<String, List<VoucherOrderDTO>> voucherListCache;
 
     /**
-     * 卡券下单功能
+     * 卡券下单功能，当前的卡券数量是没有限量的，所以不需要加锁
      */
     @PostMapping("/booking")
-    @RepeatRequest(intervalTime = 1)
+    @RepeatRequest(intervalTime = 5)
     public Result voucherBooking(@RequestParam("voucherId") String voucherId,
                                  @RequestParam("orderId") String orderId,
                                  @RequestParam("openid") String openid){
-        // 该用户所拥有的卡券发生变化，所以清除对应的本地缓存，通过key进行清除
+        // 该用户所拥有的卡券发生变化，清除对应的本地缓存，通过key进行清除
         voucherListCache.invalidate(openid);
         return voucherOrderService.voucherBooking(voucherId,orderId,openid);
     }
@@ -65,6 +65,7 @@ public class VoucherOrderController {
     @PostMapping("/judgeVoucher")
     public Result voucherJudgement(@RequestParam("openId") String openId,
                                    @RequestParam("roomName") String roomName,
-                                   @RequestParam("userTime") BigDecimal userTime)
-    {return voucherOrderService.voucherJudgement(openId,roomName,userTime);}
+                                   @RequestParam("userTime") BigDecimal userTime) {
+        return voucherOrderService.voucherJudgement(openId,roomName,userTime);
+    }
 }

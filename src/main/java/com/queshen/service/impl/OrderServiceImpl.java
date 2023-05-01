@@ -25,8 +25,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.*;
@@ -42,20 +41,24 @@ import java.util.concurrent.TimeUnit;
  * @Description: Man can conquer nature
  **/
 @Log4j2
-@Component
+@Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
     @Autowired
     private IdUtil idUtil;
 
-    @Resource
+    @Autowired
     private IRoomService iRoomService;
 
-    @Resource
+    @Autowired
     private StoreService storeService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    OrderMapper orderMapper;
+
     //查询该用户所有订单信息
     public Result getAllOrderByUser(OrderSelectByUserVO orderSelectByUserVO){
         //查询进行中的订单信息
@@ -150,7 +153,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return Result.ok(orderSelectReturnVOIPage);
     }
 
-
     /**
      * 支付成功后调用，处理redis中的数据到Mysql中
      * @param orderSaveVo
@@ -175,11 +177,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         long l1 = orderTime.getEndTime().toEpochSecond(ZoneOffset.of("+8"));
         long l2 = System.currentTimeMillis() / 1000;
         stringRedisTemplate.opsForValue().set(keyOrderTime,JSONUtil.toJsonStr(orderTime),l1-l2,TimeUnit.SECONDS);
-        //存入mysql中
-//        this.save(order);
         this.updateById(order);
         return Result.ok();
-
     }
 
 
@@ -215,50 +214,44 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     /**
      * 下单
-     * 处理未完成支付订单
-     * @param orderSaveVO
-     * @return
+     * synchronized就是避免几个用户同时对同一个预约时间进行下单，因为一开始点进去查看的预约时间是一样的
      */
     @Override
-    @Transactional
     public Result saveOneUserOrder(OrderSaveVo orderSaveVO) {
+        LocalDateTime startTime = LocalDateTime.ofInstant(orderSaveVO.getStartTime().toInstant(), ZoneId.systemDefault());
+        LocalDateTime endTime = LocalDateTime.ofInstant(orderSaveVO.getEndTime().toInstant(), ZoneId.systemDefault());
+        //判断当前下单的预约时间是否已经不能预约了
+        Integer isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();
+        if (isReserve > 0) {
+            return Result.fail("该预约时间错误");
+        }
         //获取订单图片
-        String byRoomId= getImge(orderSaveVO.getRoomId());
-        //获得订单id
-        String orderId=idUtil.getOrderId(orderSaveVO.getUserId());
-        //设置orderid
-        orderSaveVO.setId(orderId);
-
-        //将orderSaveVo复制给orderDTO,到达将接收date类型数据的效果
-        OrderDTO orderDTO=new OrderDTO();
+        String byRoomId = iRoomService.getById(orderSaveVO.getRoomId()).getImage();
+        orderSaveVO.setId(idUtil.getOrderId(orderSaveVO.getUserId()));
+        //将orderSaveVo复制给orderDTO
+        OrderDTO orderDTO = new OrderDTO();
+        BeanUtils.copyProperties(orderSaveVO,orderDTO, "startTime", "endTime");
         //订单过期时间为15分钟
-        long l = System.currentTimeMillis()+(15*60*1000);//15*60*1000
-        Date date=new Date(l);
-        orderDTO.setExpireTime(date);
-        BeanUtils.copyProperties(orderSaveVO,orderDTO,"startTime","endTime");
-        orderDTO.setStartTime(LocalDateTime.ofInstant(orderSaveVO.getStartTime().toInstant(), ZoneId.systemDefault()));
-        orderDTO.setEndTime(LocalDateTime.ofInstant(orderSaveVO.getEndTime().toInstant(), ZoneId.systemDefault()));
-        //创建key
-        String key = orderDTO.getUserId() + "||" + orderDTO.getId();
-
-
-        //设置订单图片
+        long l = System.currentTimeMillis() + (15 * 60 * 1000);
+        orderDTO.setExpireTime(new Date(l));
+        orderDTO.setStartTime(startTime);
+        orderDTO.setEndTime(endTime);
         orderDTO.setImage(byRoomId);
-        log.info(orderDTO);
-        stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(orderDTO));
-        String s = stringRedisTemplate.opsForValue().get(key);
-        OrderDTO orderDTO1 = JSONUtil.toBean(s, OrderDTO.class);
-        log.info(orderDTO1);
-        Order order=new Order();
-        BeanUtils.copyProperties(orderDTO,order,"expireTime");
+        Order order = new Order();
+        BeanUtils.copyProperties(orderDTO, order, "expireTime");
         order.setStatus(2);
-        saveTimeToRedis(order);
-        this.save(order);
+        synchronized (UserHolder.getUser().getOpenid().intern()) {
+            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
+            // 判断是否没有冲突的预约时间
+            if (isReserve == 0) {
+                this.save(order);// 保存到数据库
+            }
+        }
+        //创建缓存用户订单过期时间信息的key
+        String key = orderDTO.getUserId() + "||" + orderDTO.getId();
+        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(orderDTO));// 存储到Redis中
+        saveTimeToRedis(order);// 保存到Redis
         return Result.ok(order.getId());
-    }
-
-    private String getImge(String RoomId){
-        return iRoomService.getById(RoomId).getImage();
     }
 
     /**
@@ -302,8 +295,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderTime.setEndTime(order.getEndTime());
         orderTime.setStartTme(order.getStartTime());
         //命名规则  门店号+房间号+|+|+开始时间
-        String key=order.getStoreId()+order.getRoomId()+"+"+ order.getStartTime().toEpochSecond(ZoneOffset.of("+8"));
-        long timeout=60*15;
+        String key = order.getStoreId()+order.getRoomId() + "+" + order.getStartTime().toEpochSecond(ZoneOffset.of("+8"));
+        long timeout = 60*15;
         String value = JSONUtil.toJsonStr(orderTime);
         log.info(value);
         log.info(key);
@@ -315,23 +308,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * 查询时间是否存在
      */
     public Boolean judgeTimeExist(OrderSaveVo orderSaveVo){
-        String key=orderSaveVo.getStoreId()+orderSaveVo.getRoomId()+"+"+"*";
+        String key = orderSaveVo.getStoreId()+orderSaveVo.getRoomId()+"+"+"*";
         Set<String> keysList = stringRedisTemplate.keys(key);
-        LocalDateTime startTime=LocalDateTime.ofInstant(orderSaveVo.getStartTime().toInstant(), ZoneId.systemDefault());
-        LocalDateTime endTime=LocalDateTime.ofInstant(orderSaveVo.getEndTime().toInstant(), ZoneId.systemDefault());
-        long l1=startTime.toEpochSecond(ZoneOffset.of("+8"));
-        long l2=endTime.toEpochSecond(ZoneOffset.of("+8"));
+        LocalDateTime startTime = LocalDateTime.ofInstant(orderSaveVo.getStartTime().toInstant(), ZoneId.systemDefault());
+        LocalDateTime endTime = LocalDateTime.ofInstant(orderSaveVo.getEndTime().toInstant(), ZoneId.systemDefault());
+        long l1 = startTime.toEpochSecond(ZoneOffset.of("+8"));
+        long l2 = endTime.toEpochSecond(ZoneOffset.of("+8"));
         if (keysList.size()!=0){
             List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
 
             for (String s: strings){
                 OrderTime orderTime = JSONUtil.toBean(s, OrderTime.class);
                 log.info(orderTime);
-                long l3=orderTime.getStartTme().toEpochSecond(ZoneOffset.of("+8"));
-                long l4=orderTime.getEndTime().toEpochSecond(ZoneOffset.of("+8"));
-                if (l1>=l3 && l1<=l4)
+                long l3 = orderTime.getStartTme().toEpochSecond(ZoneOffset.of("+8"));
+                long l4 = orderTime.getEndTime().toEpochSecond(ZoneOffset.of("+8"));
+                if (l1 >= l3 && l1 <= l4)
                     return false;
-                if (l2>=l3 && l2<=l4)
+                if (l2 >= l3 && l2 <= l4)
                     return false;
             }
             return true;
