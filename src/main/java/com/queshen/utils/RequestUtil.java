@@ -11,6 +11,7 @@ import java.util.Map;
  **/
 public class RequestUtil {
 
+    // 将map形式存储的请求参数转换成拼接到url路径上的格式
     public static String mapToGetParam(Map<String, String> params) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {

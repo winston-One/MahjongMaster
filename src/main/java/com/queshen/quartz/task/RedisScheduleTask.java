@@ -1,4 +1,4 @@
-package com.queshen.schedule;
+package com.queshen.quartz.task;
 
 import cn.hutool.json.JSONUtil;
 import com.queshen.pojo.dto.OrderDTO;

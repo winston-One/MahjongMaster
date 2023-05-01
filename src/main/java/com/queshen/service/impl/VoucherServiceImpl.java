@@ -9,9 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 卡券服务实现类
@@ -25,19 +22,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
     @Resource
     private VoucherMapper voucherMapper;
-
-    @Override
-    public Result queryAllVoucher() {
-        // 查询isDelete=1 and vouStatus=1的所有卡券
-        Map<String,Object> map = new HashMap<>();
-        map.put("is_delete",1);
-        map.put("vou_status",1);
-        List<Voucher> vouchers = voucherMapper.selectByMap(map);
-        if (vouchers == null){
-            return null;
-        }
-        return Result.ok(vouchers);
-    }
 
     @Override
     public Result queryVoucherById(String voucherId) {

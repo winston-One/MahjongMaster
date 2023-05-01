@@ -25,6 +25,7 @@ import org.apache.http.entity.ContentType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -172,11 +173,7 @@ public class DianPingController {
         return Result.fail("系统错误");
     }
 
-    /**
-     * 销券接口
-     * @param receiptCodeDTO [userId:用户id ，receiptCode：券码 ， count：张数]
-     * @return
-     */
+    // 销券接口
     @PostMapping("/verificationWrittenOff")
     public Result verificationWrittenOff(@RequestBody ReceiptCodeDTO receiptCodeDTO) {
         if (receiptCodeDTO.getUserId()==null)
@@ -263,10 +260,7 @@ public class DianPingController {
         return dianPingVoucherService.selectCandoDPVoucherInRedis(userId);
     }
 
-    /**
-     * 获取session和refresh_session
-     * @return
-     */
+    //获取session和refresh_session
     private  AppConstants getSessionAndRefresh(){
         String appKey = AppConstants.APP_KEY;
         // 会话数据是存储在Redis里的
@@ -280,21 +274,14 @@ public class DianPingController {
         return appConstants;
     }
 
-    /**
-     * 设置session和refresh_session
-     * @param dianPingSessionDTO
-     */
+    // 设置session和refresh_session
     private void setSessionAndRefresh(DianPingSessionDTO dianPingSessionDTO){
         String key=AppConstants.APP_KEY;
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(dianPingSessionDTO));
-
     }
 
-    /**
-     * 更新Session 一个月调用一次
-     * @return
-     */
-    @PostMapping("/freshSession")
+    // 更新Session 一个月调用一次，session的过期时间默认就是一个月，每个月的壹号00:30:00执行一次
+    @Scheduled(cron = "0 30 0 1 * ?")
     public Result freshSession(){
         String key=AppConstants.APP_KEY;
         String s = stringRedisTemplate.opsForValue().get(key);
@@ -314,6 +301,7 @@ public class DianPingController {
         return Result.ok(response);
     }
 
+    // 测试Redis中存放的验券sdk的session是否正常
     @PostMapping("/test")
     public Result test(){
         String s = stringRedisTemplate.opsForValue().get("freshsession");
@@ -324,6 +312,7 @@ public class DianPingController {
         return Result.ok();
     }
 
+    // 查询该美团号管理的门店范围
     @PostMapping("/selectStoreScope")
     public String selectStoreScope()  {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -341,12 +330,13 @@ public class DianPingController {
         requestParam.put("sign", SignUtil.generateSign(requestParam,AppConstants.APP_SECRET,AppConstants.SIGN_METHOD_MD5));
         log.info(SignUtil.generateSign(requestParam,AppConstants.APP_SECRET,AppConstants.SIGN_METHOD_MD5));
         try {
-            String s = Request.Get("https://openapi.dianping.com/router/oauth/session/scope"
-                            + "?"
-                            + RequestUtil.mapToGetParam(requestParam))
-                    .execute().returnContent().asString();
+            String s = Request
+                    .Get("https://openapi.dianping.com/router/oauth/session/scope?" + RequestUtil.mapToGetParam(requestParam))
+                    .execute()// 执行get请求
+                    .returnContent()// 返回结果集
+                    .asString();// 转化string
             log.info(s);
-            return  s;
+            return s;
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,6 +1,5 @@
 package com.queshen.controller;
 
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.CommentLikeDTO;
 import com.queshen.pojo.dto.ReceiptCodeDTO;

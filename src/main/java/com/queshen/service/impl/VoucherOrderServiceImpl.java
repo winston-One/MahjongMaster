@@ -12,7 +12,6 @@ import com.queshen.mapper.VoucherOrderMapper;
 import com.queshen.service.DianPingVoucherService;
 import com.queshen.service.IVoucherOrderService;
 import com.queshen.service.IVoucherService;
-import com.queshen.utils.RedisIdWorker;
 import com.queshen.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;

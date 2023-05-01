@@ -1,9 +1,9 @@
 package com.queshen.controller;
 
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.queshen.anno.RepeatRequest;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.VoucherOrderDTO;
-import com.queshen.pojo.po.Voucher;
 import com.queshen.service.IVoucherOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ import java.util.List;
  **/
 @Slf4j
 @RestController
-@RequestMapping("/vouoreder")
+@RequestMapping("/voucherUser")
 public class VoucherOrderController {
 
     @Resource
@@ -31,10 +31,9 @@ public class VoucherOrderController {
 
     /**
      * 卡券下单功能
-     * @Param 卡券id
-     * @return 订单id
      */
     @PostMapping("/booking")
+    @RepeatRequest(intervalTime = 1)
     public Result voucherBooking(@RequestParam("voucherId") String voucherId,
                                  @RequestParam("orderId") String orderId,
                                  @RequestParam("openid") String openid){
@@ -45,20 +44,16 @@ public class VoucherOrderController {
 
     /**
      * 根据用户id查询用户拥有券的总数量
-     * @Param userid
-     * @Return 卡券数量
      */
-    @PostMapping("/countvoucher")
+    @PostMapping("/countVoucher")
     public Result countVoucherById(@RequestParam("openId") String openId){
         return voucherOrderService.countVoucherById(openId);
     }
 
     /**
      *  根据当前用户id查询该用户拥有的卡券
-     * @Param userid
-     * @Retrun 卡券信息
      */
-    @PostMapping("/queryvoucher")
+    @PostMapping("/getVoucher")
     public Result queryVoucherById(@RequestParam("openId") String openId){
         List<VoucherOrderDTO> vouchers = voucherListCache.get(openId);
         return Result.ok(vouchers);
@@ -67,7 +62,7 @@ public class VoucherOrderController {
     /**
      * 根据条件（房间是否适用，时长是否超时）判断卡券是否适用
      */
-    @PostMapping("/voucherjudge")
+    @PostMapping("/judgeVoucher")
     public Result voucherJudgement(@RequestParam("openId") String openId,
                                    @RequestParam("roomName") String roomName,
                                    @RequestParam("userTime") BigDecimal userTime)

@@ -1,6 +1,5 @@
 package com.queshen.pojo.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -41,16 +40,16 @@ public class Order extends BaseEntity {
     private BigDecimal price;
 
 
-    //订单开始时间
+    // 订单开始时间
     private LocalDateTime startTime;
 
-    //订单结束时间
+    // 订单结束时间
     private LocalDateTime endTime;
 
-    //门店号
+    // 门店号
     private String storeId;
 
-    //订单状态 1为已完成 2为进行中 3为已取消
+    // 订单状态 1为已完成 2为进行中 3为已取消
     @TableField(value = "order_status")
     private Integer status;
 
@@ -58,12 +57,12 @@ public class Order extends BaseEntity {
     @TableField("partner_id")
     private String partnerID;
 
-    //查看是否有用券 0为没有，1为美团的券，2为自己平台的券
+    // 查看是否有用券 0为没有，1为美团的券，2为自己平台的券
     private Integer isVoucher;
 
     private String voucherId;
 
-    //图片路径
+    // 图片路径
     private String image;
 
     //支付时间

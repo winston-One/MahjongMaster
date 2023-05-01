@@ -3,9 +3,6 @@ package com.queshen.pojo.bo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 被预约的时间段信息
  * @author WinstonYv

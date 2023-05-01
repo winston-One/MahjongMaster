@@ -1,6 +1,5 @@
 package com.queshen.pojo.vo;
 
-import com.queshen.pojo.po.Room;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

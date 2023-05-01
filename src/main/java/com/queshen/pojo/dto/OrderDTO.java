@@ -1,6 +1,5 @@
 package com.queshen.pojo.dto;
 
-import com.queshen.pojo.po.Order;
 import lombok.Data;
 
 import java.math.BigDecimal;

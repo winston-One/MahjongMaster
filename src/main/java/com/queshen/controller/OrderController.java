@@ -1,5 +1,6 @@
 package com.queshen.controller;
 
+import com.queshen.anno.RepeatRequest;
 import com.queshen.pojo.bo.Result;
 import com.queshen.service.OrderService;
 import com.queshen.pojo.vo.OrderSaveVo;
@@ -31,9 +32,10 @@ public class OrderController {
     }
 
     /**
-     * 下单
+     * 下单，同一个用户1秒内不能重复请求
      */
     @PostMapping("/saveOneUserOrder")
+    @RepeatRequest
     public Result saveOneUserOrder(@RequestBody OrderSaveVo orderSaveVo){
         if (orderService.judgeTimeExist(orderSaveVo))
             return orderService.saveOneUserOrder(orderSaveVo);

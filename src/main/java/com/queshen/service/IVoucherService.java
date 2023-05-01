@@ -12,7 +12,5 @@ import com.queshen.pojo.po.Voucher;
  **/
 public interface IVoucherService extends IService<Voucher> {
 
-    Result queryAllVoucher();
-
     Result queryVoucherById(String voucherId);
 }

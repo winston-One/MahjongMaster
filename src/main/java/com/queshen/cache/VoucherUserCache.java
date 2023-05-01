@@ -2,8 +2,8 @@ package com.queshen.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.queshen.pojo.po.Store;
-import com.queshen.service.StoreService;
+import com.queshen.mapper.VoucherOrderMapper;
+import com.queshen.pojo.dto.VoucherOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,25 +13,25 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author winston
- * @create 2023/4/26 23:07
+ * @create 2023/4/10 10:45
  * @Description: Man can conquer nature
- * 将所有的门店进行缓存
+ * caffeine本地缓存配置
  **/
 @Configuration
-public class StoreCache {
+public class VoucherUserCache {
 
     @Autowired
-    StoreService storeService;
+    VoucherOrderMapper voucherOrderMapper;
 
     /**
-     * 用于做优惠券的本地缓存处理
+     * 用于做优惠券的本地缓存处理，将openid作为缓存key
      * @return
      */
-    @Bean("storeListCache")
-    public LoadingCache<String, List<Store>> getCache(){
+    @Bean("voucherListCache")
+    public LoadingCache<String, List<VoucherOrderDTO>> getCache(){
         return Caffeine.newBuilder()
-                .expireAfterWrite(30, TimeUnit.DAYS)// 缓存门店数据的有效期是30天
-                .build(key -> storeService.list());
+                .expireAfterWrite(3, TimeUnit.DAYS)
+                .build(key -> voucherOrderMapper.listVoucherOrder(key));
     }
 
 }

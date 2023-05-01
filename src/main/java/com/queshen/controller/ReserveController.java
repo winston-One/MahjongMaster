@@ -2,7 +2,6 @@ package com.queshen.controller;
 
 import com.queshen.pojo.bo.Result;
 import com.queshen.service.ReservationInfoService;
-import com.queshen.pojo.vo.RoomInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/reservation")
-public class ReservationInfoController {
+public class ReserveController {
 
     @Resource
     private ReservationInfoService reservationInfoService;
