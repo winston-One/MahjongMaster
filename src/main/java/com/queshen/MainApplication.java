@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @since 2022/11/8
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
-//@MapperScan("com.queshen.mapper")
 @SpringBootApplication
 @EnableScheduling
 public class MainApplication {

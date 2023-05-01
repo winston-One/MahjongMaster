@@ -20,6 +20,12 @@
     </properties>
     <dependencies>
 
+        <!--AOP思想-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!-- FastDFS dependency -->
         <dependency>
             <groupId>net.oschina.zcx7878</groupId>
@@ -185,10 +191,10 @@
         </dependency>
 
         <!-- 自定义注解，AOP开发，例如进行接口限流，接口日志打印统一处理 -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.aspectj</groupId>-->
+<!--            <artifactId>aspectjweaver</artifactId>-->
+<!--        </dependency>-->
 
         <!--美团接口-->
         <dependency>
