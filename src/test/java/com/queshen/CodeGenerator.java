@@ -14,8 +14,8 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         String projectPath = System.getProperty("user.dir");
-        FastAutoGenerator.create("jdbc:mysql://43.143.88.250:3306/queshen?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8",
-                "141-user-525", "u?5*2%e-5/r+")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/queshen?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8",
+                "root", "123456")
                 .globalConfig(builder -> {
                     builder.author("WinstonYv") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
