@@ -14,6 +14,8 @@ import lombok.Data;
 @TableName("tb_store")
 public class Store {
 
+    private static final long serialVersionUID = 1L;
+
     @TableId
     private String storeId;
 

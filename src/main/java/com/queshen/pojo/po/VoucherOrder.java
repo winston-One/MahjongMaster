@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 @Data
 public class VoucherOrder {
 
+    private static final long serialVersionUID = 1L;
+
     // 主键
     @TableId
     private String id;

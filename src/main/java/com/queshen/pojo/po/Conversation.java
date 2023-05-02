@@ -11,62 +11,54 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
 /**
- * 卡券实体类
- * @author winston
- * @create 2022/12/11 15:14
- * @Description: Man can conquer nature
- **/
-@TableName("tb_voucher")
+ * <p>
+ * 
+ * </p>
+ *
+ * @author DJT
+ * @since 2022-07-31
+ */
+@TableName("t_conversation")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Voucher implements Serializable {
+public class Conversation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // 卡券ID
-    @TableId
-    private String voucherId;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
 
-    // 卡券标题
-    private String title;
+    private Integer type;
 
-    // 可用范围
-    private String availableRange;
-
-    // 价格
-    private BigDecimal price;
-
-    // 有效期
-    private Integer term;
-
-    // 状态
-    private Integer vouStatus;
-
-    // 原价
-    private Integer originalPrice;
-
-    // 使用时长
-    private BigDecimal duration;
+    /**
+     * 会话中存放的内容是聊天的最后一条记录
+     * 一个接收者一个发送者只会对应一条记录
+     */
+    private String lastMsg;
 
     @TableLogic
-    private Integer isDelete;
+    private Integer isDeleted;
 
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime createTime;
+
+    public Conversation(Integer type, String lastMsg, LocalDateTime updateTime, LocalDateTime createTime) {
+        this.type = type;
+        this.lastMsg = lastMsg;
+        this.updateTime = updateTime;
+        this.createTime = createTime;
+    }
 }

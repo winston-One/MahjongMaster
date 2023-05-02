@@ -15,6 +15,8 @@ import java.io.Serializable;
 @TableName("tb_user")
 public class User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @TableId(value = "openid", type = IdType.ASSIGN_ID)
     private String openid;
 

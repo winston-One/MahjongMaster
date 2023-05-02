@@ -1,11 +1,17 @@
 package com.queshen.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.queshen.handler.IMMsgHandler;
+import com.queshen.pojo.bo.Message;
+import com.queshen.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,8 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author WinstonYv
  * @since 2022/11/14
  * 弹出聊天框之后才是连接上websocket
+ * 接收者id是封装到消息体里的
+ * /IM/chat/{sendId}/{isGroup}
  */
-@ServerEndpoint("/IM/chat/{sendId}/{recvId}")
+@ServerEndpoint("/IM/chat/{sendId}")
 @Component
 @Slf4j
 public class WebSocketChatController {
@@ -33,7 +41,13 @@ public class WebSocketChatController {
     }
 
     /**
-     * 收到客户端发来消息
+     * 收到客户端发来消息,data就是前端发送过来的消息体，后端使用String接收，所以使用JSON解析
+     * data = {
+     *   openId: 4234234234,
+     * 	 receiveId: 23423423,
+     * 	 type: 1,
+     * 	 content: winstonYv
+     * }
      */
     @OnMessage
     public void onMessage(String message,
@@ -41,6 +55,9 @@ public class WebSocketChatController {
                           Session mySession) {
         log.info("服务端收到客户端发来的消息: {}", message);
         // todo,通过spring的bean工厂获取消息处理类，处理消息，例如存入数据库，让接收者看到消息
+        IMMsgHandler MessageHandler = SpringUtils.getBean(IMMsgHandler.class);
+        MessageHandler.handlerIndividual(message,sendId,mySession,clientList);// 处理个人消息
+        // 还可以处理群消息 handlerGroup 通过连接websocket路径上的参数获取是否是群消息
     }
 
     /**

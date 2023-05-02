@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 @Data
 public class Order extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     //订单id
     @TableId("order_id")
     private String id;

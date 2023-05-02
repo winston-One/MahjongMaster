@@ -20,6 +20,8 @@ import java.util.List;
 @TableName(value = "tb_dpvoucherorder",autoResultMap = true)
 public class DianPingVoucherOrder {
 
+    private static final long serialVersionUID = 1L;
+
     //订单id
     @TableId("dporder_id")
     private String id;

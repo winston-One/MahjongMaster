@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 @TableName("tb_dianpingsession")
 public class AppConstants {
 
+    private static final long serialVersionUID = 1L;
+
     // 请求美团验券的会话
     @TableField("dp_session")
     public  String session;

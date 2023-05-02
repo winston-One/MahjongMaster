@@ -91,6 +91,13 @@ public class CommentController {
         return Result.ok();
     }
 
+    // 把消息标为已读
+    @PostMapping("/readMessage")
+    public Result readMessage(@RequestBody Integer messageId) {
+        // todo 用户会话表里未读消息按实际减少，消息表里的对应消息标记为已读
+        return Result.ok();
+    }
+
     // 获取消息列表
     @GetMapping("/conversationList")
     public Result getConversationList(@RequestParam Integer type){

@@ -26,11 +26,14 @@ import java.time.LocalDateTime;
 @TableName("t_comment")
 public class Comment {
 
+    private static final long serialVersionUID = 1L;
+
     @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
 
     private String roomId;
 
+    @TableField("openid")
     private String openid;
 
     private String replyId;

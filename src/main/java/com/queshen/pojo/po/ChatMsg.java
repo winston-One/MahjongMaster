@@ -6,56 +6,47 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
 /**
- * 卡券实体类
  * @author winston
- * @create 2022/12/11 15:14
+ * @create 2023/5/2 11:52
  * @Description: Man can conquer nature
+ * 存放所有的消息
  **/
-@TableName("tb_voucher")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Voucher implements Serializable {
+@TableName("t_chat_msg")
+@Setter
+@Getter
+@ToString
+public class ChatMsg {
 
     private static final long serialVersionUID = 1L;
 
-    // 卡券ID
-    @TableId
-    private String voucherId;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
 
-    // 卡券标题
-    private String title;
+    private String content;
 
-    // 可用范围
-    private String availableRange;
+    // 1是文字，2是图片
+    private Integer type;
 
-    // 价格
-    private BigDecimal price;
+    @TableField("openid")
+    private String openId;
 
-    // 有效期
-    private Integer term;
+    private String receiveId;
 
-    // 状态
-    private Integer vouStatus;
+    private String conversationId;
 
-    // 原价
-    private Integer originalPrice;
-
-    // 使用时长
-    private BigDecimal duration;
+    private Integer isUnread;
 
     @TableLogic
-    private Integer isDelete;
+    private Integer isDeleted;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -69,4 +60,12 @@ public class Voucher implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    public ChatMsg(String openid, String receiveId, String content,Integer isUnread, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.openId = openid;
+        this.receiveId = receiveId;
+        this.content = content;
+        this.isUnread = isUnread;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
 }
