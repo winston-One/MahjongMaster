@@ -1,22 +1,6 @@
-/*
-SQLyog Ultimate v10.00 Beta1
-MySQL - 5.7.35 : Database - queshen
-*********************************************************************
-*/
-
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`queshen` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `queshen`;
-
-/*Table structure for table `re_order_voucher` */
 
 DROP TABLE IF EXISTS `re_order_voucher`;
 
@@ -26,9 +10,6 @@ CREATE TABLE `re_order_voucher` (
   `voucher_type` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `re_order_voucher` */
-
-/*Table structure for table `t_chat_msg` */
 
 DROP TABLE IF EXISTS `t_chat_msg`;
 
@@ -117,7 +98,7 @@ CREATE TABLE `tb_dianpingsession` (
 
 /*Data for the table `tb_dianpingsession` */
 
-insert  into `tb_dianpingsession`(`dp_session`,`dp_refresh_token`,`dp_id`) values ('e0379bd308d105db8c1a71103877ee40f4a7ac82','ff2d7b134da1cd10e03743e5434923c08fbcae36','1');
+insert  into `tb_dianpingsession`(`dp_session`,`dp_refresh_token`,`dp_id`) values ('e0379bd998d105db8c1a7110877ee40f4a7ac82','ff2d7b134da1cd10e03799rt434923c08fbcae36','1');
 
 /*Table structure for table `tb_dpvoucherorder` */
 
@@ -224,7 +205,7 @@ CREATE TABLE `tb_store` (
 
 /*Data for the table `tb_store` */
 
-insert  into `tb_store`(`store_id`,`room_sum`,`store_status`,`emp_id`,`address`,`phone`,`wifi`,`store_name`,`wifi_password`) values ('97901',100,1,'001','惠城区安鸿商务大厦11楼110A','18688317496','mashangdao','安鸿店','MSD888888'),('97902',20,1,'003','惠城区麦地路69号达利大厦601','18688317496','mashangdao','数码街店','MSD888888'),('97903',30,1,'003','惠城区升平苑麦兴路23-16','18688317496','mashangdao','麦地升平苑店','MSD888888'),('97904',20,1,'004','惠城区河南岸演达大道12号海燕玉兰花园E栋2层08号房','18688317496','mashangdao','玉兰店','MSD888888');
+insert  into `tb_store`(`store_id`,`room_sum`,`store_status`,`emp_id`,`address`,`phone`,`wifi`,`store_name`,`wifi_password`) values ('97901',100,1,'001','惠城区安鸿商务大厦11楼110A','18688317496','mahjong','安鸿店','mahjong88'),('97902',20,1,'003','惠城区麦地路69号达利大厦601','18688317496','mahjong','数码街店','mahjong'),('97903',30,1,'003','惠城区升平苑麦兴路23-16','18688317496','mahjong','麦地升平苑店','MSD867678'),('97904',20,1,'004','惠城区河南岸演达大道12号海燕玉兰花园E栋2层08号房','18688317496','mahjong','玉兰店','MSD867678');
 
 /*Table structure for table `tb_user` */
 

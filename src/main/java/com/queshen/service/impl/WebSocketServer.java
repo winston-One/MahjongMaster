@@ -140,6 +140,7 @@ public class WebSocketServer {
      * 实现服务器主动推送消息到 指定客户端
      */
     public void sendMessage(String message) throws IOException {
+        // 发送文本消息有两个方法：getAsyncRemote()和getBasicRemote()
         this.session.getBasicRemote().sendText(message);
     }
 

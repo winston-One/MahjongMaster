@@ -14,7 +14,6 @@ import java.io.InputStream;
  * 操作文件的端口
  * @author WinstonYv
  * @create 2022/11/14
- * @Description:
  **/
 public class FastDFSClient {
 

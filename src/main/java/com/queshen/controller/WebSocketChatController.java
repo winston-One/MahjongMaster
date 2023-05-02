@@ -9,6 +9,12 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 前端控制器
+ * @author WinstonYv
+ * @since 2022/11/14
+ * 弹出聊天框之后才是连接上websocket
+ */
 @ServerEndpoint("/IM/chat/{sendId}/{recvId}")
 @Component
 @Slf4j

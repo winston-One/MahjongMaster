@@ -28,11 +28,7 @@ public class CodeGenerator {
 //                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, projectPath+"src/main/java/com/queshen/service/com.queshen.mapper/xml")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-//                    builder.addInclude("dm_date_group","dm_date_item","dm_default_mode", "dm_default_task",
-//                                    "dm_member", "dm_salary_item","dm_schedule","dm_schedule_item",
-//                                    "dm_shop_group","dm_shop_group_item","dm_task_group", "dm_task_group_item", "dm_task_item") // 设置需要生成的表名
                     builder.addInclude("t_comment","t_comment_like","t_chat_msg");
-//                    builder.addInclude("dm_member", "dm_task_item", "dm_task_group_item")
                     builder.addTablePrefix("t_") // 设置过滤表前缀
                             .entityBuilder()
                             .enableLombok()

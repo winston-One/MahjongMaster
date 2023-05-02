@@ -3,18 +3,15 @@ package com.queshen.controller;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.CommentInfoDTO;
 import com.queshen.pojo.dto.CommentLikeDTO;
-import com.queshen.pojo.dto.ReceiptCodeDTO;
-import com.queshen.pojo.po.Comment;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author winston
  * @create 2023/4/20 20:38
  * @Description: Man can conquer nature
+ * 评论系统的接口
  **/
 @Log4j2
 @RequestMapping("/comment")
@@ -74,7 +71,7 @@ public class CommentController {
         return Result.ok();
     }
 
-    // 获取某个帖子下的评论
+    // 获取某个房间下的评论
     @GetMapping("/pageComment")
     public Result getCommentPage(@RequestParam String roomId,
                             @RequestParam int page,
@@ -82,7 +79,7 @@ public class CommentController {
         return Result.ok();
     }
 
-    // 获取门店自己在某个门店下的点赞列表
+    // 获取门店自己在某个房间下的点赞列表
     @GetMapping("/commentLike")
     public Result getSelfCommentLikeList(@RequestParam("storeId") String storeId){
         return Result.ok();
