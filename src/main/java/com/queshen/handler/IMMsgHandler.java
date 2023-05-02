@@ -113,25 +113,18 @@ public class IMMsgHandler {
         chatMsgService.save(msg);
         //给自己也发消息，保证自己的聊天框也要展示自己的消息
         mySession.getAsyncRemote().sendText(JSON.toJSONString(IMMsg));
+        boolean isOnline = WebSocketServer.online(receiveId);
+        if (isFirstSend && !isOnline && isUnRead == 1) {
+            // rabbitMQ推送消息————你有新的客户，或新的门店给你推荐新的优惠活动
+        } else if (!isFirstSend && !isOnline && isUnRead == 1) {
+            // rabbitMQ推送消息————收到门店或者客户信息，并且有userConversation.getUnreadCount()条信息未读
 
-        try {
-            // 获取是否在线，但是并没有进入聊天框
-            boolean isOnline = WebSocketServer.online(receiveId);
-            //如果对方不在线 且第一次和对方聊天，且之前不存在未读私信,则发送模板推送
-            if (isFirstSend && !isOnline && isUnRead == 1) {
-                // rabbitMQ推送消息————你有新的客户，或新的门店给你推荐新的优惠活动
-            } else if (!isFirstSend && !isOnline && isUnRead == 1) {
-                // rabbitMQ推送消息————收到门店或者客户信息，并且有userConversation.getUnreadCount()条信息未读
-
-            } else if (isOnline && !isConnectWebSocket) {// 如果对方在线，但是没有在聊天框中，就是进入了小程序而已，就不需要MQ
-                Session session = WebSocketServer.getSession(receiveId);
-                if (!StringUtils.isEmpty(session)) {
-                    // 相当于在前端设置红点来提醒用户
-                    session.getAsyncRemote().sendText("1");
-                }
+        } else if (isOnline && !isConnectWebSocket) {// 如果对方在线，但是没有在聊天框中，就是进入了小程序而已，就不需要MQ
+            Session session = WebSocketServer.getSession(receiveId);
+            if (!StringUtils.isEmpty(session)) {
+                // 相当于在前端设置红点来提醒用户
+                session.getAsyncRemote().sendText("1");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
