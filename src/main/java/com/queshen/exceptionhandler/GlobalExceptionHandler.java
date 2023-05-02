@@ -1,6 +1,7 @@
 package com.queshen.exceptionhandler;
 
 import com.queshen.pojo.bo.Result;
+import com.queshen.utils.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler {
     public Result error(Exception e) {
         e.printStackTrace();
         return Result.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(IMException.class)
+    @ResponseBody
+    public Result doBusinessException(Exception e) {
+        log.info(e.getMessage());
+        return Result.fail("即时通讯消息处理异常，客户端无法接收").code(ResultCode.IM_RECEIVE_FAIL);
     }
 
     //出现算术运算异常

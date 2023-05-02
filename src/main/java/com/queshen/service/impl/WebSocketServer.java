@@ -1,12 +1,10 @@
 package com.queshen.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.queshen.pojo.bo.Message;
 import com.queshen.pojo.po.UserConversation;
 import com.queshen.service.IUserConversationService;
-import com.queshen.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,21 +47,13 @@ public class WebSocketServer {
      */
     private static final Map<String, Session> clients = new ConcurrentHashMap<>();
 
-    public static boolean online(String openid){
-        return clients.containsKey(openid);
-    }
-
-    public static Session getSession(String openid){
-        return clients.get(openid);
-    }
-
     /**
      * 连接建立成功调用的方法
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("userID") String openId) {
-        log.info("即时通讯IM建立成功：=={}",openId);
-        clients.put(openId,session);
+        log.info("即时通讯IM建立成功：{}客户端接入成功",openId);
+        clients.put(openId, session);
         webSocketSet.add(this);     // 加入set中
         addOnlineCount();           // 在线数加1
         session.getAsyncRemote().sendText(String.valueOf(getUnreadCount(openId)));
@@ -75,11 +63,10 @@ public class WebSocketServer {
      * 连接关闭调用的方法
      */
     @OnClose
-    public void onClose(Session session, @PathParam("userID") String userID) {
+    public void onClose(@PathParam("userID") String userID) {
         webSocketSet.remove(this);  // 从set中删除
         clients.remove(userID);
         subOnlineCount();              // 在线数减1
-        // 断开连接情况下，更新主板占用情况为释放
         log.info("释放的sid=" + userID + "的客户端");
     }
 
@@ -92,11 +79,27 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session,@PathParam("userID") String openId) {
         Message IMMsg = JSON.parseObject(message, Message.class);
-        log.info("收到来自客户端 sid=" + IMMsg.getOpenId() + " 的信息:" + message);
+        log.info("收到来自客户端 sid=" + IMMsg.getOpenId() + " 的信息,准备发送给rid=" + IMMsg.getReceiveId());
         session.getAsyncRemote().sendText(String.valueOf(getUnreadCount(openId)));
     }
 
+    /**
+     * 发生错误回调
+     */
+    @OnError
+    public void onError(Session session, Throwable error) {
+        log.error(session.getBasicRemote() + "客户端发生错误");
+    }
+
+    public static boolean online(String openid){
+        return clients.containsKey(openid);
+    }
+
+    public static Session getSession(String openid){
+        return clients.get(openid);
+    }
     // 获取的是该用户的所有联系人加起来的所有未读消息
+
     public int getUnreadCount(String openid){
         List<UserConversation> list = userConversationService.list(
                 new QueryWrapper<UserConversation>().eq("openid",openid)
@@ -109,19 +112,7 @@ public class WebSocketServer {
     }
 
     /**
-     * 发生错误回调
-     */
-    @OnError
-    public void onError(Session session, Throwable error) {
-        log.error(session.getBasicRemote() + "客户端发生错误");
-        error.printStackTrace();
-    }
-
-
-    /**
-     * 获取当前在线人数
-     *
-     * @return
+     * 获取当前在线人数，以此可以做出当前有多少人正在看该麻将门店
      */
     public static int getOnlineCount() {
         return onlineCount.get();
@@ -129,8 +120,6 @@ public class WebSocketServer {
 
     /**
      * 当前在线人数 +1
-     *
-     * @return
      */
     public static void addOnlineCount() {
         onlineCount.getAndIncrement();
@@ -138,8 +127,6 @@ public class WebSocketServer {
 
     /**
      * 当前在线人数 -1
-     *
-     * @return
      */
     public static void subOnlineCount() {
         onlineCount.getAndDecrement();

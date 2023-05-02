@@ -16,4 +16,6 @@ public interface ResultCode {
 
     Integer NEED_REFRESH_INFO = 20005; //需要重新获取用户信息，以达到最新
 
+    Integer IM_RECEIVE_FAIL = 666; // 即时通讯异常，服务端处理完消息之后，接收端接收异常
+
 }

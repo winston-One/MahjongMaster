@@ -3,6 +3,7 @@ package com.queshen.handler;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.queshen.exceptionhandler.IMException;
 import com.queshen.pojo.bo.Message;
 import com.queshen.pojo.po.ChatMsg;
 import com.queshen.pojo.po.Conversation;
@@ -12,6 +13,7 @@ import com.queshen.service.IConversationService;
 import com.queshen.service.IUserConversationService;
 import com.queshen.service.impl.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -20,6 +22,7 @@ import javax.websocket.Session;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Slf4j
 @Component
@@ -31,19 +34,22 @@ public class IMMsgHandler {
 
     private final IConversationService conversationService;
 
-    @Transactional(rollbackFor = Exception.class)
+    @Autowired
+    private ThreadPoolExecutor executorService;
+
+    @Transactional(rollbackFor = IMException.class)
     public void handlerGroup(String message, String openid, Session mySession, Map<String, Session> clients) {
         // 处理群消息 TODO
-        Session session;
-        String otherId;
         for (Map.Entry<String, Session> entry : clients.entrySet()) {
-            otherId = entry.getKey();
-            session = entry.getValue();
-            log.info(otherId + "：" + session);
-            // handlerIndividual
-            Message IMMsg = JSON.parseObject(message, Message.class);
-            IMMsg.setReceiveId(otherId);
-            handlerIndividual(JSON.toJSONString(IMMsg), openid, mySession, clients);
+            executorService.execute(() -> {
+                String otherId = entry.getKey();
+                Session  session = entry.getValue();
+                log.info(otherId + "：" + session);
+                // handlerIndividual
+                Message IMMsg = JSON.parseObject(message, Message.class);
+                IMMsg.setReceiveId(otherId);
+                handlerIndividual(JSON.toJSONString(IMMsg), openid, mySession, clients);
+            });
         }
     }
 
