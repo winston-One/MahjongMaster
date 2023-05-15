@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.queshen.mapper.TestMapper">
+
+    <select id="getChildren" resultType="com.queshen.pojo.po.TestChildren">
+        select * from t_test WHERE parent_id = #{parentId}
+    </select>
+</mapper>
