@@ -12,6 +12,7 @@ import lombok.ToString;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author winston
@@ -58,5 +59,8 @@ public class Comment {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+
+    @TableField(exist = false)
+    private List<Comment> children;
 
 }

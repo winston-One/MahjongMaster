@@ -1,11 +1,20 @@
 package com.queshen.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.queshen.mapper.TCommentMapper;
+import com.queshen.mapper.TestMapper;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.CommentInfoDTO;
 import com.queshen.pojo.dto.CommentLikeDTO;
+import com.queshen.pojo.po.Comment;
+import com.queshen.pojo.po.TestChildren;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author winston
@@ -18,12 +27,40 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CommentController {
 
+    @Autowired
+    private TCommentMapper commentMapper;
+
     // 获取评论
+    List<Comment> commentList = new ArrayList<>(); // 最终展现给前端的数据集
+
     @PostMapping("/getComment")
     public Result getStoreCommentList(@RequestParam() String storeId,
                                       @RequestParam() Integer roomId){
+        // 先查出头结点，也就是parentId为-1的数据
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("room_id", roomId);
+        queryWrapper.eq("top_comment_id", -1);
+        DFS(commentMapper.selectList(queryWrapper));
+        System.out.println(commentList);    // 将前端的数据打印出来
+        return Result.ok(commentList);
+    }
+    // 深度优先遍历
 
-        return Result.ok();
+    public void DFS(List<Comment> children) {
+        int index = -1;
+        for (Comment comment : children) {
+            // 查出该节点的子节点
+            List<Comment> childrenList = commentMapper.getChildren(comment.getId());
+            index = index + 1;
+            if (childrenList.size() == 0){
+                continue;
+            }
+            // 设置当前节点的子节点数据
+            children.get(index).setChildren(childrenList);
+            DFS(childrenList);
+        }
+        // 将最终的数据放回tests中
+        commentList = children;
     }
 
     /**
