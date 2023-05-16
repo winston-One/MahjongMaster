@@ -81,7 +81,7 @@ public class DianPingController {
 
         try {
             String s = Request.Post("https://openapi.dianping.com/router/tuangou/receipt/prepare")
-                    .bodyForm(form.build())
+                    .bodyForm(form.build())// 带三方接口请求体要是使用form-data形式
                     .setHeader("Content-Type", ContentType.create("application/x-www-form-urlencoded", "UTF-8").toString())
                     .execute().returnContent().asString();
             log.info(s);
