@@ -25,7 +25,6 @@ import org.apache.http.entity.ContentType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +70,7 @@ public class DianPingController {
         requestParam.put("open_shop_uuid",AppConstants.OPEM_SHOP_UUID);
         requestParam.put("receipt_code",receiptCode.getReceiptCode());
         log.info(receiptCode);
-        //验证签名
+        //验证签名 将请求第三方接口所需要参数和app密钥加密成一个签名
         requestParam.put("sign", SignUtil.generateSign(requestParam,AppConstants.APP_SECRET,AppConstants.SIGN_METHOD_MD5));
         log.info(SignUtil.generateSign(requestParam,AppConstants.APP_SECRET,AppConstants.SIGN_METHOD_MD5));
         //构造form

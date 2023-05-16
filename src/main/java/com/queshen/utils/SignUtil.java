@@ -66,7 +66,7 @@ public class SignUtil {
     }
 
     //使用签名算法对编码后的字节流进行摘要。使用MD5算法
-    private static String genMd5(String info) throws NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    private static String genMd5(String info) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         byte[] infoBytes = info.getBytes("UTF-8");
         //进行加签
