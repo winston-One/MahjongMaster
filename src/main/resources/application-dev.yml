@@ -20,15 +20,15 @@ spring:
 #    port: 5672
 #    username: wwx@
 #    password: wwx@
-  data:
-    mongodb:
-      database: mahjong
-      host: root
-      password: root
-      username: root
-      port: 27017
-      authentication-database: admin
-      auto-index-creation: false
+#  data:
+#    mongodb:
+#      database: mahjong
+#      host: root
+#      password: root
+#      username: root
+#      port: 27017
+#      authentication-database: admin
+#      auto-index-creation: false
   #Servlet配置信息
   servlet:
     multipart:
