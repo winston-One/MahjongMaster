@@ -1,12 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:52514/queshen?useUnicode=true&useSSL=false&serverTimezone=GMT&characterEncoding=UTF-8&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/queshen?useUnicode=true&useSSL=false&serverTimezone=GMT&characterEncoding=UTF-8&rewriteBatchedStatements=true
     username: root
     password: 123456
   redis:
     host: localhost
-    port: 53433
+    port: 2022
     password: u*******/r+
     # 连接池配置
     lettuce:
@@ -16,10 +16,10 @@ spring:
         min-idle: 10
         time-between-eviction-runs: 100s
 #  rabbitmq:
-#    host: 43.143.88.250
+#    host: localhost
 #    port: 5672
-#    username: wwx@
-#    password: wwx@
+#    username: root
+#    password: root
 #  data:
 #    mongodb:
 #      database: mahjong
@@ -43,7 +43,7 @@ wechat:
 wx:
   pay:
     appId: wx934535345291dc #微信公众号或者小程序等的appid
-    mchId: 163434534500 #微信支付商户号
+    mchId: 1634*******00 #微信支付商户号
     mchKey: Mjmk1523453453434533454钥
     #    subAppId: #服务商模式下的子商户公众账号ID
     #    subMchId: #服务商模式下的子商户号

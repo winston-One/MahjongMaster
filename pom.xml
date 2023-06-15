@@ -53,10 +53,10 @@
         </dependency>
 
         <!-- mongodb的数据库操作工具 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+<!--        </dependency>-->
 
         <!--中文分词器，便于分析评论中是否有违规和敏感词汇-->
         <dependency>
