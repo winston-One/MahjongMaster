@@ -5,9 +5,9 @@ spring:
     username: root
     password: 123456
   redis:
-    host: 43.143.88.250
-    port: 52515
-    password: u?5*2%e-5/r+
+    host: localhost
+    port: 53433
+    password: u*******/r+
     # 连接池配置
     lettuce:
       pool:
