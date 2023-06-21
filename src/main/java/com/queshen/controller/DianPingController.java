@@ -302,15 +302,15 @@ public class DianPingController {
     }
 
     // 测试Redis中存放的验券sdk的session是否正常
-    @PostMapping("/test")
-    public Result test(){
-        String s = stringRedisTemplate.opsForValue().get("freshsession");
-        CustomerRefreshTokenResponse response = JsonUtils.toBean(s, CustomerRefreshTokenResponse.class);
-        DianPingSessionDTO dianPingSessionDTO=new DianPingSessionDTO();
-        BeanUtils.copyProperties(response,dianPingSessionDTO);
-        log.info(dianPingSessionDTO);
-        return Result.ok();
-    }
+//    @PostMapping("/test")
+//    public Result test(){
+//        String s = stringRedisTemplate.opsForValue().get("freshsession");
+//        CustomerRefreshTokenResponse response = JsonUtils.toBean(s, CustomerRefreshTokenResponse.class);
+//        DianPingSessionDTO dianPingSessionDTO=new DianPingSessionDTO();
+//        BeanUtils.copyProperties(response,dianPingSessionDTO);
+//        log.info(dianPingSessionDTO);
+//        return Result.ok();
+//    }
 
     // 查询该美团号管理的门店范围
     @PostMapping("/selectStoreScope")

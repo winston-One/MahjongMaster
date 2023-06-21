@@ -46,24 +46,22 @@ public class UserController {
     @Resource(name = "loginCache")
     RedisCache<User> cache;
 
-    @Autowired
-    private TestMapper testMapper;
 
-    @PostMapping("/test")
-    public Result test() {
-        QueryWrapper<TestChildren> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("parent_id", -1);
-        List<TestChildren> tests = testMapper.selectList(queryWrapper);
-        for (TestChildren test : tests) {
-            List<TestChildren> children = testMapper.getChildren(test.getId());
-            if (children.size() == 0){
-
-            }
-            test.setChildren(children);
-        }
-
-        return Result.ok();
-    }
+//    @PostMapping("/test")
+//    public Result test() {
+//        QueryWrapper<TestChildren> queryWrapper = new QueryWrapper();
+//        queryWrapper.eq("parent_id", -1);
+//        List<TestChildren> tests = testMapper.selectList(queryWrapper);
+//        for (TestChildren test : tests) {
+//            List<TestChildren> children = testMapper.getChildren(test.getId());
+//            if (children.size() == 0){
+//
+//            }
+//            test.setChildren(children);
+//        }
+//
+//        return Result.ok();
+//    }
 
     /**
      * 微信登录功能
