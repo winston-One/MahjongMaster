@@ -1,5 +1,6 @@
 package com.queshen.pojo.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * @Description: Man can conquer nature
  **/
 @Data
+@AllArgsConstructor
 public class ReceiptCodeDTO {
 
     // 用户id

@@ -41,9 +41,9 @@ public class AppConstants {
 
     public final static String CHAR_SECRET="UTF-8";
 
-    public final static String APP_SECRET="6d5870************************03c3980d";
+    public final static String APP_SECRET="6d587069d22ca42c97ce148d41375e4503c3980d";
 
-    public final static String OPEM_SHOP_UUID="d1c677ea*******************05c95d6";
+    public final static String OPEM_SHOP_UUID="d1c677ea16675d9b8883cc2e305c95d6";
 
     // 时间戳模板
     public final static String TIMESTAMP_PATTERN="yyyy-mm-dd HH:mm:ss";
