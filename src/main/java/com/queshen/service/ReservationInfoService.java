@@ -2,6 +2,8 @@ package com.queshen.service;
 
 import com.queshen.pojo.bo.Result;
 
+import java.text.ParseException;
+
 /**
  * @author winston
  * @create 2022/12/11 15:14
@@ -23,5 +25,5 @@ public interface ReservationInfoService {
      * @param date
      * @return
      */
-    Result getInfoByRoom(String roomId, String date);
+    Result getInfoByRoom(String roomId, String date) throws ParseException;
 }

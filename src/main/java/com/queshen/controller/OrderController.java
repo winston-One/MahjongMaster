@@ -35,12 +35,13 @@ public class OrderController {
      * 下单，同一个用户1秒内不能重复请求
      */
     @PostMapping("/saveOneUserOrder")
-    @RepeatRequest
+//    @RepeatRequest
     public Result saveOneUserOrder(@RequestBody OrderSaveVo orderSaveVo){
-        if (orderService.judgeTimeExist(orderSaveVo))
-            return orderService.saveOneUserOrder(orderSaveVo);
-        else
-            return Result.fail("房间被人预定");
+//        if (orderService.judgeTimeExist(orderSaveVo))
+//            return orderService.saveOneUserOrder(orderSaveVo);
+//        else
+//            return Result.fail("房间被人预定");
+        return orderService.saveOneUserOrder(orderSaveVo);
     }
 
 

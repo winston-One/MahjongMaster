@@ -30,7 +30,7 @@ public class TimeRangeUtil {
         List<TimeRange> timeRanges = getTimeRanges(date);
         //日期转换格式
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeRangeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter timeRangeFormat  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         for (Order order : orders) {
             String startTime = dateFormat.format(order.getStartTime());
@@ -100,19 +100,28 @@ public class TimeRangeUtil {
         List<TimeRange> timeRanges = new ArrayList<>(48);
         //对应当天的起始值并解析成对应时间戳时间戳
         String startAt = date + " 00:00:00";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
-        Date conversionDate = null;
-        try {
-            conversionDate = sdf.parse(startAt);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long l = conversionDate.getTime();
-//        long l = LocalDateTime.parse(startAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        long l = LocalDateTime.parse(startAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
         for (int i = 1; i <= 48; i++) {
             timeRanges.add(new TimeRange(l + i * halfHour, 0));
         }
         return timeRanges;
+//        //一天24小时，半小时为一个分段，总共48个段
+//        List<TimeRange> timeRanges = new ArrayList<>(48);
+//        //对应当天的起始值并解析成对应时间戳时间戳
+//        String startAt = date + " 00:00:00";
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
+//        Date conversionDate = new Date();
+//        try {
+//            conversionDate = sdf.parse(startAt);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        long l = conversionDate.getTime();
+//        long l = LocalDateTime.parse(startAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+//        for (int i = 1; i <= 48; i++) {
+//            timeRanges.add(new TimeRange(l + i * halfHour, 0));
+//        }
+//        return timeRanges;
     }
 }

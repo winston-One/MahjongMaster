@@ -108,6 +108,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
@@ -208,6 +214,7 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.22.75.ALL</version>
         </dependency>
+
         <dependency>
             <groupId>com.dianping</groupId>
             <artifactId>dianping-openapi-java-sdk-qa</artifactId>

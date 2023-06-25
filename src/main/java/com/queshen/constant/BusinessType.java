@@ -30,4 +30,9 @@ public enum BusinessType {
      */
     UPLOAD,
 
+    /**
+     * 上传 4
+     */
+    SELECT,
+
 }

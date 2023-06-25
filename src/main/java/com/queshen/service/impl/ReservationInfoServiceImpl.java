@@ -92,27 +92,21 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
     public Result getInfoByRoom(String roomId, String date) {
         //1通过日期查找当天订单和次日
         LambdaQueryWrapper<Order> wrapper1 = new LambdaQueryWrapper<>();
+        System.out.println("date====");
+        System.out.println(date);
         //2添加过滤条件
         wrapper1.eq(Order::getRoomId, roomId)
-                .ne(Order::getStatus, ORDER_NOT_PAID)
+//                .ne(Order::getStatus, ORDER_NOT_PAID)
                 .and(wp -> wp.likeRight(Order::getStartTime, date).or().likeRight(Order::getEndTime, date));
         List<Order> orders1 = orderService.list(wrapper1);
 
+        System.out.println("orders1====");
+        System.out.println(orders1);
         //获取明日时段
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
-        Date conversionDate = null;
-        try {
-            conversionDate = sdf.parse(date + " 00:00:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long l = conversionDate.getTime();
-//        long l = LocalDateTime.parse(date + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
-
+        long l = LocalDateTime.parse(date + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
         //24小时，一小时60分钟，一分钟60秒，一秒60毫秒
         l = l + 24 * 60 * 60 * 1000;
         String nextDate = dateFormat.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.of("+8")));
@@ -121,13 +115,19 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
         LambdaQueryWrapper<Order> wrapper2 = new LambdaQueryWrapper<>();
         //2添加过滤条件
         wrapper2.eq(Order::getRoomId, roomId)
-                .ne(Order::getStatus, ORDER_NOT_PAID)
+//                .ne(Order::getStatus, ORDER_NOT_PAID)
                 .and(wp -> wp.likeRight(Order::getStartTime, nextDate).or().likeRight(Order::getEndTime, nextDate));
         List<Order> orders2 = orderService.list(wrapper2);
+        System.out.println("orders2====");
+        System.out.println(orders2);
 
         //获取时间段
         List<TimeRange> timeRanges1 = TimeRangeUtil.timeRanges(orders1, date);
         List<TimeRange> timeRanges2 = TimeRangeUtil.timeRanges(orders2, nextDate);
+        System.out.println("timeRanges1====");
+        System.out.println(timeRanges1);
+        System.out.println("timeRanges2====");
+        System.out.println(timeRanges2);
 
         //装配信息
         List<ReservationInfo> results = new ArrayList<>();
@@ -144,7 +144,8 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
                         .isFree(timeRange.getIsReservation())
                         .time(start + "-" + end)
                         .build();
-
+                System.out.println("build====");
+                System.out.println(build);
                 results.add(build);
             }
         }
@@ -169,9 +170,98 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
                 }
             }
         }
-
+        System.out.println("results====");
+        System.out.println(results);
         return Result.ok(results);
     }
+//    @Override
+//    public Result getInfoByRoom(String roomId, String date) throws ParseException {
+//        //1通过日期查找当天订单和次日
+//        LambdaQueryWrapper<Order> wrapper1 = new LambdaQueryWrapper<>();
+//        //2添加过滤条件
+//        wrapper1.eq(Order::getRoomId, roomId)
+//                .ne(Order::getStatus, ORDER_NOT_PAID)
+//                .and(wp -> wp.likeRight(Order::getStartTime, date).or().likeRight(Order::getEndTime, date));
+//        List<Order> orders1 = orderService.list(wrapper1);
+//
+//        //获取明日时段
+//        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        sdf.setTimeZone(TimeZone.getTimeZone("CTT"));
+////        Date conversionDate = new Date();
+////        try {
+////            conversionDate = sdf.parse(date + " 00:00:00");
+////        } catch (ParseException e) {
+////            e.printStackTrace();
+////        }
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date dateNew = simpleDateFormat.parse(date + " 00:00:00");
+//        long l = dateNew.getTime();
+//        //long l = conversionDate.getTime();
+////        long l = LocalDateTime.parse(date + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+//
+//        //24小时，一小时60分钟，一分钟60秒，一秒60毫秒
+//        l = l + 24 * 60 * 60 * 1000;
+//        String nextDate = dateFormat.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.of("+8")));
+//
+//        //1通过日期查找当天订单和次日
+//        LambdaQueryWrapper<Order> wrapper2 = new LambdaQueryWrapper<>();
+//        //2添加过滤条件
+//        wrapper2.eq(Order::getRoomId, roomId)
+//                .ne(Order::getStatus, ORDER_NOT_PAID)
+//                .and(wp -> wp.likeRight(Order::getStartTime, nextDate).or().likeRight(Order::getEndTime, nextDate));
+//        List<Order> orders2 = orderService.list(wrapper2);
+//
+//        //获取时间段
+//        List<TimeRange> timeRanges1 = TimeRangeUtil.timeRanges(orders1, date);
+//        List<TimeRange> timeRanges2 = TimeRangeUtil.timeRanges(orders2, nextDate);
+//        System.out.println(timeRanges1);
+//        System.out.println(timeRanges2);
+//        //装配信息
+//        List<ReservationInfo> results = new ArrayList<>();
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//        //先装配timeRanges1
+//        for (TimeRange timeRange : timeRanges1) {
+//            if (timeRange.getIsReservation() != 2) {
+//                //将时间戳转换为对应时间格式，仅使用这一次，所以不做工具类
+//                String start = dateTimeFormatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeRange.getStartTimestamp() - halfHour), ZoneOffset.of("+8")));
+//                String end = dateTimeFormatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeRange.getStartTimestamp()), ZoneOffset.of("+8")));
+//
+//                ReservationInfo build = ReservationInfo.builder()
+//                        .isNextDay(0)
+//                        .isFree(timeRange.getIsReservation())
+//                        .time(start + "-" + end)
+//                        .build();
+//
+//                results.add(build);
+//            }
+//        }
+//        //后装配timeRanges2
+//        for (TimeRange timeRange : timeRanges2) {
+//            if (timeRange.getIsReservation() != 2) {
+//                //如果大小不达标，则继续检索
+//                if(results.size() <= 48) {
+//                    //将时间戳转换为对应时间格式，仅使用这一次，所以不做工具类
+//                    String start = dateTimeFormatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeRange.getStartTimestamp() - halfHour), ZoneOffset.of("+8")));
+//                    String end = dateTimeFormatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeRange.getStartTimestamp()), ZoneOffset.of("+8")));
+//
+//                    ReservationInfo build = ReservationInfo.builder()
+//                            .isNextDay(1)
+//                            .isFree(timeRange.getIsReservation())
+//                            .time(start + "-" + end)
+//                            .build();
+//
+//                    results.add(build);
+//                } else {
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return Result.ok(results);
+//    }
 
 
 /*    public Result all(Long storeId) {

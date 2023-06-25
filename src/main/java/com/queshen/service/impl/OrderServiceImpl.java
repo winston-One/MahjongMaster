@@ -221,10 +221,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LocalDateTime startTime = LocalDateTime.ofInstant(orderSaveVO.getStartTime().toInstant(), ZoneId.systemDefault());
         LocalDateTime endTime = LocalDateTime.ofInstant(orderSaveVO.getEndTime().toInstant(), ZoneId.systemDefault());
         //判断当前下单的预约时间是否已经不能预约了
-        Integer isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();
-        if (isReserve > 0) {
-            return Result.fail("该预约时间错误");
-        }
+//        Integer isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();
+//        if (isReserve > 0) {
+//            return Result.fail("该预约时间错误");
+//        }
         //获取订单图片
         String byRoomId = iRoomService.getById(orderSaveVO.getRoomId()).getImage();
         orderSaveVO.setId(idUtil.getOrderId(orderSaveVO.getUserId()));
@@ -239,14 +239,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderDTO.setImage(byRoomId);
         Order order = new Order();
         BeanUtils.copyProperties(orderDTO, order, "expireTime");
-        order.setStatus(2);
-        synchronized (UserHolder.getUser().getOpenid().intern()) {
-            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
-            // 判断是否没有冲突的预约时间
-            if (isReserve == 0) {
-                this.save(order);// 保存到数据库
-            }
-        }
+        order.setStatus(1);
+//        synchronized (UserHolder.getUser().getOpenid().intern()) {
+//            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
+//            // 判断是否没有冲突的预约时间
+//            if (isReserve == 0) {
+//                this.save(order);// 保存到数据库
+//            }
+//        }
+//        isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
+//        // 判断是否没有冲突的预约时间
+//        if (isReserve == 0) {
+//            this.save(order);// 保存到数据库
+//        }
+        this.save(order);
         //创建缓存用户订单过期时间信息的key
         String key = orderDTO.getUserId() + "||" + orderDTO.getId();
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(orderDTO));// 存储到Redis中
@@ -346,7 +352,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     public Boolean selectIsDoingOrder(){
         //1.根据用户id是否存在redis中
-        String userId= UserHolder.getUser().getOpenid();
+//        String userId= UserHolder.getUser().getOpenid();
+        String userId= "o2eui5ZuZQt2eEsO7lyq0psWFXYg";
         String key=userId+"||*";
         Set<String> keysList = stringRedisTemplate.keys(key);
         if (keysList.size()==0)

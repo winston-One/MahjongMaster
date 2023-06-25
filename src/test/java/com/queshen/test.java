@@ -6,6 +6,7 @@ import com.queshen.mapper.TestMapper;
 import com.queshen.pojo.bo.Temperature;
 import com.queshen.pojo.bo.TimeRange;
 import com.queshen.pojo.po.TestChildren;
+import com.queshen.service.ReservationInfoService;
 import com.queshen.utils.TimeRangeUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
@@ -43,6 +44,14 @@ public class test {
     @Autowired
     private TestMapper testMapper;
 
+    @Autowired
+    private ReservationInfoService reservationInfoService;
+
+    @Test
+    public void testReservation() throws ParseException {
+        reservationInfoService.getInfoByRoom("001","2023-06-26");
+    }
+
     List<TestChildren> tests = new ArrayList<>(); // 最终展现给前端的数据集
     @Test
     public void testChilder() {
@@ -68,80 +77,6 @@ public class test {
         }
         // 将最终的数据放回tests中
         tests = children;
-    }
-
-    List<Temperature> temperatures = new ArrayList<>();
-    @Test
-    public void testChaZhi() {
-
-        // 读取csv文件
-        try {
-            File file = new File("F:\\Temperature.csv");
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            // CSV文件的分隔符
-            String DELIMITER = ",";
-            // 按行读取
-            String line;
-            while ((line = br.readLine()) != null) {
-                // 分割
-                String[] columns = line.split(DELIMITER);
-                Temperature temperature = new Temperature(
-                        Integer.valueOf(columns[0]),
-                        Double.valueOf(columns[1]),
-                        Double.valueOf(columns[2]),Double.valueOf(columns[3]),
-                        Double.valueOf(columns[4]));
-                temperatures.add(temperature);
-                // 打印行
-                System.out.println("Temperature["+ String.join(",", columns) +"]");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(temperatures);
-        // 插值算法
-        InterpolationAlgorithm();
-    }
-
-    // 使用工具包commons-math3辅助实现
-    private void InterpolationAlgorithm() {
-        // 判断数据是否已经准备好
-        if (temperatures.size() == 0 || temperatures == null) {
-            return ;
-        }
-
-        // 准备插值
-        SplineInterpolator interpolator = new SplineInterpolator();
-        double[] xArray;
-        double[] yArray;
-        List<Double> x = new ArrayList<>();
-        List<Double> y = new ArrayList<>();
-        for (Temperature temperature : temperatures) {
-            x.add(temperature.getXNode());
-            y.add(temperature.getYNode());
-        }
-        xArray = x.stream().mapToDouble(n -> n).toArray();
-        yArray = y.stream().mapToDouble(m -> m).toArray();
-
-        PolynomialSplineFunction insertMissingFunc = interpolator.interpolate(xArray, yArray);
-
-        // 正常情况下所有点
-        final int normalSize = 9999;
-        Double current = x.get(0);
-        List<Double> threeDimensional = new LinkedList<>();
-
-        // 插值法进行填充
-        for (int i = 0; i < x.size() && threeDimensional.size() < normalSize; ) {
-            // 如果存在，则不需要插值
-            if (current == x.get(i)) {
-                threeDimensional.add(y.get(i));
-                i++;
-            } else {
-                // 如果不存在，则插值
-                double value = insertMissingFunc.value(current);
-                threeDimensional.add(value);
-            }
-            current += 0.2;
-        }
     }
 
 }
