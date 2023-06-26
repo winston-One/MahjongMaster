@@ -1,4 +1,4 @@
-package com.queshen.utils;
+package com.queshen.constant;
 
 /**
  * @author winston

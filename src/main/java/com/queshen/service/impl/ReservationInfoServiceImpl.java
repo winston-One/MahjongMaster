@@ -15,18 +15,14 @@ import com.queshen.pojo.vo.RoomInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-import static com.queshen.utils.OrderStatus.ORDER_NOT_PAID;
+import static com.queshen.constant.OrderStatus.ORDER_NOT_PAID;
 import static com.queshen.utils.TimeRangeUtil.halfHour;
 
 

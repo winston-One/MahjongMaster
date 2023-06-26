@@ -1,7 +1,7 @@
 package com.queshen.exceptionhandler;
 
 import com.queshen.pojo.bo.Result;
-import com.queshen.utils.ResultCode;
+import com.queshen.constant.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

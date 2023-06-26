@@ -1,6 +1,6 @@
 package com.queshen.pojo.bo;
 
-import com.queshen.utils.ResultCode;
+import com.queshen.constant.ResultCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
