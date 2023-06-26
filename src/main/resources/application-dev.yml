@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://43.143.88.250:52514/queshen?useUnicode=true&useSSL=false&serverTimezone=GMT&characterEncoding=UTF-8&rewriteBatchedStatements=true
-    username: 141-user-525
-    password: u?5*2%e-5/r+
+    url: jdbc:mysql://localhost:52514/queshen?useUnicode=true&useSSL=false&serverTimezone=GMT&characterEncoding=UTF-8&rewriteBatchedStatements=true
+    username: localhost
+    password: localhost
   redis:
-    host: 43.143.88.250
+    host: localhost
     port: 52515
-    password: u?5*2%e-5/r+
+    password: localhost
     # 连接池配置
     lettuce:
       pool:
@@ -37,14 +37,14 @@ spring:
       max-request-size: 10MB
 #小程序信息
 wechat:
-  appid: wx9643514640a291dc
-  secret: bae673cdd211796ae622ce91732de442
+  appid: wx96localhost0a291dc
+  secret: bae673localhost91732de442
 
 wx:
   pay:
-    appId: wx9643514640a291dc #微信公众号或者小程序等的appid
-    mchId: 1634252700 #微信支付商户号
-    mchKey: Mjmk1524fjuimnv74256sueiinju741f #微信支付商户密钥
+    appId: wx9localhost291dc #微信公众号或者小程序等的appid
+    mchId: 163localhost00 #微信支付商户号
+    mchKey: Mjmk152localhostiinju741f #微信支付商户密钥
     #    subAppId: #服务商模式下的子商户公众账号ID
     #    subMchId: #服务商模式下的子商户号
     keyPath: classpath:apiclient_cert.p12
