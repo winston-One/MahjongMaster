@@ -14,7 +14,7 @@ public class OrderSelectByUserVO {
     //用户的openId
     private String openId;
 
-    //订单状态  1为进行中，2为未开始，3为已完成
+    //订单状态  1为待支付，2为已支付，3为已完成
     private Integer orderStatus;
 
     //排序状态

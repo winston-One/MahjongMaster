@@ -100,8 +100,8 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     @Override
     public Result voucherJudgement(String openId,String roomName, BigDecimal duration) {
         List<VoucherSuitDTO> voucherSuitDTOS = voucherOrderMapper.voucherJudgement(openId,roomName,duration);
-        if (voucherSuitDTOS == null){
-            return null;
+        if (voucherSuitDTOS.size() == 0){
+            return Result.ok(null);
         }else{
             return Result.ok(voucherSuitDTOS);
         }

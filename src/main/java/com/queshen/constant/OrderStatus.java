@@ -8,15 +8,14 @@ package com.queshen.constant;
 public class OrderStatus {
 
     /**
-     * 已支付
-     */
-    public static final int ORDER_IS_PAID = 1;
-
-    /**
      * 待支付
      */
-    public static final int ORDER_UN_PAID = 2;
+    public static final int ORDER_UN_PAID = 1;
 
+    /**
+     * 已支付
+     */
+    public static final int ORDER_IS_PAID = 2;
 
     /**
      * 已完成

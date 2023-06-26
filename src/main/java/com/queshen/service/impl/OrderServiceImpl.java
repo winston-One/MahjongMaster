@@ -62,52 +62,54 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     //查询该用户所有订单信息
     public Result getAllOrderByUser(OrderSelectByUserVO orderSelectByUserVO){
         //查询进行中的订单信息
-        if (orderSelectByUserVO.getOrderStatus()!=0){
-            if (orderSelectByUserVO.getOrderStatus() == 2) {
-                Result orderInRedis = getOrderInRedisBySelect(orderSelectByUserVO);
-                List<Order> data = (ArrayList) orderInRedis.getData();
-                IPage<Order> page = new Page<>(orderSelectByUserVO.getPageNum(), 10);
-                page.setRecords(data);
-                return doSelectData(page);
-            }
-        }
-        List<Order> data=null;
-        if (orderSelectByUserVO.getOrderStatus()==0){
-            Result orderInRedis = getOrderInRedisBySelect(orderSelectByUserVO);
-            data = (ArrayList<Order>) orderInRedis.getData();
-        }
+//        if (orderSelectByUserVO.getOrderStatus() != 0){
+//            if (orderSelectByUserVO.getOrderStatus() == 2) {
+//                Result orderInRedis = getOrderInRedisBySelect(orderSelectByUserVO);
+//                List<Order> data = (ArrayList) orderInRedis.getData();
+//                IPage<Order> page = new Page<>(orderSelectByUserVO.getPageNum(), 10);
+//                page.setRecords(data);
+//                return doSelectData(page);
+//            }
+//        }
+//        List<Order> data = null;
+//        if (orderSelectByUserVO.getOrderStatus() == 0){
+//            Result orderInRedis = getOrderInRedisBySelect(orderSelectByUserVO);
+//            data = (ArrayList<Order>) orderInRedis.getData();
+//        }
 
         //查询已完成或者已取消的订单信息
         //分页查询1页十条数据
-        IPage<Order> page=new Page<>(orderSelectByUserVO.getPageNum(),10);
-        LambdaQueryWrapper<Order> lqw=new LambdaQueryWrapper<>();
+        IPage<Order> page = new Page<>(orderSelectByUserVO.getPageNum(), 10);
+        LambdaQueryWrapper<Order> lqw = new LambdaQueryWrapper<>();
 
-        lqw.eq(Order::getUserId,orderSelectByUserVO.getOpenId());
+        lqw.eq(Order::getUserId, orderSelectByUserVO.getOpenId());
         //是否查询该门店的订单，否的话就查询所有门店的订单
-        if (orderSelectByUserVO.getStoreId()!=null)
-            lqw.eq(Order::getStoreId,orderSelectByUserVO.getStoreId());
+        if (orderSelectByUserVO.getStoreId() != null && orderSelectByUserVO.getStoreId() != "")
+            lqw.eq(Order::getStoreId, orderSelectByUserVO.getStoreId());
         //是否查询有状态的订单，否的就查询所有类型的订单
-        if (orderSelectByUserVO.getOrderStatus()!=null&&orderSelectByUserVO.getOrderStatus()!=0)
-            lqw.eq(Order::getStatus,orderSelectByUserVO.getOrderStatus());
+        if (orderSelectByUserVO.getOrderStatus() != 0)
+            lqw.eq(Order::getStatus, orderSelectByUserVO.getOrderStatus());
         //按照时间顺序倒序
         lqw.orderByDesc(Order::getStartTime);
 
         IPage<Order> orderPage = this.page(page, lqw);
-        log.info(orderPage.getClass());
-        if (data!=null) {
-            List<Order> records = orderPage.getRecords();
-            ArrayList<Order> arrayList=new ArrayList<>(records);
-            arrayList.addAll(data);
-            orderPage.setRecords(arrayList);
-            orderPage.setTotal(arrayList.size());
-            log.info(orderPage.getRecords().toString());
-        }
+        List<Order> records = orderPage.getRecords();
+        ArrayList<Order> arrayList = new ArrayList<>(records);
+        orderPage.setRecords(arrayList);
+        orderPage.setTotal(arrayList.size());
+//        if (data != null) {
+//            List<Order> records = orderPage.getRecords();
+//            ArrayList<Order> arrayList=new ArrayList<>(records);
+//            arrayList.addAll(data);
+//            orderPage.setRecords(arrayList);
+//            orderPage.setTotal(arrayList.size());
+//        }
           return doSelectData(orderPage);
     }
 
     //处理查询的数据返回
     private Result doSelectData(IPage<Order> page){
-        IPage<OrderSelectReturnVO> orderSelectReturnVOIPage=new Page<>(page.getCurrent(),10);
+        IPage<OrderSelectReturnVO> orderSelectReturnVOIPage = new Page<>(page.getCurrent(),10);
         List<Order> records = page.getRecords();
         List<OrderSelectReturnVO> orderSelectReturnVOS=new ArrayList<>();
         List<Store> storeList = storeService.list();
@@ -128,9 +130,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
             Duration duration=Duration.between(order.getStartTime(),order.getEndTime());
 
-            Long l1 = duration.toMinutes()%60;
+            Long l1 = duration.toMinutes() % 60;
             Long l2 = duration.toHours();
-            String durationString= l2.toString()+"小时"+l1.toString()+"分钟";
+            String durationString= l2 + "小时" + l1 + "分钟";
 
             orderSelectReturnVO.setOrderStatus(order.getStatus());
             orderSelectReturnVO.setDuration(durationString);
@@ -141,7 +143,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             orderSelectReturnVO.setStartTime(order.getStartTime());
             orderSelectReturnVO.setEndTime(order.getEndTime());
             orderSelectReturnVO.setOrderId(order.getId());
-            if (order.getPayTime()!=null)
+            if (order.getPayTime() != null)
                 orderSelectReturnVO.setPayTime(order.getPayTime());
             else
                 orderSelectReturnVO.setPayTime(null);
@@ -240,6 +242,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Order order = new Order();
         BeanUtils.copyProperties(orderDTO, order, "expireTime");
         order.setStatus(1);
+        order.setPayTime(LocalDateTime.now());
 //        synchronized (UserHolder.getUser().getOpenid().intern()) {
 //            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
 //            // 判断是否没有冲突的预约时间
