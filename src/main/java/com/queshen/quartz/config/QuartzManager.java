@@ -27,7 +27,7 @@ public class QuartzManager {
                 .withIdentity("job1", "group1")
                 .build();
         // 凌晨00:00触发
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0 0 0 * * ?");
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("*/5 * * ? * *");
         CronTrigger cronTrigger = TriggerBuilder
                 .newTrigger()
                 .forJob(jobDetail) // 绑定工作任务

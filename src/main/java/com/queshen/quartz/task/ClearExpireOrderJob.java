@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.queshen.pojo.dto.OrderDTO;
 import com.queshen.pojo.po.Order;
 import com.queshen.service.OrderService;
+import com.queshen.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.BeanUtils;
@@ -23,14 +24,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class ClearExpireOrderJob implements Job {
 
-    @Autowired
-    private ThreadPoolExecutor executorService;
+    private final ThreadPoolExecutor executorService = SpringUtil.getBean(ThreadPoolExecutor.class);
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate = SpringUtil.getBean(StringRedisTemplate.class);
 
-    @Autowired
-    OrderService orderService;
+    private final OrderService orderService = SpringUtil.getBean(OrderService.class);
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
