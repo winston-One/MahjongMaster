@@ -86,7 +86,7 @@ public class UserController {
         ServletContext application = session.getServletContext();
         List<String> userOnlineList= (List<String>) application.getAttribute("userOnlineList");
         if(userOnlineList!=null){
-            System.out.println("在线用户数:"+userOnlineList.size());
+            log.info("在线用户数==={}", userOnlineList.size());
         }
         return Result.ok(userOnlineList);
     }

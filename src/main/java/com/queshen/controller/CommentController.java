@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2023/4/20 20:38
  * @Description: Man can conquer nature
  * 评论系统的接口
@@ -154,5 +154,4 @@ public class CommentController {
                            @RequestParam int size){
         return Result.ok();
     }
-
 }

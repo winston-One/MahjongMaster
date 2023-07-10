@@ -44,12 +44,6 @@ public class WebSocketChatController {
 
     /**
      * 收到客户端发来消息,data就是前端发送过来的消息体，后端使用String接收，所以使用JSON解析
-     * data = {
-     *   openId: 97908848,
-     * 	 receiveId: 520520,
-     * 	 type: 1(文字),
-     * 	 content: Hello,winstonYv
-     * }
      * 发送消息是否成功可以在前端确认，但是在服务端处理完消息给接收端的时候，可能丢失消息，所以保证不丢失消息
      */
     @OnMessage

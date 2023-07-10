@@ -24,6 +24,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
 
+/**
+ * @author WinstonYv
+ * @create 2023/5/10 10:28
+ * @Description: Man can conquer nature
+ */
 @Slf4j
 @Component
 public class IMMsgHandler {

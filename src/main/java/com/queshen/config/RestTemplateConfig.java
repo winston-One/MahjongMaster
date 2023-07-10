@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  * 配置restTemplate，可以发起网络请求，例如调用第三方sdk

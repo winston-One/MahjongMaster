@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * 用户实体类
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/

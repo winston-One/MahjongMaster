@@ -1,6 +1,8 @@
 package com.queshen.pojo.bo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * FastDFS 所能交互文件类型
@@ -9,7 +11,10 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FastDFSFile {
+
     //文件名字
     private String name;
 
@@ -24,16 +29,6 @@ public class FastDFSFile {
 
     //文件创建作者
     private String author;
-
-
-    public FastDFSFile(String name, byte[] content, String ext, String height,
-                       String width, String author) {
-        super();
-        this.name = name;
-        this.content = content;
-        this.ext = ext;
-        this.author = author;
-    }
 
     public FastDFSFile(String name, byte[] content, String ext) {
         super();

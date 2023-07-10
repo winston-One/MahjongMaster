@@ -7,7 +7,7 @@ import com.queshen.service.IChatMsgService;
 import org.springframework.stereotype.Service;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2023/5/2 11:56
  * @Description: Man can conquer nature
  **/

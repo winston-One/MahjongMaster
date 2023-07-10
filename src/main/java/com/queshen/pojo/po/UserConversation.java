@@ -12,11 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author DJT
+ * @author WinstonYv
  * @since 2022-07-31
  */
 @TableName("t_user_conversation")

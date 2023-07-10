@@ -27,7 +27,7 @@ import static com.queshen.utils.TimeRangeUtil.halfHour;
 
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -46,7 +46,6 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
         //1、根据storeId返回对应店铺的所有房间信息
         List<Room> rooms = roomService.list(new LambdaQueryWrapper<Room>().eq(Room::getStoreId, storeId));
         List<RoomInfoVO> results = new ArrayList<>(rooms.size());
-
         //2、遍历房间信息，寻找对应订单信息
         for (Room room : rooms) {
             //2.1通过日期查找当天订单和次日
@@ -55,13 +54,11 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
             wrapper.eq(Order::getRoomId, room.getRoomId())
                     .ne(Order::getStatus, ORDER_NOT_PAID)
                     .and(wp -> wp.likeRight(Order::getStartTime, date).or().likeRight(Order::getEndTime, date));
-
             List<Order> orders = orderService.list(wrapper);
             //2.3订单信息拆分归纳
             List<Integer> assembly = TimeRangeUtil.assembly(TimeRangeUtil.timeRanges(orders, date));
-
             //2.4该房间在当天是否有空闲
-            Boolean isFree = false;
+            boolean isFree = false;
             for (Integer integer : assembly) {
                 if(integer == 0) {
                     isFree = true;
@@ -78,7 +75,6 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
                     .timeRanges(assembly)
                     .isFree(isFree)
                     .build();
-
             results.add(build);
         }
         return Result.ok(results);
@@ -90,12 +86,8 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
         LambdaQueryWrapper<Order> wrapper1 = new LambdaQueryWrapper<>();
         //2添加过滤条件
         wrapper1.eq(Order::getRoomId, roomId)
-//                .ne(Order::getStatus, ORDER_NOT_PAID)
                 .and(wp -> wp.likeRight(Order::getStartTime, date).or().likeRight(Order::getEndTime, date));
         List<Order> orders1 = orderService.list(wrapper1);
-
-        System.out.println("orders1====");
-        System.out.println(orders1);
         //获取明日时段
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

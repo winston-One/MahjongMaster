@@ -3,11 +3,12 @@ package com.queshen.pojo.dto;
 import java.util.Date;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
 public class ReceiptValidateResultDTO {
+
     //验证券码
     public String receipt_code;
 
@@ -40,4 +41,5 @@ public class ReceiptValidateResultDTO {
 
     //用户手机号
     public String mobile;
+
 }

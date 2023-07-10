@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  * 用户登录成功之后返回给前端的数据，
@@ -22,5 +22,4 @@ public class UserLoginVo {
 
     private String nickname;
 
-    //private String phone;
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2023/4/10 10:45
  * @Description: Man can conquer nature
  * caffeine本地缓存配置
@@ -41,5 +41,4 @@ public class StoreVoucherCache {
                     return vouchers;
                 });
     }
-
 }

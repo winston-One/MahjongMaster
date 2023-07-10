@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 /**
  * 订单实体类
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  * 数据库订单实体
@@ -40,7 +40,6 @@ public class Order extends BaseEntity {
 
     //金额
     private BigDecimal price;
-
 
     // 订单开始时间
     private LocalDateTime startTime;
@@ -72,4 +71,5 @@ public class Order extends BaseEntity {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime payTime;
+
 }

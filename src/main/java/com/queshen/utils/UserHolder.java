@@ -4,7 +4,7 @@ import com.queshen.pojo.dto.UserDTO;
 
 /**
  * 记录当前线程执行的用户 的线程类
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/

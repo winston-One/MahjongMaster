@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2023/4/10 10:45
  * @Description: Man can conquer nature
  * caffeine本地缓存配置
@@ -33,5 +33,4 @@ public class VoucherUserCache {
                 .expireAfterWrite(3, TimeUnit.DAYS)
                 .build(key -> voucherOrderMapper.listVoucherOrder(key));
     }
-
 }

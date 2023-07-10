@@ -43,16 +43,12 @@ public class FileController {
             FastDFSFile fastDFSFile = new FastDFSFile(originalFileName, content, extName);
             //提交
             String[] uploadResult = FastDFSClient.upload(fastDFSFile);
-
             //封装返回结果
             String url = FastDFSClient.getTrackerUrl() + uploadResult[0] + "/" + uploadResult[1];
-
             return Result.ok(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return Result.fail("文件上传失败");
     }
-
 }

@@ -7,7 +7,7 @@ import com.queshen.pojo.bo.WxLoginResponse;
 
 /**
  * 用户相关服务
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/

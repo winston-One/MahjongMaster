@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -27,7 +27,6 @@ public class RedisCacheBuilder<T> {
     // 过期时间的单位
     private TimeUnit timeUnit;
 
-
     private RedisTemplate<String,Object> redisTemplate;
 
     // 存入到redis的前缀
@@ -45,10 +44,8 @@ public class RedisCacheBuilder<T> {
      * @return
      */
     public RedisCacheBuilder<T> setPrefix(String prefix) {
-
         this.prefix = prefix;
         return this;
-
     }
 
     public RedisCacheBuilder(RedisTemplate<String, Object> redisTemplate) {

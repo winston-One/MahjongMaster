@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 /**
  * 实体类基类
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -45,4 +45,5 @@ public abstract class BaseEntity implements Serializable {
     // 逻辑删除：0删除
     @TableLogic
     private Integer isDelete;
+
 }

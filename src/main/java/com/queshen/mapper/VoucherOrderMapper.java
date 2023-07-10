@@ -22,5 +22,4 @@ public interface VoucherOrderMapper extends BaseMapper<VoucherOrder> {
     List<VoucherSuitDTO> voucherJudgement(@Param("user_id") String userId,
                                           @Param("room_name") String roomName,
                                           @Param("duration") BigDecimal duration);
-
 }

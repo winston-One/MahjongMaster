@@ -62,5 +62,4 @@ public class OrderController {
     public Result selectIsDoingOrder(){
         return Result.ok(orderService.selectIsDoingOrder());
     }
-
 }

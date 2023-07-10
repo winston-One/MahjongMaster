@@ -53,5 +53,4 @@ public class AppConstants {
 
     public final static String HOST="https//openapi.dianping.com";
 
-
 }

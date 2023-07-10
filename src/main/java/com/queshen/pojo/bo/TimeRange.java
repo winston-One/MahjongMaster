@@ -21,5 +21,4 @@ public class TimeRange {
      * 是否被预定
      */
     private Integer isReservation;
-
 }

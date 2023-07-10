@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -47,5 +47,4 @@ public class RedisCache<T> {
     public void remove(String key){
         redisTemplate.delete(prefix+":"+key);
     }
-
 }

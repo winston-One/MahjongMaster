@@ -5,7 +5,6 @@ import com.queshen.mapper.TestMapper;
 import com.queshen.pojo.po.TestChildren;
 import com.queshen.service.AppConstantsService;
 import com.queshen.service.DianPingVoucherService;
-import com.queshen.service.ReservationInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

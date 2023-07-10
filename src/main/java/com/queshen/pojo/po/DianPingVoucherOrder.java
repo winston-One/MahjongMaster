@@ -1,6 +1,5 @@
 package com.queshen.pojo.po;
 
-
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -48,4 +47,5 @@ public class DianPingVoucherOrder {
     //状态 1已经使用 0未使用
     @TableField("dporder_status")
     private Integer status;
+
 }

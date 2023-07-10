@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -35,9 +35,6 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
 
     /**
      * 将标题处理成内容，通过美团第三方sdk获得关于该门店给券定义的标题，通过对该标题进行解析获取美团券的信息
-     * @param orderId
-     * @param tittle
-     * @return
      */
     public DianPingVoucherOrder doDianPingTittle(String orderId,String tittle,String userId) {
         if (tittle.isEmpty()||!tittle.contains("【")||!tittle.contains("】")||!tittle.contains("/")||!tittle.contains("小时"))
@@ -83,8 +80,6 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
 
     /**
      * 将预约完的订单放进数据库中
-     * @param dianPingVoucherOrder
-     * @return
      */
     public Boolean doDPOrderToMysql(DianPingVoucherOrder dianPingVoucherOrder){
         String s = stringRedisTemplate.opsForValue().get(dianPingVoucherOrder.getUserId() + dianPingVoucherOrder.getId());
@@ -97,8 +92,6 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
 
     /**
      * 将销完券的订单放进reids中
-     * @param dianPingVoucherOrder
-     * @return
      */
     public Boolean doDPOrderToRedis(DianPingVoucherOrder dianPingVoucherOrder){
         dianPingVoucherOrder.setStatus(0);
@@ -108,9 +101,6 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
 
     /**
      * 查询可用的券（在redis中的）
-     * @param userid
-     * @param pageNum
-     * @return
      */
     public Result selectDPOrderInRedis(String userid,int pageNum){
         String key = userid + "*";
@@ -119,7 +109,6 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         if (keysList.size() == 0)
             return Result.ok(null);
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
-
         DianPingVoucherOrder voucherOrder;
         for (String s : strings) {
             voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
@@ -132,18 +121,14 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
 
     /**
      * 查询可用券——跟是一个接口的区别是返回的结果集不一样
-     * @param userid
-     * @return
      */
     public Result selectCandoDPVoucherInRedis(String userid){
-
         String key = userid + "*";
         Set<String> keysList = stringRedisTemplate.keys(key);
         log.info(keysList+userid);
         List<DianPingCanDoVoucher> dianPingCanDoVoucherList = new ArrayList<>();
         if (keysList.size() == 0)
             return Result.ok(null);
-
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
         DianPingVoucherOrder voucherOrder;
         for (String s : strings) {

@@ -3,7 +3,7 @@ package com.queshen.pojo.vo;
 import lombok.Data;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
@@ -25,4 +25,5 @@ public class OrderSelectByUserVO {
 
     //门店号
     private String storeId;
+
 }

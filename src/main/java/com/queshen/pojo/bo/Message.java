@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author WinstonYv
+ * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
+ **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,5 +29,4 @@ public class Message {
     private Integer type;
 
     private LocalDateTime createTime;
-
 }

@@ -3,10 +3,10 @@ package com.queshen.exceptionhandler;
 import lombok.Data;
 
 /**
- * @author winston
- * @create 2022/12/18 11:29
+ * @author WinstonYv
+ * @create 2023/5/10 10:28
  * @Description: Man can conquer nature
- **/
+ */
 @Data
 public class PayReCallException extends RuntimeException{
 

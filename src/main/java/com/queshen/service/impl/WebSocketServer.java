@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2023/4/24 21:47
  * @Description: Man can conquer nature
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,

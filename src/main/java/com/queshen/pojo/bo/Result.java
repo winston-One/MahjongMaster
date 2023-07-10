@@ -50,5 +50,4 @@ public class Result {
         this.setCode(code);
         return this;
     }
-
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.queshen.pojo.po.Conversation;
 
 /**
- * @author winston
+ * @author WinstonYv
  * @create 2023/5/2 13:11
  * @Description: Man can conquer nature
  **/

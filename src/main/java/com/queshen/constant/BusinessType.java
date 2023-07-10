@@ -3,7 +3,7 @@ package com.queshen.constant;
 /**
  * 业务操作类型
  *
- * @author winston
+ * @author WinstonYv
  * @create 2022/11/22 0:21
  * @Description: Man can conquer nature
  *
