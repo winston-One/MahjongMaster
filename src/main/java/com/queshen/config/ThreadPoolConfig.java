@@ -19,7 +19,7 @@ public class ThreadPoolConfig {
     @Bean
     public ThreadPoolExecutor getThreadPoolExecutor(){
         return new ThreadPoolExecutor(
-                2,
+                4,
                 16,
                 8,
                 TimeUnit.MINUTES,

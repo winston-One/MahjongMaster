@@ -1,5 +1,7 @@
 package com.queshen.config;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -14,6 +16,7 @@ import java.util.List;
  * 登录接口加上：httpSession.setAttribute("userOnlineListener", new UserOnlineListener(commonUserNode.getId()));
  * 监听当前系统在线用户
  */
+@Slf4j
 public class UserOnlineListener implements HttpSessionBindingListener {
 
     private String openid;
@@ -35,7 +38,7 @@ public class UserOnlineListener implements HttpSessionBindingListener {
         }
         //将当前用户添加至用户列表
         userOnlineList.add(this.openid);
-        System.out.println("session属性绑定=======>"+this.openid);
+        log.info("session属性绑定=======>{}", this.openid);
     }
 
     @Override
@@ -47,5 +50,4 @@ public class UserOnlineListener implements HttpSessionBindingListener {
         //将该用户从列表中移除
         userOnlineList.remove(this.openid);
     }
-
 }

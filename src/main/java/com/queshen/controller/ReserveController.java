@@ -1,7 +1,5 @@
 package com.queshen.controller;
 
-import com.queshen.anno.Log;
-import com.queshen.constant.BusinessType;
 import com.queshen.pojo.bo.Result;
 import com.queshen.service.ReservationInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +35,6 @@ public class ReserveController {
 //    @Log(content="用户查询预约房间",businessType = BusinessType.SELECT)
     public Result getInfoByRoom(@RequestParam("roomId") String roomId,
                                 @RequestParam("date") String date) throws ParseException {
-        System.out.println(roomId+date);
         return reservationInfoService.getInfoByRoom(roomId, date);
     }
 }

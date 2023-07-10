@@ -17,7 +17,6 @@ import com.queshen.service.IRoomService;
 import com.queshen.service.OrderService;
 import com.queshen.service.StoreService;
 import com.queshen.utils.IdUtil;
-import com.queshen.utils.UserHolder;
 import com.queshen.pojo.vo.OrderSaveVo;
 import com.queshen.pojo.vo.OrderSelectByUserVO;
 import com.queshen.pojo.vo.OrderSelectReturnVO;
@@ -27,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Date;

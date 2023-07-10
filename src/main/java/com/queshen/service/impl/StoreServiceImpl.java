@@ -6,8 +6,6 @@ import com.queshen.mapper.StoreMapper;
 import com.queshen.service.StoreService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author winston
  * @create 2022/12/11 15:14

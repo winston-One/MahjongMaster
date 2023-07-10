@@ -78,7 +78,6 @@ public class DianPingController {
         for(Map.Entry<String, String> entry : requestParam.entrySet()){
             form.add(entry.getKey(), entry.getValue());
         }
-
         try {
             String s = Request.Post("https://openapi.dianping.com/router/tuangou/receipt/prepare")
                     .bodyForm(form.build())// 带三方接口请求体要是使用form-data形式
@@ -105,9 +104,8 @@ public class DianPingController {
                 Integer code = preparemtRecordResult.code;
                 return Result.fail(msg).code(code);
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e.toString());
         }
         return Result.fail("系统错误");
     }
@@ -142,7 +140,6 @@ public class DianPingController {
                     .bodyForm(form.build())
                     .setHeader("Content-Type", ContentType.create("application/x-www-form-urlencoded", "UTF-8").toString())
                     .execute().returnContent().asString();
-
             log.info(s);
             PreparemtRecordResultDTO preparemtRecordResult;
             // 将请求结果集进行JSON解析
@@ -168,8 +165,6 @@ public class DianPingController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return Result.fail("系统错误");
     }
 
@@ -200,13 +195,12 @@ public class DianPingController {
             form.add(entry.getKey(), entry.getValue());
         }
         //发起post请求
-        String s = null;
+        String s;
         try {
             s = Request.Post("https://openapi.dianping.com/router/tuangou/receipt/consume")
                     .bodyForm(form.build())
                     .setHeader("Content-Type", ContentType.create("application/x-www-form-urlencoded", "UTF-8").toString())
                     .execute().returnContent().asString();
-
             log.info(s);
             JSONObject jsonStr = JSONObject.parseObject(s);
             ConsumeResult consumeResult = JSONObject.toJavaObject(jsonStr, ConsumeResult.class);
@@ -301,17 +295,6 @@ public class DianPingController {
         return Result.ok(response);
     }
 
-    // 测试Redis中存放的验券sdk的session是否正常
-//    @PostMapping("/test")
-//    public Result test(){
-//        String s = stringRedisTemplate.opsForValue().get("freshsession");
-//        CustomerRefreshTokenResponse response = JsonUtils.toBean(s, CustomerRefreshTokenResponse.class);
-//        DianPingSessionDTO dianPingSessionDTO=new DianPingSessionDTO();
-//        BeanUtils.copyProperties(response,dianPingSessionDTO);
-//        log.info(dianPingSessionDTO);
-//        return Result.ok();
-//    }
-
     // 查询该美团号管理的门店范围
     @PostMapping("/selectStoreScope")
     public String selectStoreScope()  {
@@ -343,5 +326,4 @@ public class DianPingController {
         }
         return null;
     }
-
 }

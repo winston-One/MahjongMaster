@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public WxLoginPhoneResponse getPhoneResponse(String code) {
 
-        String access_token = null;
+        String access_token;
         // 如果可以从缓存中获取微信接口调用凭证，就不需要重复发送请求获取凭证
         // 第一次登录都会将解析的token存入到Redis缓存中，并有过期时间，频繁发起网络请求时很耗cpu资源的。
         access_token = stringRedisTemplate.opsForValue().get("access_token");

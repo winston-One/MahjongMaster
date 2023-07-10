@@ -117,8 +117,5 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         }else {
             stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(voucherOrder),term, TimeUnit.DAYS);
         }
-
     }
-
-
 }

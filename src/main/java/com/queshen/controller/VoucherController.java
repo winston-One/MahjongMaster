@@ -83,5 +83,4 @@ public class VoucherController {
         voucherStoreCache.invalidateAll();
         return Result.ok(result);
     }
-
 }

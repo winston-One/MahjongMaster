@@ -64,5 +64,4 @@ public class SpringUtils implements BeanFactoryPostProcessor,ApplicationContextA
     public static String[] getActiveProfiles() {
         return applicationContext.getEnvironment().getActiveProfiles();
     }
-
 }

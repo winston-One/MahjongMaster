@@ -19,5 +19,4 @@ public class RequestUtil {
         }
         return sb.toString();
     }
-
 }

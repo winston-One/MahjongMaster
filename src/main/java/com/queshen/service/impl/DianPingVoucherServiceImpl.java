@@ -166,7 +166,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         List<DianPingVoucherOrder> voucherOrderList = new ArrayList<>();
         if (keysList.size() != 0) {
             List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
-            DianPingVoucherOrder voucherOrder= new DianPingVoucherOrder();
+            DianPingVoucherOrder voucherOrder;
             for (String s : strings) {
                 voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
                 voucherOrderList.add(voucherOrder);

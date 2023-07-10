@@ -27,5 +27,4 @@ public class OrderStatus {
      */
     public static final int ORDER_NOT_PAID = 4;
 
-
 }

@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.queshen.cache.RedisCache;
 import com.queshen.config.UserOnlineListener;
-import com.queshen.mapper.TestMapper;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.UserDTO;
 import com.queshen.pojo.dto.WxLoginDTO;
 import com.queshen.pojo.dto.WxPhoneDTO;
-import com.queshen.pojo.po.TestChildren;
 import com.queshen.pojo.po.User;
 import com.queshen.pojo.bo.WxLoginPhoneResponse;
 import com.queshen.pojo.bo.WxLoginResponse;
@@ -45,23 +43,6 @@ public class UserController {
 
     @Resource(name = "loginCache")
     RedisCache<User> cache;
-
-
-//    @PostMapping("/test")
-//    public Result test() {
-//        QueryWrapper<TestChildren> queryWrapper = new QueryWrapper();
-//        queryWrapper.eq("parent_id", -1);
-//        List<TestChildren> tests = testMapper.selectList(queryWrapper);
-//        for (TestChildren test : tests) {
-//            List<TestChildren> children = testMapper.getChildren(test.getId());
-//            if (children.size() == 0){
-//
-//            }
-//            test.setChildren(children);
-//        }
-//
-//        return Result.ok();
-//    }
 
     /**
      * 微信登录功能
@@ -170,5 +151,4 @@ public class UserController {
         UserHolder.removeUser();
         return Result.ok("退出登录成功");
     }
-
 }

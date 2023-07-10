@@ -18,5 +18,4 @@ public class WeChatUtil {
 
     @Value("${wechat.secret}")
     private String secret;
-
 }

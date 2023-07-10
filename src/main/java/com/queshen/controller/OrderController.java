@@ -1,6 +1,5 @@
 package com.queshen.controller;
 
-import com.queshen.anno.RepeatRequest;
 import com.queshen.pojo.bo.Result;
 import com.queshen.service.OrderService;
 import com.queshen.pojo.vo.OrderSaveVo;

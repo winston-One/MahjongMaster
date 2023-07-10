@@ -32,5 +32,4 @@ public class StoreController {
         List<Store> storeList = storeListCache.get("store");// 以store作为键值，第一次查询是查不到的，需要会自动查找数据库然后将数据放到键值为store的字典中
         return Result.ok(storeList);
     }
-
 }

@@ -27,12 +27,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     public Result queryVoucherById(String voucherId) {
         // 根据卡券id查询卡券
         Voucher voucher = voucherMapper.selectById(voucherId);
-
         if (voucher == null){
             return null;
         }
-
         return Result.ok(voucher);
     }
-
 }
