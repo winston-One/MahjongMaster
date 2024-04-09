@@ -45,7 +45,7 @@ public class VoucherOrderController {
     /**
      * 根据用户id查询用户拥有券的总数量
      */
-    @PostMapping("/countVoucher")
+    @GetMapping("/countVoucher")
     public Result countVoucherById(@RequestParam("openId") String openId){
         return voucherOrderService.countVoucherById(openId);
     }
@@ -62,7 +62,7 @@ public class VoucherOrderController {
     /**
      * 根据条件（房间是否适用，时长是否超时）判断卡券是否适用
      */
-    @PostMapping("/judgeVoucher")
+    @GetMapping("/judgeVoucher")
     public Result voucherJudgement(@RequestParam("openId") String openId,
                                    @RequestParam("roomName") String roomName,
                                    @RequestParam("userTime") BigDecimal userTime) {

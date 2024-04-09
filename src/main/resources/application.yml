@@ -2,8 +2,11 @@ server:
   port: 9790
 
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: flag # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   mapper-locations: classpath:com/queshen/mapper/xml/*.xml
 
 spring:
@@ -14,8 +17,8 @@ spring:
   jackson:
     default-property-inclusion: non_null #json处理时忽略非空字段
 
-logging:
-  level:
-    com.queshen: debug
-  pattern:
-    dateformat: mm:ss.SSS
+#logging:
+#  level:
+#    com.queshen: debug
+#  pattern:
+#    dateformat: mm:ss.SSS

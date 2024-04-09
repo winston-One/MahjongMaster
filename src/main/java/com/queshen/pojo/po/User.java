@@ -29,6 +29,8 @@ public class User implements Serializable {
 
     private String phone;
 
+    private Double money;
+
     @TableField(fill = FieldFill.INSERT)
     private Long createTime;
 

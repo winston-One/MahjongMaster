@@ -44,7 +44,7 @@ public class OrderSelectReturnVO {
     private String orderId;
 
     // 下单时间
-    private LocalDateTime creatTime;
+    private LocalDateTime createTime;
 
     // 支付时间
     private LocalDateTime payTime;

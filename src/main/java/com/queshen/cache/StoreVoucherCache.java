@@ -1,5 +1,6 @@
 package com.queshen.cache;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.queshen.mapper.VoucherMapper;
@@ -34,11 +35,10 @@ public class StoreVoucherCache {
         return Caffeine.newBuilder()
                 .expireAfterWrite(3, TimeUnit.DAYS)
                 .build(key -> {
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("is_delete",1);
-                    map.put("vou_status",1);
-                    List<Voucher> vouchers = voucherMapper.selectByMap(map);
-                    return vouchers;
+                    QueryWrapper<Voucher> voucherQueryWrapper = new QueryWrapper<>();
+                    voucherQueryWrapper.eq("vou_status", 1);
+                    voucherQueryWrapper.eq("is_delete", 0);
+                    return voucherMapper.selectList(voucherQueryWrapper);
                 });
     }
 }

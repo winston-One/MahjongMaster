@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.queshen.constant.OrderStatus;
 import com.queshen.pojo.dto.OrderDTO;
 import com.queshen.pojo.dto.OrderTime;
 import com.queshen.pojo.bo.Result;
@@ -145,7 +146,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 orderSelectReturnVO.setPayTime(order.getPayTime());
             else
                 orderSelectReturnVO.setPayTime(null);
-            orderSelectReturnVO.setCreatTime(order.getCreateTime());
+            orderSelectReturnVO.setCreateTime(order.getCreateTime());
             orderSelectReturnVOS.add(orderSelectReturnVO);
         }
         orderSelectReturnVOIPage.setRecords(orderSelectReturnVOS);
@@ -239,7 +240,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderDTO.setImage(byRoomId);
         Order order = new Order();
         BeanUtils.copyProperties(orderDTO, order, "expireTime");
-        order.setStatus(1);
+        order.setStatus(OrderStatus.ORDER_UN_PAID);
         order.setPayTime(LocalDateTime.now());
 //        synchronized (UserHolder.getUser().getOpenid().intern()) {
 //            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
