@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author WinstonYv
  * @create 2022/12/11 15:14
- * @Description: Man can conquer nature
  **/
 @Log4j2
 @Service
