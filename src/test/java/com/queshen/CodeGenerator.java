@@ -3,7 +3,12 @@ package com.queshen;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.fill.Column;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WinstonYv
@@ -14,6 +19,17 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         String projectPath = System.getProperty("user.dir");
+        String moduleName = "";
+        String modulePath;
+        String moduleEntity;
+        if (StringUtils.hasLength(moduleName)) {
+            modulePath = "/" + moduleName;
+            moduleEntity = "." + moduleName;
+        } else {
+            modulePath = "";
+            moduleEntity = "";
+        }
+        System.out.println(projectPath);
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/queshen?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8",
                 "root", "123456")
                 .globalConfig(builder -> {
@@ -23,9 +39,19 @@ public class CodeGenerator {
                             .outputDir(projectPath + "/src/main/java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
-                    builder.parent("com.queshen"); // 设置父包名
-                            //.moduleName("pojo"); // 设置父包模块名
-//                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, projectPath+"src/main/java/com/queshen/service/com.queshen.mapper/xml")); // 设置mapperXml生成路径
+                    Map<OutputFile, String> map = new HashMap<>();
+                    map.put(OutputFile.entity, projectPath + "/src/main/java/com/queshen/pojo.po" + modulePath);//设置entity生成路径
+                    map.put(OutputFile.service, projectPath + "/src/main/java/com/queshen/service" + modulePath);//设置service生成路径
+                    map.put(OutputFile.serviceImpl, projectPath + "/src/main/java/com/queshen/service" + modulePath + "/impl");//设置serviceImpl生成路径
+                    map.put(OutputFile.mapper, projectPath + "/src/main/java/com/queshen/mapper" + modulePath);//设置mapper生成路径或者设置mapperXml生成路径
+//                    map.put(OutputFile.xml, projectPath + "/src/main/java/com/queshen/mapper" + modulePath + "/xml");//设置mapperXml生成路径
+                    builder.parent("com.queshen") //设置父包名
+                            .entity("pojo.po" + moduleEntity)
+                            .service("service" + moduleEntity)
+                            .serviceImpl("service" + moduleEntity + ".impl")
+                            .mapper("mapper" + moduleEntity)
+                            .xml("mapper" + moduleEntity + ".xml")
+                            .pathInfo(map); //设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("t_comment","t_comment_like","t_chat_msg");
