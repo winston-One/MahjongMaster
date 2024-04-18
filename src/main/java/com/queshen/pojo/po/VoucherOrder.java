@@ -46,9 +46,6 @@ public class VoucherOrder {
     private LocalDateTime createTime;
 
     // 支付时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime payTime;
 
     public VoucherOrder(String id, String voucherId, String userId, Integer orderStatus, LocalDateTime createTime) {

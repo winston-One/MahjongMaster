@@ -77,6 +77,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
                     .build();
             results.add(build);
         }
+        log.info("rooms=={}", rooms);
         return Result.ok(results);
     }
 
@@ -91,8 +92,12 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
         //获取明日时段
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter aFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        long l = LocalDateTime.parse(date + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        String[] parts = date.split("-");
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int day = Integer.parseInt(parts[2]);
+        String formattedDate = String.format("%d-%02d-%02d", year, month, day);
+        long l = LocalDateTime.parse(formattedDate + " 00:00:00", aFormat).toInstant(ZoneOffset.of("+8")).toEpochMilli();
         //24小时，一小时60分钟，一分钟60秒，一秒60毫秒
         l = l + 24 * 60 * 60 * 1000;
         String nextDate = dateFormat.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.of("+8")));

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
-import com.queshen.constant.OrderStatus;
 import com.queshen.pojo.dto.OrderDTO;
 import com.queshen.pojo.dto.OrderTime;
 import com.queshen.pojo.bo.Result;
@@ -37,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author WinstonYv
  * @create 2022/12/11 15:14
+ * @Description: Man can conquer nature
  **/
 @Log4j2
 @Service
@@ -102,7 +102,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 //            orderPage.setRecords(arrayList);
 //            orderPage.setTotal(arrayList.size());
 //        }
-          return doSelectData(orderPage);
+        return doSelectData(orderPage);
     }
 
     //处理查询的数据返回
@@ -146,8 +146,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             else
                 orderSelectReturnVO.setPayTime(null);
             orderSelectReturnVO.setCreateTime(order.getCreateTime());
+            log.info("78789{}", orderSelectReturnVO.getCreateTime());
             orderSelectReturnVOS.add(orderSelectReturnVO);
         }
+
         orderSelectReturnVOIPage.setRecords(orderSelectReturnVOS);
         orderSelectReturnVOIPage.setTotal(orderSelectReturnVOS.size());
         return Result.ok(orderSelectReturnVOIPage);
@@ -239,7 +241,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderDTO.setImage(byRoomId);
         Order order = new Order();
         BeanUtils.copyProperties(orderDTO, order, "expireTime");
-        order.setStatus(OrderStatus.ORDER_UN_PAID);
+        order.setStatus(1);
         order.setPayTime(LocalDateTime.now());
 //        synchronized (UserHolder.getUser().getOpenid().intern()) {
 //            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间

@@ -25,6 +25,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
     @Override
     public Result queryVoucherById(String voucherId) {
+        if(voucherId == null || voucherId.isEmpty()) {
+            return Result.ok(null);
+        }
         // 根据卡券id查询卡券
         Voucher voucher = voucherMapper.selectById(voucherId);
         if (voucher == null){

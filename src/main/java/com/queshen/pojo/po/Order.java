@@ -1,8 +1,6 @@
 package com.queshen.pojo.po;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,7 +22,7 @@ import java.time.LocalDateTime;
 
 @TableName("tb_order")
 @Data
-public class Order extends BaseEntity {
+public class Order {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,9 +40,15 @@ public class Order extends BaseEntity {
     private BigDecimal price;
 
     // 订单开始时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime startTime;
 
     // 订单结束时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime endTime;
 
     // 门店号
@@ -72,4 +76,26 @@ public class Order extends BaseEntity {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime payTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    // 创建人
+    private String createUser = "0";
+
+    // 修改时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @TableField(fill = FieldFill.UPDATE)
+    private LocalDateTime updateTime;
+
+    // "修改人"
+    private String updateUser;
+
+    // 逻辑删除：0删除
+    @TableLogic
+    private Integer isDelete;
 }

@@ -18,7 +18,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  **/
 @Slf4j
 @Configuration
-public class QuartzListener implements ApplicationListener<ContextRefreshedEvent> {
+public class QuartzListener {//} implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private QuartzManager quartzManager;
@@ -31,14 +31,14 @@ public class QuartzListener implements ApplicationListener<ContextRefreshedEvent
     }
 
     // 启动quartz
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        try {
-            quartzManager.startJob();
-            log.info("任务已经启动...");
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public void onApplicationEvent(ContextRefreshedEvent event) {
+//        try {
+//            quartzManager.startJob();
+//            log.info("任务已经启动...");
+//        } catch (SchedulerException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

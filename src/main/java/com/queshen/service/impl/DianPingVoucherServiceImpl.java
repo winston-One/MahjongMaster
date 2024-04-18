@@ -125,9 +125,9 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
     public Result selectCandoDPVoucherInRedis(String userid){
         String key = userid + "*";
         Set<String> keysList = stringRedisTemplate.keys(key);
-        log.info(keysList+userid);
+        log.info("keyList{}", keysList);
         List<DianPingCanDoVoucher> dianPingCanDoVoucherList = new ArrayList<>();
-        if (keysList.size() == 0)
+        if (keysList.isEmpty())
             return Result.ok(null);
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
         DianPingVoucherOrder voucherOrder;
@@ -139,6 +139,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
             dianPingCanDoVoucher.setDuration(voucherOrder.getDuration());
             dianPingCanDoVoucherList.add(dianPingCanDoVoucher);
         }
+
         return Result.ok(dianPingCanDoVoucherList);
     }
 

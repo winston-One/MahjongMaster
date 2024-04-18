@@ -57,6 +57,7 @@ public class VoucherController {
      */
     @GetMapping("/getOneVoucher")
     public Result queryVoucherById(@RequestParam("voucherId") String voucherId){
+        log.info("id==={}", voucherId);
         return voucherService.queryVoucherById(voucherId);
     }
 
