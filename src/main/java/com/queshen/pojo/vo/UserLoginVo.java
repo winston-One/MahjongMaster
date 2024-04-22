@@ -22,4 +22,13 @@ public class UserLoginVo {
 
     private String nickname;
 
+    @Override
+    public String toString() {
+        return "UserLoginVo{" +
+                "Authority='" + Authority + '\'' +
+                ", openid='" + openid + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
 }
