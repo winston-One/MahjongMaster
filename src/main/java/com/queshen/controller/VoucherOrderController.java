@@ -1,9 +1,11 @@
 package com.queshen.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.queshen.anno.RepeatRequest;
+import com.queshen.mapper.UserMapper;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.VoucherOrderDTO;
+import com.queshen.pojo.po.User;
 import com.queshen.service.IVoucherOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/voucherUser")
 public class VoucherOrderController {
+
+    @Resource
+    UserMapper userMapper;
 
     @Resource
     private IVoucherOrderService voucherOrderService;
@@ -59,6 +64,18 @@ public class VoucherOrderController {
     public Result queryVoucherById(@RequestParam("openId") String openId){
         List<VoucherOrderDTO> vouchers = voucherListCache.get(openId);
         return Result.ok(vouchers);
+    }
+
+
+    /**
+     * 根据用户id查询用户拥有券的总数量
+     */
+    @GetMapping("/money")
+    public Result money(@RequestParam("openId") String openId){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("openid", openId);
+        User user = userMapper.selectOne(queryWrapper);
+        return Result.ok(user.getMoney());
     }
 
     /**
