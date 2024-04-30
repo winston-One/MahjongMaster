@@ -1,4 +1,4 @@
-package com.queshen.pojo.dto;
+package com.queshen.pojo.admin;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,26 +13,24 @@ import java.math.BigDecimal;
  * @Description: Man can conquer nature
  **/
 @Data
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class VoucherSuitDTO {
+public class RoomVo {
 
-    /**
-     * 卡券id
-     */
-    private String voucherId;
-    /**
-     * 标题
-     */
-    private String title;
-    /**
-     * 价格
-     */
+    private String roomId;
+
+    private String roomName;
+
+    private String storeId;
+
+    private Integer status;
+
     private BigDecimal price;
-    /**
-     * 时长
-     */
-    private BigDecimal duration;
 
+    private String image;
+
+    private String remarks;
+
+    private String storeName;
 }

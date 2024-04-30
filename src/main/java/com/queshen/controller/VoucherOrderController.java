@@ -85,6 +85,7 @@ public class VoucherOrderController {
     public Result voucherJudgement(@RequestParam("openId") String openId,
                                    @RequestParam("roomName") String roomName,
                                    @RequestParam("userTime") BigDecimal userTime) {
+        log.info("openId:{},roomName:{},userTime:{}",openId,roomName,userTime);
         return voucherOrderService.voucherJudgement(openId,roomName,userTime);
     }
 }

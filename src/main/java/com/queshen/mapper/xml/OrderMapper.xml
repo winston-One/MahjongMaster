@@ -8,4 +8,22 @@
         OR(start_time &lt;= #{startTime} AND end_time &gt; #{startTime})
         and is_delete=0 and order_status &lt;&gt; 3
     </select>
+
+    <resultMap type="com.queshen.pojo.admin.OrderInfoVo" id="SelectTeaResult">
+        <result property="id" column="order_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="price" column="price"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="storeId" column="store_id"/>
+        <result property="status" column="order_status"/>
+        <result property="isVoucher" column="is_voucher"/>
+        <result property="payTime" column="pay_time"/>
+    </resultMap>
+    <select id="getData" resultMap="SelectTeaResult">
+        SELECT *
+        FROM tb_order
+        WHERE is_delete = 0
+    </select>
 </mapper>

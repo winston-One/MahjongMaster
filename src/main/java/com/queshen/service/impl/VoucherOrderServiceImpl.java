@@ -56,7 +56,13 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
             return Result.fail("订单已下架！");
         }
         // 创建订单
-        VoucherOrder voucherOrder = new VoucherOrder(orderId,voucherId,openid,1,LocalDateTime.now());
+        VoucherOrder voucherOrder = new VoucherOrder(
+              orderId
+            , voucherId
+            , openid
+            ,0
+            , LocalDateTime.now()
+        );
         boolean save = voucherOrderService.save(voucherOrder);
         if (save) {
             // 存入Redis并设置过期时间
@@ -99,8 +105,8 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
 
     @Override
     public Result voucherJudgement(String openId,String roomName, BigDecimal duration) {
-        List<VoucherSuitDTO> voucherSuitDTOS = voucherOrderMapper.voucherJudgement(openId,roomName,duration);
-        if (voucherSuitDTOS.size() == 0){
+        List<VoucherSuitDTO> voucherSuitDTOS = voucherOrderMapper.voucherJudgement(openId, roomName, duration);
+        if (voucherSuitDTOS.isEmpty()){
             return Result.ok(null);
         }else{
             return Result.ok(voucherSuitDTOS);

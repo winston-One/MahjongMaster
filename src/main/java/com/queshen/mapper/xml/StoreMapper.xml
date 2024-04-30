@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.queshen.mapper.StoreMapper">
+
+    <resultMap type="com.queshen.pojo.admin.StoreVo" id="SelectTeaResult">
+        <result property="storeId" column="store_id"/>
+        <result property="status" column="store_status"/>
+        <result property="address" column="address"/>
+        <result property="phone" column="phone"/>
+        <result property="storeName" column="store_name"/>
+        <result property="wifi" column="wifi"/>
+        <result property="wifiPassword" column="wifi_password"/>
+    </resultMap>
+
+    <select id="getAllStore" resultMap="SelectTeaResult">
+        SELECT *
+        FROM tb_store
+        WHERE is_deleted = 0
+        ORDER BY store_id DESC
+    </select>
 </mapper>

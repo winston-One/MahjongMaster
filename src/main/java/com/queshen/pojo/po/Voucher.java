@@ -69,4 +69,13 @@ public class Voucher implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    public Voucher(String title, String availableRange, BigDecimal price, Integer term, Integer vouStatus, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.title = title;
+        this.availableRange = availableRange;
+        this.price = price;
+        this.term = term;
+        this.vouStatus = vouStatus;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
 }

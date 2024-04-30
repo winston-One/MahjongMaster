@@ -2,10 +2,12 @@ package com.queshen.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.queshen.mapper.VoucherOrderMapper;
 import com.queshen.pojo.dto.OrderDTO;
 import com.queshen.pojo.dto.OrderTime;
 import com.queshen.pojo.bo.Result;
@@ -13,6 +15,7 @@ import com.queshen.pojo.po.Order;
 import com.queshen.pojo.po.Room;
 import com.queshen.pojo.po.Store;
 import com.queshen.mapper.OrderMapper;
+import com.queshen.pojo.po.VoucherOrder;
 import com.queshen.service.IRoomService;
 import com.queshen.service.OrderService;
 import com.queshen.service.StoreService;
@@ -26,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -232,7 +236,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderSaveVO.setId(idUtil.getOrderId(orderSaveVO.getUserId()));
         //将orderSaveVo复制给orderDTO
         OrderDTO orderDTO = new OrderDTO();
-        BeanUtils.copyProperties(orderSaveVO,orderDTO, "startTime", "endTime");
+        BeanUtils.copyProperties(orderSaveVO, orderDTO, "startTime", "endTime");
+        orderDTO.setVoucherId(orderSaveVO.getVoucherId());
+        orderDTO.setIsVoucher(orderSaveVO.getIsVoucher());
+        log.info("卡券{}", orderSaveVO.getVoucherId());
         //订单过期时间为15分钟
         long l = System.currentTimeMillis() + (15 * 60 * 1000);
         orderDTO.setExpireTime(new Date(l));
@@ -243,18 +250,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         BeanUtils.copyProperties(orderDTO, order, "expireTime");
         order.setStatus(1);
         order.setPayTime(LocalDateTime.now());
-//        synchronized (UserHolder.getUser().getOpenid().intern()) {
-//            isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
-//            // 判断是否没有冲突的预约时间
-//            if (isReserve == 0) {
-//                this.save(order);// 保存到数据库
-//            }
-//        }
-//        isReserve = orderMapper.isExistReserveTime(startTime,endTime).size();// 查的出结果说明有冲突的预约时间
-//        // 判断是否没有冲突的预约时间
-//        if (isReserve == 0) {
-//            this.save(order);// 保存到数据库
-//        }
+        UpdateWrapper<VoucherOrder> wrapper = new UpdateWrapper<>();
+        wrapper.eq("voucher_id", orderSaveVO.getVoucherId());
+        wrapper.eq("user_id", orderSaveVO.getUserId());
+        wrapper.set("order_status", 3);
+        voucherOrderMapper.update(null, wrapper);
+
         this.save(order);
         //创建缓存用户订单过期时间信息的key
         String key = orderDTO.getUserId() + "||" + orderDTO.getId();
@@ -262,6 +263,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         saveTimeToRedis(order);// 保存到Redis
         return Result.ok(order.getId());
     }
+
+    @Resource
+    VoucherOrderMapper voucherOrderMapper;
 
     /**
      * 将redis中的订单数据加入Mysql数据库

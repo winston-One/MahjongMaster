@@ -100,7 +100,7 @@ public class PayController {
 
         UpdateWrapper<VoucherOrder> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", orderId);
-        updateWrapper.set("order_status", OrderStatus.ORDER_IS_PAID);
+        updateWrapper.set("order_status", OrderStatus.ORDER_UN_PAID);
         updateWrapper.set("pay_time", LocalDateTime.now());
         voucherOrderService.update(updateWrapper);
         return Result.ok("支付成功");

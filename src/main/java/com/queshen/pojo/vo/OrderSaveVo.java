@@ -1,5 +1,6 @@
 package com.queshen.pojo.vo;
 
+import com.queshen.pojo.dto.VoucherSuitDTO;
 import com.queshen.pojo.po.base.BaseEntity;
 import lombok.Data;
 
@@ -31,6 +32,8 @@ public class OrderSaveVo extends BaseEntity {
 
     //订单结束时间
     private Date endTime;
+
+    private VoucherSuitDTO coupon;
 
     //门店号
     private String storeId;
