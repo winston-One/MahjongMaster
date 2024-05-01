@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.7.35 : Database - queshen
+MySQL - 5.7.37 : Database - queshen
 *********************************************************************
 */
 
@@ -12,7 +12,7 @@ MySQL - 5.7.35 : Database - queshen
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`queshen` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`queshen` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `queshen`;
 
@@ -259,7 +259,7 @@ CREATE TABLE `tb_room` (
 
 /*Data for the table `tb_room` */
 
-insert  into `tb_room`(`room_id`,`room_name`,`store_id`,`status`,`price`,`image`,`room_remarks`,`is_deleted`) values ('001','九宝莲灯(222)','97901',1,'77.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('002','十三幺(333)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/沙发',0),('003','杠上开花(777)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗',0),('004','大四喜(999)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调',0),('005','海底捞月(111)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('006','大三元(888)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('007','天地胡(666)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗',0),('008','九宝莲灯(222)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/沙发',0),('009','十三幺(333)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('010','杠上开花(777)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('011','大四喜(999)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('012','海底捞月(111)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调',0),('013','大三元(888)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('014','天地胡(666)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调 ',0),('015','九宝莲灯(222)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('016','十三幺(333)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','沙发',0),('017','杠上开花(777)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/沙发',0),('018','大四喜(999)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗',0),('019','十三幺(333)','97904',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发/空调',0),('020','大四喜(999)','97904',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调',0);
+insert  into `tb_room`(`room_id`,`room_name`,`store_id`,`status`,`price`,`image`,`room_remarks`,`is_deleted`) values ('001','九宝莲灯(222)','97901',1,'77.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('002','十三幺(333)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/沙发',0),('003','杠上开花(777)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗',0),('004','大四喜(999)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调',0),('005','海底捞月(111)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('006','大三元(888)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('007','天地胡(666)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗',0),('008','九宝莲灯(222)','97901',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/沙发',0),('009','十三幺(333)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('010','杠上开花(777)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('011','大四喜(999)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('012','海底捞月(111)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调',0),('013','大三元(888)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调/沙发',0),('014','天地胡(666)','97902',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调 ',0),('015','九宝莲灯(222)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发',0),('016','十三幺(333)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','沙发',0),('017','杠上开花(777)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/沙发',0),('018','大四喜(999)','97903',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗',0),('019','十三幺(333)','97904',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/沙发/空调',0),('020','大四喜(999)','97904',1,'66.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','有窗/空调',0),('1111111','赢硬(1111)','97904',1,'12.00','https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg','空调/窗户',0);
 
 /*Table structure for table `tb_store` */
 
@@ -295,15 +295,15 @@ CREATE TABLE `tb_user` (
   `union_id` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `money` int(11) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   `is_delete` int(10) DEFAULT '0',
   PRIMARY KEY (`openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_user` */
 
-insert  into `tb_user`(`openid`,`nickname`,`avatar_url`,`password`,`union_id`,`phone`,`money`,`create_time`,`update_time`,`is_delete`) values ('admin','WinstonYv',NULL,'123456',NULL,'13662508979',999,NULL,NULL,0),('o2eui5ZuZQt2eEsO7lyq0psWFXYg','WinstonYv','https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',NULL,NULL,'13662399903',999,NULL,NULL,0);
+insert  into `tb_user`(`openid`,`nickname`,`avatar_url`,`password`,`union_id`,`phone`,`money`,`create_time`,`update_time`,`is_delete`) values ('admin','WinstonYv',NULL,'123456',NULL,'13662508979',1000,NULL,'2024-04-30 09:27:34',0),('o2eui5ZuZQt2eEsO7lyq0psWFXYg','WinstonYv','https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',NULL,NULL,'13662399903',999,NULL,NULL,0);
 
 /*Table structure for table `tb_voucher` */
 

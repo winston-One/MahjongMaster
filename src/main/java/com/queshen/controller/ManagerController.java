@@ -2,6 +2,7 @@ package com.queshen.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.queshen.mapper.*;
 import com.queshen.pojo.admin.*;
 import com.queshen.pojo.po.*;
@@ -58,6 +59,12 @@ public class ManagerController {
 
     @Resource
     IVoucherService voucherService;
+
+    @Resource(name = "voucherStoreCache")
+    LoadingCache<String, List<Voucher>> voucherStoreCache;
+
+    @Resource(name = "storeListCache")
+    LoadingCache<String, List<Store>> storeListCache;
 
     @PostMapping("/getUserInfo")
     public R getUserInfo(@RequestBody User dto){
@@ -260,6 +267,7 @@ public class ManagerController {
             store.setPhone(dto.getPhone());
         }
         boolean b = storeService.saveOrUpdate(store);
+        storeListCache.invalidateAll();
         if (!b) {
             return R.error().message("修改门店数据失败");
         }
@@ -276,6 +284,7 @@ public class ManagerController {
         wrapper.eq("store_id", dto.getStoreId());
         wrapper.set("is_deleted", 1);
         int update = storeMapper.update(null, wrapper);
+        storeListCache.invalidateAll();
         if (update <= 0) {
             return R.error().message("删除门店数据失败");
         }
@@ -340,6 +349,7 @@ public class ManagerController {
             room.setStatus(dto.getStatus());
         }
         boolean b = roomService.saveOrUpdate(room);
+        storeListCache.invalidateAll();
         if (!b) {
             return R.error().message("修改房间数据失败");
         }
@@ -356,6 +366,7 @@ public class ManagerController {
         wrapper.eq("room_id", dto.getRoomId());
         wrapper.set("is_deleted", 1);
         int update = roomMapper.update(null, wrapper);
+        storeListCache.invalidateAll();
         if (update <= 0) {
             return R.error().message("删除房间数据失败");
         }
@@ -478,6 +489,7 @@ public class ManagerController {
             voucher.setUpdateTime(LocalDateTime.now());
         }
         boolean b = voucherService.saveOrUpdate(voucher);
+        voucherStoreCache.invalidateAll();
         if (!b) {
             return R.error().message("修改卡券数据失败");
         }
@@ -494,6 +506,7 @@ public class ManagerController {
         wrapper.eq("voucher_id", dto.getVoucherId());
         wrapper.set("is_delete", 1);
         int update = voucherMapper.update(null, wrapper);
+        voucherStoreCache.invalidateAll();
         if (update <= 0) {
             return R.error().message("删除卡券数据失败");
         }
