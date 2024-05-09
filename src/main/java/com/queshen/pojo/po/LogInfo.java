@@ -80,5 +80,4 @@ public class LogInfo {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updateTime;
-
 }

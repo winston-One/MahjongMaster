@@ -1,11 +1,7 @@
 package com.queshen.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author WinstonYv
@@ -19,9 +15,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class IpUtil {
-
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
 
     private static final String UNKNOWN = "unknown";
 
@@ -66,23 +59,4 @@ public class IpUtil {
         }
         return ip;
     }
-
-    // 是否发生IP洪水攻击,3秒内的同一个ip请求数量不超过5次，可以自定义设置
-    public Boolean isFloodAttack(HttpServletRequest request){
-
-        String ip = this.getIpAddress(request);
-        // IP:——在redis中建立一层IP文件夹
-        if(stringRedisTemplate.hasKey("IP:" + ip)){
-            stringRedisTemplate.opsForValue().increment("IP:" + ip);
-            if(Integer.parseInt(stringRedisTemplate.opsForValue().get("IP:" + ip)) >= 5){
-                log.info("IP访问次数过多");
-                return false;
-            }
-        }else {
-            stringRedisTemplate.opsForValue().set("IP:" + ip, "1");
-            stringRedisTemplate.expire("IP:" + ip,3L, TimeUnit.SECONDS);// 3秒
-        }
-        return true;
-    }
-
 }

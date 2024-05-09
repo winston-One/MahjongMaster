@@ -38,7 +38,7 @@ public class WxPayProperties {
     private String subMchId;
 
     /**
-     * apiclient_cert.p12文件的绝对路径，或者如果放在项目中，请以classpath:开头指定
+     * api_client_cert.p12文件的绝对路径，或者如果放在项目中，请以classpath:开头指定
      */
     private String keyPath;
 

@@ -21,11 +21,10 @@ public class LoginCacheConfig {
 
     /**
      * 登录的本地缓存处理
-     * @return
      */
     @Bean("loginCache")
     public RedisCache<User> getCache(){
         return new RedisCacheBuilder<User>(redisTemplate).setPrefix("user")
-                .expire(30,TimeUnit.DAYS).build();
+            .expire(30,TimeUnit.DAYS).build();
     }
 }

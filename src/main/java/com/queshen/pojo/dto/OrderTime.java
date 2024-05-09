@@ -19,5 +19,4 @@ public class OrderTime {
     private LocalDateTime startTme;
 
     private LocalDateTime endTime;
-
 }

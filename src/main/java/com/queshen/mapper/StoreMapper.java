@@ -14,5 +14,6 @@ import java.util.List;
  **/
 @Mapper
 public interface StoreMapper extends BaseMapper<Store> {
+
     List<StoreVo> getAllStore();
 }

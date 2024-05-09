@@ -25,5 +25,4 @@ public class OrderSelectByUserVO {
 
     //门店号
     private String storeId;
-
 }

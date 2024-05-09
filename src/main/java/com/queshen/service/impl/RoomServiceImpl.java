@@ -13,4 +13,5 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements IRoomService {
+
 }

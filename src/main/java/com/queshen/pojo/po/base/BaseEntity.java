@@ -45,5 +45,4 @@ public abstract class BaseEntity implements Serializable {
     // 逻辑删除：0删除
     @TableLogic
     private Integer isDelete;
-
 }

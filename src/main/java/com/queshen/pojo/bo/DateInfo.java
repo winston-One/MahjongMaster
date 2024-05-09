@@ -22,5 +22,4 @@ public class DateInfo {
      * 当天的预约信息
      */
     private List<TimeRange> timeRanges;
-
 }

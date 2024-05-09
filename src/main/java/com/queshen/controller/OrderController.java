@@ -5,8 +5,9 @@ import com.queshen.service.OrderService;
 import com.queshen.pojo.vo.OrderSaveVo;
 import com.queshen.pojo.vo.OrderSelectByUserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 前端控制器
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
+    @Resource
     OrderService orderService;
 
     /**
@@ -35,12 +36,7 @@ public class OrderController {
      * 下单，同一个用户1秒内不能重复请求
      */
     @PostMapping("/saveOneUserOrder")
-//    @RepeatRequest
     public Result saveOneUserOrder(@RequestBody OrderSaveVo orderSaveVo){
-//        if (orderService.judgeTimeExist(orderSaveVo))
-//            return orderService.saveOneUserOrder(orderSaveVo);
-//        else
-//            return Result.fail("房间被人预定");
         return orderService.saveOneUserOrder(orderSaveVo);
     }
 
@@ -57,7 +53,6 @@ public class OrderController {
 
     /**
      * 查询用户是否存在进行中订单
-     * @return
      */
     @GetMapping("/selectIsDoingOrder")
     public Result selectIsDoingOrder(){

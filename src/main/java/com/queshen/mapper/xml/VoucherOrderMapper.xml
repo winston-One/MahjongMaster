@@ -20,7 +20,7 @@
         left join tb_voucher_order t2 ON t1.voucher_id = t2.voucher_id
         where t2.user_id = #{user_id}  AND order_status &lt;&gt; 0
     </select>
-<!--    concat拼接可以用多个参数，-->
+
     <select id="voucherJudgement" resultType="com.queshen.pojo.dto.VoucherSuitDTO" resultMap="OrderResult">
         SELECT t2.voucher_id, title, available_range, price, duration
         FROM tb_voucher t1
@@ -30,5 +30,4 @@
           AND duration &lt;= #{duration}
           AND order_status = 1
     </select>
-
 </mapper>

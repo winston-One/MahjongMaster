@@ -13,4 +13,5 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class AppConstantsServiceImpl extends ServiceImpl<AppConstantsMapper, AppConstants> implements AppConstantsService {
+
 }

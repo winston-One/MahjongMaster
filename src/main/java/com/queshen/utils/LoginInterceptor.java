@@ -5,6 +5,7 @@ import com.queshen.exceptionhandler.LoginException;
 import com.queshen.pojo.dto.UserDTO;
 import com.queshen.pojo.po.User;
 import io.jsonwebtoken.Claims;
+import lombok.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -27,7 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     // 获取请求头中的token信息，如果Redis中存在相关信息，则刷新token有效期，否则放行
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler)  {
         String authority = request.getHeader("Authority");
         // 如果需要认证的请求中，请求头必须携带Authority属性——token信息
         if (StringUtils.isEmpty(authority)){
@@ -55,14 +56,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     /**
      * 只有在 preHandle(……) 被成功执行后并且返回 true 才会被执行。
-     * @param request
-     * @param response
-     * @param handler
-     * @param ex
-     * @throws Exception
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) {
         UserHolder.removeUser();
     }
 }

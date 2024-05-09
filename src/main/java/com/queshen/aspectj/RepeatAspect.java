@@ -8,13 +8,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +33,7 @@ public class RepeatAspect {
 
     private static final String SUFFIX = "REPEAT_:";
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
     // 定义注解类型的切点

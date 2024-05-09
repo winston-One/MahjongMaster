@@ -5,6 +5,7 @@ import com.queshen.pojo.dto.UserDTO;
 import com.queshen.pojo.po.User;
 import com.queshen.exceptionhandler.LoginException;
 import io.jsonwebtoken.Claims;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -29,7 +30,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private RedisCache<User> cache;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler)  {
         //TODO 获取请求头中的token信息，如果Redis中存在相关信息，则刷新token有效期，否则放行
         String authority = request.getHeader("Authority");
         if (StringUtils.isEmpty(authority)){
@@ -54,8 +55,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) {
         UserHolder.removeUser();
     }
-
 }

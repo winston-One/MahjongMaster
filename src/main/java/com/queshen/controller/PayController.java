@@ -2,17 +2,15 @@ package com.queshen.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
-import com.github.binarywang.wxpay.bean.request.BaseWxPayRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
-import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.queshen.constant.OrderStatus;
-import com.queshen.mapper.OrderMapper;
 import com.queshen.mapper.UserMapper;
 import com.queshen.pojo.dto.MahjongOrderDTO;
 import com.queshen.pojo.bo.Result;
+import com.queshen.pojo.dto.VoucherOrderDTO;
 import com.queshen.pojo.po.Order;
 import com.queshen.exceptionhandler.PayReCallException;
 import com.queshen.pojo.po.User;
@@ -23,16 +21,16 @@ import com.queshen.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * @author WinstonYv
@@ -44,31 +42,30 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class PayController {
 
-    @Autowired
+    @Resource
     private WxPayService wxPayService;
 
-    @Autowired
+    @Resource
     private OrderService orderService;
 
-    @Autowired
+    @Resource
     private IVoucherOrderService voucherOrderService;
 
-    @Autowired
+    @Resource(name = "voucherListCache")
+    LoadingCache<String, List<VoucherOrderDTO>> voucherListCache;
+
+    @Resource
     IUserService userService;
 
-    @Autowired
+    @Resource
     UserMapper userMapper;
-
-    @Autowired
-    OrderMapper orderMapper;
 
     @PostMapping("/pay")
     public Result pay(@RequestBody MahjongOrderDTO dto) {
-        String openid = dto.getOpenid();
         String orderId = dto.getOrderNo();
         BigDecimal totalFee = dto.getRealPrice();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("openid", openid);
+        queryWrapper.eq("openid", dto.getOpenid());
         User user = userMapper.selectOne(queryWrapper);
         if (user.getMoney() < totalFee.doubleValue()) {
             return Result.fail("余额不足");
@@ -103,6 +100,7 @@ public class PayController {
         updateWrapper.set("order_status", OrderStatus.ORDER_UN_PAID);
         updateWrapper.set("pay_time", LocalDateTime.now());
         voucherOrderService.update(updateWrapper);
+        voucherListCache.invalidate(openid);
         return Result.ok("支付成功");
     }
 

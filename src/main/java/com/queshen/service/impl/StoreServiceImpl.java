@@ -13,4 +13,5 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class StoreServiceImpl extends ServiceImpl<StoreMapper, Store> implements StoreService {
+
 }

@@ -68,7 +68,7 @@ public class VoucherOrderController {
 
 
     /**
-     * 根据用户id查询用户拥有券的总数量
+     * 根据用户id查询用户余额
      */
     @GetMapping("/money")
     public Result money(@RequestParam("openId") String openId){

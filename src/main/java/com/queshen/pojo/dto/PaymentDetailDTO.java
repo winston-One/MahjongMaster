@@ -20,5 +20,4 @@ public class PaymentDetailDTO {
 
     //金额类型
     public Long amount_type;
-
 }

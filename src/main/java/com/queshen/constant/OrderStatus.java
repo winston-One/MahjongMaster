@@ -18,13 +18,7 @@ public class OrderStatus {
     public static final int ORDER_IS_PAID = 2;
 
     /**
-     * 已完成
-     */
-    public static final int ORDER_FINISH = 3;
-
-    /**
      * 未支付
      */
     public static final int ORDER_NOT_PAID = 4;
-
 }

@@ -41,7 +41,6 @@ public class RedisCacheBuilder<T> {
 
     /**
      * 设置过期时间
-     * @return
      */
     public RedisCacheBuilder<T> setPrefix(String prefix) {
         this.prefix = prefix;

@@ -11,16 +11,6 @@ package com.queshen.constant;
 public enum BusinessType {
 
     /**
-     * 授权 0
-     */
-    GRANT,
-
-    /**
-     * 导出 1
-     */
-    EXPORT,
-
-    /**
      * 导入 2
      */
     IMPORT,
@@ -29,10 +19,4 @@ public enum BusinessType {
      * 上传 3
      */
     UPLOAD,
-
-    /**
-     * 上传 4
-     */
-    SELECT,
-
 }

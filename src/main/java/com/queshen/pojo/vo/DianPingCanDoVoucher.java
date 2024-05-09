@@ -21,5 +21,4 @@ public class DianPingCanDoVoucher {
 
     //时长
     private BigDecimal duration;
-
 }

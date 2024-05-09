@@ -32,7 +32,6 @@ import java.util.Map;
  * @author WinstonYv
  * @create 2022/11/18 10:06
  * @Description: Man can conquer nature
- * @Aspect切面注解
  **/
 @Aspect
 @Component
@@ -120,20 +119,20 @@ public class LogAspect {
      * 参数拼装
      */
     private String argsArrayToString(Object[] paramsArray) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         if (!StringUtils.isEmpty(paramsArray) && paramsArray.length > 0) {
             for (Object param : paramsArray) {
                 if (StringUtils.isEmpty(param) && isFilterParam(param)) {
                     try {
                         Object jsonParam = JSON.toJSON(param);
-                        params += jsonParam.toString() + ",";
+                        params.append(jsonParam.toString()).append(",");
                     } catch (Exception e) {
                         log.info("参数拼装 =={}",e.getMessage());
                     }
                 }
             }
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
     /**

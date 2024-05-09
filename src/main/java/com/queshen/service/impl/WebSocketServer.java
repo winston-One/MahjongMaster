@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author WinstonYv
  * @create 2023/4/24 21:47
  * @Description: Man can conquer nature
- * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
+ * 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端。
  * 从而可以统计当前在线人数，websocket是长连接，配合前端就能搭建即时通讯功能
  */
@@ -37,10 +37,10 @@ public class WebSocketServer {
     private IUserConversationService userConversationService;
 
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
-    private static AtomicInteger onlineCount = new AtomicInteger(0);
+    private static final AtomicInteger onlineCount = new AtomicInteger(0);
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
+    private static final CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
 
     /**
      * 存放所有在线的客户端
@@ -74,7 +74,7 @@ public class WebSocketServer {
      * 收到客户端消息后调用的方法
      * 客户端发送消息的时候：消息中带有接收者的id，服务端就会转发过去，实现了客户端发送消息和服务端接收消息
      * 客户端接收消息的时候：只需要前端的websocket监听好即可
-     * @Param message 客户端发送过来的消息
+     *  message 客户端发送过来的消息
      */
     @OnMessage
     public void onMessage(String message, Session session,@PathParam("userID") String openId) {
@@ -88,7 +88,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error(session.getBasicRemote() + "客户端发生错误");
+        log.error(session.getBasicRemote() + "客户端发生错误" + error);
     }
 
     public static boolean online(String openid){

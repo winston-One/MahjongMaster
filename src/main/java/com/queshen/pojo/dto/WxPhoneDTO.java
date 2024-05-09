@@ -19,5 +19,4 @@ public class WxPhoneDTO {
     private String code;
 
     private String openid;
-
 }

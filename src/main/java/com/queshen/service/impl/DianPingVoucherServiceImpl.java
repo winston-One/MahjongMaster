@@ -12,12 +12,13 @@ import com.queshen.service.DianPingVoucherService;
 import com.queshen.pojo.vo.DianPingCanDoVoucher;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -30,14 +31,17 @@ import java.util.Set;
 @Service
 public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrderMapper, DianPingVoucherOrder> implements DianPingVoucherService {
 
-    @Autowired
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 将标题处理成内容，通过美团第三方sdk获得关于该门店给券定义的标题，通过对该标题进行解析获取美团券的信息
      */
     public DianPingVoucherOrder doDianPingTittle(String orderId,String tittle,String userId) {
-        if (tittle.isEmpty()||!tittle.contains("【")||!tittle.contains("】")||!tittle.contains("/")||!tittle.contains("小时"))
+        if (!tittle.contains("【")
+            || !tittle.contains("】")
+            || !tittle.contains("/")
+            || !tittle.contains("小时"))
             return null;
 
         DianPingVoucherOrder dianPingVoucherOrder=new DianPingVoucherOrder();
@@ -56,9 +60,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         if (s1.isEmpty()||s2.isEmpty()||s3.isEmpty())
             return null;
         if (s3.contains("/")){
-            for (String s4 : s3.split("/")) {
-                room.add(s4);
-            }
+            room.addAll(Arrays.asList(s3.split("/")));
         }else{
             room.add(s3);
         }
@@ -106,15 +108,17 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         String key = userid + "*";
         Set<String> keysList = stringRedisTemplate.keys(key);
         List<DianPingVoucherOrder> voucherOrderList = new ArrayList<>();
-        if (keysList.size() == 0)
+        assert keysList != null;
+        if (keysList.isEmpty())
             return Result.ok(null);
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
         DianPingVoucherOrder voucherOrder;
+        assert strings != null;
         for (String s : strings) {
             voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
             voucherOrderList.add(voucherOrder);
         }
-        IPage<DianPingVoucherOrder> iPage =new Page(pageNum,voucherOrderList.size());
+        IPage<DianPingVoucherOrder> iPage = new Page(pageNum,voucherOrderList.size());
         iPage.setRecords(voucherOrderList);
         return Result.ok(iPage);
     }
@@ -127,10 +131,12 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         Set<String> keysList = stringRedisTemplate.keys(key);
         log.info("keyList{}", keysList);
         List<DianPingCanDoVoucher> dianPingCanDoVoucherList = new ArrayList<>();
+        assert keysList != null;
         if (keysList.isEmpty())
             return Result.ok(null);
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
         DianPingVoucherOrder voucherOrder;
+        assert strings != null;
         for (String s : strings) {
             DianPingCanDoVoucher dianPingCanDoVoucher=new DianPingCanDoVoucher();
             voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
@@ -150,9 +156,11 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
         String key = userid + "*";
         Set<String> keysList = stringRedisTemplate.keys(key);
         List<DianPingVoucherOrder> voucherOrderList = new ArrayList<>();
-        if (keysList.size() != 0) {
+        assert keysList != null;
+        if (!keysList.isEmpty()) {
             List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
             DianPingVoucherOrder voucherOrder;
+            assert strings != null;
             for (String s : strings) {
                 voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
                 voucherOrderList.add(voucherOrder);

@@ -3,15 +3,12 @@ package com.queshen;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.queshen.mapper.TestMapper;
 import com.queshen.pojo.po.TestChildren;
-import com.queshen.service.AppConstantsService;
-import com.queshen.service.DianPingVoucherService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -25,26 +22,17 @@ import java.util.*;
 // 出现这个错的原因是在部署项目的时候,项目中含有websocket的@ServerEndpoint注解的时候,
 // 如果项目是springboot项目,去除内置tomcat的时候会把websocket的包也给删除掉,所以需要手动在测试类加上这个包，保证测试环境可以使用
 @SpringBootTest(classes = MainApplication.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class test {
+public class MahjongTest {
 
-    @Autowired
+    @Resource
     private TestMapper testMapper;
-
-    @Autowired
-    public DianPingVoucherService dianPingVoucherService;
-
-    @Autowired
-    public AppConstantsService appConstantsService;
-
-    @Autowired
-    public StringRedisTemplate stringRedisTemplate;
 
     List<TestChildren> tests = new ArrayList<>(); // 最终展现给前端的数据集
 
     @Test
-    public void testChilder() {
+    public void testChildren() {
         // 先查出头结点，也就是parentId为-1的数据
-        QueryWrapper<TestChildren> queryWrapper = new QueryWrapper();
+        QueryWrapper<TestChildren> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("parent_id", -1);
         DFS(testMapper.selectList(queryWrapper));
         System.out.println(tests);// 将前端的数据打印出来

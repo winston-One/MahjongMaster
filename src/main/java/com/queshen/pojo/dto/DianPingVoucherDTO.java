@@ -11,7 +11,8 @@ import java.util.List;
  * @Description:
  **/
 @Data
-public class DianPingVorcherDTO {
+public class DianPingVoucherDTO {
+
     //订单id
     private String order_id;
 

@@ -35,9 +35,6 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     private IVoucherService voucherService;
 
     @Resource
-    private IVoucherOrderService voucherOrderService;
-
-    @Resource
     private VoucherOrderMapper voucherOrderMapper;
 
     @Resource
@@ -63,7 +60,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
             ,0
             , LocalDateTime.now()
         );
-        boolean save = voucherOrderService.save(voucherOrder);
+        boolean save = this.save(voucherOrder);
         if (save) {
             // 存入Redis并设置过期时间
             saveVoucherOrderToRedis(orderId,voucherOrder,voucher.getTerm());
@@ -90,16 +87,16 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     }
 
     @Override
-    public Result changeOrderStatus(String orderId) {
+    public void changeOrderStatus(String orderId) {
         // 获取当前用户id
         String openid = UserHolder.getUser().getOpenid();
         UpdateWrapper<VoucherOrder> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("order_status",3).eq("user_id",openid).eq("id",orderId);
         int result = voucherOrderMapper.update(null, updateWrapper);
         if (result > 0){
-            return Result.ok("修改成功");
+            Result.ok("修改成功");
         }else{
-            return Result.fail("修改失败");
+            Result.fail("修改失败");
         }
     }
 

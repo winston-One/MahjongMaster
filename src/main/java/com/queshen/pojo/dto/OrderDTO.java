@@ -50,5 +50,4 @@ public class OrderDTO  {
     private Integer isVoucher;
 
     private String voucherId;
-
 }

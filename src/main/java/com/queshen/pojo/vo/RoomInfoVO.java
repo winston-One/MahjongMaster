@@ -37,5 +37,4 @@ public class RoomInfoVO {
 
     /** 是否空闲*/
     private Boolean isFree;
-
 }

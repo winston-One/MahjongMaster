@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 public class OrderSelectReturnVO {
 
-    // 房间名字
+    // 房间 名字
     private String roomName;
 
     // 门店名字
@@ -48,5 +48,4 @@ public class OrderSelectReturnVO {
 
     // 支付时间
     private LocalDateTime payTime;
-
 }

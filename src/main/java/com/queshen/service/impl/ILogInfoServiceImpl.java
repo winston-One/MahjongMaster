@@ -5,7 +5,6 @@ import com.queshen.mapper.LogMapper;
 import com.queshen.pojo.po.LogInfo;
 import com.queshen.service.ILogInfoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +22,7 @@ public class ILogInfoServiceImpl extends ServiceImpl<LogMapper, LogInfo> impleme
     @Resource
     LogMapper logMapper;
 
-    @Autowired
+    @Resource
     private ThreadPoolExecutor executorService;
 
     // 异步执行，避免因为写入磁盘耗时导致响应用户超时

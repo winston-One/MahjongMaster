@@ -47,5 +47,4 @@ public class DianPingVoucherOrder {
     //状态 1已经使用 0未使用
     @TableField("dporder_status")
     private Integer status;
-
 }

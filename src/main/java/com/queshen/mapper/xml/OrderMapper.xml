@@ -21,6 +21,7 @@
         <result property="isVoucher" column="is_voucher"/>
         <result property="payTime" column="pay_time"/>
     </resultMap>
+
     <select id="getData" resultMap="SelectTeaResult">
         SELECT *
         FROM tb_order

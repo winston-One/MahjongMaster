@@ -9,12 +9,12 @@ import lombok.Data;
  * 请求美团验券接口之后的返回结果集封装到实体
  **/
 @Data
-public class PreparemtRecordResultDTO {
+public class PreparedRecordResultDTO {
 
     public Integer code;
 
     public String msg;
 
-    public PreparemtRecordDTO Data;
+    public PreparedRecordDTO Data;
 
 }

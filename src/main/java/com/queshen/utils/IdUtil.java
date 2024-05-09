@@ -17,5 +17,4 @@ public class IdUtil {
         String subOpenid = userId.substring(1, 5);
         return subOpenid+currentTime+"queshen";
     }
-
 }

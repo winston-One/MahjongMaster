@@ -3,7 +3,7 @@ package com.queshen.utils;
 import com.google.common.collect.Lists;
 import org.springframework.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
@@ -23,7 +23,6 @@ public class SignUtil {
      * @param params     api请求参数
      * @param appSecret  app密码
      * @param signMethod 加密方法MD5
-     * @return
      */
     public static String generateSign(Map<String, String> params, String appSecret, String signMethod){
         //第一步：参数排序
@@ -56,8 +55,6 @@ public class SignUtil {
                 sign = genMd5(encryptionKey);
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             }
             return sign;
         }
@@ -66,13 +63,13 @@ public class SignUtil {
     }
 
     //使用签名算法对编码后的字节流进行摘要。使用MD5算法
-    private static String genMd5(String info) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    private static String genMd5(String info) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
-        byte[] infoBytes = info.getBytes("UTF-8");
+        byte[] infoBytes = info.getBytes(StandardCharsets.UTF_8);
         //进行加签
         md5.update(infoBytes);
         byte[] sign = md5.digest();
-        //将处理好的签名转成16进制位
+        //将处理好签名转成16进制位
         return byteArrayToHex(sign);
     }
 
@@ -80,8 +77,8 @@ public class SignUtil {
     //进制转换
     private static String byteArrayToHex(byte[] bytes) {
         StringBuilder sign = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            String hex = Integer.toHexString(bytes[i] & 0xFF);
+        for (byte aByte : bytes) {
+            String hex = Integer.toHexString(aByte & 0xFF);
             if (hex.length() == 1) {
                 sign.append("0");
             }
@@ -89,5 +86,4 @@ public class SignUtil {
         }
         return sign.toString();
     }
-
 }

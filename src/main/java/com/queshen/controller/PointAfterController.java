@@ -10,7 +10,6 @@ import com.queshen.service.IVoucherOrderService;
 import com.queshen.service.OrderService;
 import com.queshen.pojo.vo.OrderSaveVo;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,13 +29,13 @@ import java.util.List;
 @RestController
 public class PointAfterController {
 
-    @Autowired
+    @Resource
     OrderService orderService;
 
-    @Autowired
+    @Resource
     DianPingVoucherService dianPingVoucherService;
 
-    @Autowired
+    @Resource
     IVoucherOrderService voucherOrderService;
 
     @Resource(name = "voucherListCache")

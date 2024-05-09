@@ -30,10 +30,7 @@ public class RedisCache<T> {
      * 在Redis中设置前缀prefix并且使用冒号与key隔开，相当于新建一层文件夹目录
      */
     public T get(String key){
-
-        T cacheObject = (T) redisTemplate.opsForValue().get(prefix+":"+key);
-        return cacheObject;
-
+        return (T) redisTemplate.opsForValue().get(prefix+":"+key);
     }
 
     public void put(String key,Object object){

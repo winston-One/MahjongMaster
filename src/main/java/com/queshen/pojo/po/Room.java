@@ -35,15 +35,15 @@ public class Room {
      */
     private String storeId;
     /**
-     * 房间状态
+     * 房间 状态
      */
     private Integer status;
     /**
-     * 房间价格
+     * 房间 价格
      */
     private BigDecimal price;
     /**
-     * 房间图片地址
+     * 房间 图片地址
      */
     private String image;
 

@@ -19,5 +19,4 @@ public class WxLoginPhoneResponse {
     private Integer errcode;
 
     private String errmsg;
-
 }

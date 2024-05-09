@@ -1,7 +1,7 @@
 package com.queshen.controller;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.queshen.handler.IMMsgHandler;
-import com.queshen.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +9,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -52,11 +53,11 @@ public class WebSocketChatController {
                           @PathParam("isGroup") Integer isGroup,
                           Session mySession) {
         log.info("服务端收到客户端发来的消息: {}", message);
-        IMMsgHandler MessageHandler = SpringUtils.getBean(IMMsgHandler.class);
-        if (isGroup == INDIVIDUAL_MESSAGE) {
+        IMMsgHandler MessageHandler = SpringUtil.getBean(IMMsgHandler.class);
+        if (Objects.equals(isGroup, INDIVIDUAL_MESSAGE)) {
             MessageHandler.handlerIndividual(message,sendId,mySession,clientList);// 处理个人消息
         }
-        if (isGroup == GROUP_MESSAGE) {
+        if (Objects.equals(isGroup, GROUP_MESSAGE)) {
             MessageHandler.handlerGroup(message,sendId,mySession,clientList);// 处理群消息
         }
     }

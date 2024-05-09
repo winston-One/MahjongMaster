@@ -20,5 +20,4 @@ public class ReservationInfo {
 
     /** 是否为次日的时间段  0->否，1->是*/
     private Integer isNextDay;
-
 }

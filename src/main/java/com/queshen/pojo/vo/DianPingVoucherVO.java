@@ -17,5 +17,4 @@ public class DianPingVoucherVO {
     private String receiptCode;
 
     private Integer count;
-
 }

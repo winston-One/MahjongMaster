@@ -18,8 +18,7 @@ public interface IVoucherOrderService extends IService<VoucherOrder> {
 
     Result countVoucherById(String openId);
 
-    Result changeOrderStatus(String orderId);
+    void changeOrderStatus(String orderId);
 
     Result voucherJudgement(String openId,String roomName, BigDecimal userTime);
-
 }

@@ -23,5 +23,4 @@ public class QuickLoginVO {
 
     // 通过openid设置的token
     private String Authority;
-
 }

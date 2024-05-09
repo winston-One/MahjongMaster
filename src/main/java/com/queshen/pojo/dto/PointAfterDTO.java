@@ -21,5 +21,4 @@ public class PointAfterDTO {
 
     //券订单id
     private String voucherId;
-
 }

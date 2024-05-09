@@ -13,11 +13,11 @@ import com.queshen.service.IConversationService;
 import com.queshen.service.IUserConversationService;
 import com.queshen.service.impl.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.websocket.Session;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -39,12 +39,12 @@ public class IMMsgHandler {
 
     private final IConversationService conversationService;
 
-    @Autowired
+    @Resource
     private ThreadPoolExecutor executorService;
 
     @Transactional(rollbackFor = IMException.class)
     public void handlerGroup(String message, String openid, Session mySession, Map<String, Session> clients) {
-        // 处理群消息 TODO
+        // 处理群消息
         for (Map.Entry<String, Session> entry : clients.entrySet()) {
             executorService.execute(() -> {
                 String otherId = entry.getKey();
@@ -61,7 +61,7 @@ public class IMMsgHandler {
     @Transactional(rollbackFor = Exception.class)
     public void handlerIndividual(String message, String openid, Session mySession, Map<String, Session> clients) {
         boolean isConnectWebSocket = false;
-        Integer isUnRead = 0;
+        int isUnRead = 0;
         boolean isFirstSend = false;
         String lastMsg;
         Conversation conversation;
@@ -127,9 +127,10 @@ public class IMMsgHandler {
         boolean isOnline = WebSocketServer.online(receiveId);
         if (isFirstSend && !isOnline && isUnRead == 1) {
             // rabbitMQ推送消息————你有新的客户，或新的门店给你推荐新的优惠活动
+            System.out.println(123);
         } else if (!isFirstSend && !isOnline && isUnRead == 1) {
             // rabbitMQ推送消息————收到门店或者客户信息，并且有userConversation.getUnreadCount()条信息未读
-
+            System.out.println(123);
         } else if (isOnline && !isConnectWebSocket) {// 如果对方在线，但是没有在聊天框中，就是进入了小程序而已，就不需要MQ
             Session session = WebSocketServer.getSession(receiveId);
             if (!StringUtils.isEmpty(session)) {

@@ -23,6 +23,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -39,13 +40,13 @@ import java.util.Map;
 @RestController
 public class DianPingController {
 
-    @Autowired
+    @Resource
     public DianPingVoucherService dianPingVoucherService;
 
-    @Autowired
+    @Resource
     public AppConstantsService appConstantsService;
 
-    @Autowired
+    @Resource
     public StringRedisTemplate stringRedisTemplate;
 
     /**

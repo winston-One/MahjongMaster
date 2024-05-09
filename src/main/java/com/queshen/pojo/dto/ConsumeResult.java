@@ -16,5 +16,4 @@ public class ConsumeResult {
     public String msg;
 
     public JSONArray Data;
-
 }

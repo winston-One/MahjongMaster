@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.queshen.mapper.VoucherOrderMapper;
 import com.queshen.pojo.dto.OrderDTO;
 import com.queshen.pojo.dto.OrderTime;
 import com.queshen.pojo.bo.Result;
+import com.queshen.pojo.dto.VoucherOrderDTO;
 import com.queshen.pojo.po.Order;
 import com.queshen.pojo.po.Room;
 import com.queshen.pojo.po.Store;
@@ -25,16 +27,12 @@ import com.queshen.pojo.vo.OrderSelectByUserVO;
 import com.queshen.pojo.vo.OrderSelectReturnVO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,20 +44,23 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
-    @Autowired
+    @Resource
     private IdUtil idUtil;
 
-    @Autowired
+    @Resource
     private IRoomService iRoomService;
 
-    @Autowired
+    @Resource
     private StoreService storeService;
 
-    @Autowired
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @Autowired
-    OrderMapper orderMapper;
+    @Resource
+    VoucherOrderMapper voucherOrderMapper;
+
+    @Resource(name = "voucherListCache")
+    LoadingCache<String, List<VoucherOrderDTO>> voucherListCache;
 
     //查询该用户所有订单信息
     public Result getAllOrderByUser(OrderSelectByUserVO orderSelectByUserVO){
@@ -86,7 +87,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         lqw.eq(Order::getUserId, orderSelectByUserVO.getOpenId());
         //是否查询该门店的订单，否的话就查询所有门店的订单
-        if (orderSelectByUserVO.getStoreId() != null && orderSelectByUserVO.getStoreId() != "")
+        if (orderSelectByUserVO.getStoreId() != null && !Objects.equals(orderSelectByUserVO.getStoreId(), ""))
             lqw.eq(Order::getStoreId, orderSelectByUserVO.getStoreId());
         //是否查询有状态的订单，否的就查询所有类型的订单
         if (orderSelectByUserVO.getOrderStatus() != 0)
@@ -132,8 +133,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
             Duration duration=Duration.between(order.getStartTime(),order.getEndTime());
 
-            Long l1 = duration.toMinutes() % 60;
-            Long l2 = duration.toHours();
+            long l1 = duration.toMinutes() % 60;
+            long l2 = duration.toHours();
             String durationString= l2 + "小时" + l1 + "分钟";
 
             orderSelectReturnVO.setOrderStatus(order.getStatus());
@@ -161,8 +162,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     /**
      * 支付成功后调用，处理redis中的数据到Mysql中
-     * @param orderSaveVo
-     * @return
      */
     public Result userPointOrder(OrderSaveVo orderSaveVo){
         //在redis中查询到支付完成的订单
@@ -190,8 +189,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     /**
      * 处理redis中的订单(查询中使用)
-     * @param orderSelectByUserVO
-     * @return
      */
     private Result getOrderInRedisBySelect(OrderSelectByUserVO orderSelectByUserVO){
         String keys = orderSelectByUserVO.getOpenId() + "||" + "*";
@@ -199,6 +196,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
         List<Order> expireOrderList = new ArrayList<>();
         List<Order> unExpireOrderList = new ArrayList<>();
+        assert strings != null;
         for (String s : strings) {
             Order order = new Order();
             log.info(s);
@@ -213,7 +211,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 unExpireOrderList.add(order);
             }
         }
-        if (expireOrderList != null)
+        if (!expireOrderList.isEmpty())
             doOrderToMysql(expireOrderList);
         return Result.ok(unExpireOrderList);
     }
@@ -255,6 +253,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         wrapper.eq("user_id", orderSaveVO.getUserId());
         wrapper.set("order_status", 3);
         voucherOrderMapper.update(null, wrapper);
+        voucherListCache.invalidate(orderSaveVO.getUserId());
 
         this.save(order);
         //创建缓存用户订单过期时间信息的key
@@ -264,30 +263,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return Result.ok(order.getId());
     }
 
-    @Resource
-    VoucherOrderMapper voucherOrderMapper;
-
     /**
      * 将redis中的订单数据加入Mysql数据库
-     * @param orderList
-     * @return
      */
-    private boolean doOrderToMysql(List<Order> orderList){
+    private void doOrderToMysql(List<Order> orderList){
         this.updateBatchById(orderList);
-        return true;
     }
 
     /**
      * 删除订单
-     * @param orderSaveVo
-     * @return
      */
     public Result deleteOrder(OrderSaveVo orderSaveVo){
         String key=orderSaveVo.getUserId()+"||"+orderSaveVo.getId();
         String s = stringRedisTemplate.opsForValue().get(key);
         Order order = JSONUtil.toBean(s, Order.class);
         Boolean delete = stringRedisTemplate.delete(key);
-        if (delete) {
+        if (Boolean.TRUE.equals(delete)) {
             String keyOrderTime=order.getStoreId()+order.getRoomId()+"+"+ order.getStartTime().toEpochSecond(ZoneOffset.of("+8"));
             order.setStatus(3);
             this.updateById(order);
@@ -301,7 +292,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     /**
      * 下单时时间数据存redis里
      */
-    private Boolean saveTimeToRedis(Order order){
+    private void saveTimeToRedis(Order order){
         OrderTime orderTime=new OrderTime();
         orderTime.setStoreId(order.getStoreId());
         orderTime.setRoomId(order.getRoomId());
@@ -314,7 +305,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         log.info(value);
         log.info(key);
         stringRedisTemplate.opsForValue().set(key,value,timeout,TimeUnit.SECONDS);
-        return true;
     }
 
     /**
@@ -327,9 +317,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LocalDateTime endTime = LocalDateTime.ofInstant(orderSaveVo.getEndTime().toInstant(), ZoneId.systemDefault());
         long l1 = startTime.toEpochSecond(ZoneOffset.of("+8"));
         long l2 = endTime.toEpochSecond(ZoneOffset.of("+8"));
-        if (keysList.size()!=0){
+        assert keysList != null;
+        if (!keysList.isEmpty()){
             List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
 
+            assert strings != null;
             for (String s: strings){
                 OrderTime orderTime = JSONUtil.toBean(s, OrderTime.class);
                 log.info(orderTime);
@@ -363,9 +355,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         String userId= "o2eui5ZuZQt2eEsO7lyq0psWFXYg";
         String key=userId+"||*";
         Set<String> keysList = stringRedisTemplate.keys(key);
-        if (keysList.size()==0)
-            return true;
-        else
-            return false;
+        assert keysList != null;
+        return keysList.isEmpty();
     }
 }

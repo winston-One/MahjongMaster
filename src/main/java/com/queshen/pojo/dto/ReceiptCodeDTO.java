@@ -20,5 +20,4 @@ public class ReceiptCodeDTO {
 
     // 需要验券的数量
     private Integer count;
-
 }

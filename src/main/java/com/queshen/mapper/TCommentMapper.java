@@ -15,5 +15,4 @@ import java.util.List;
 public interface TCommentMapper extends BaseMapper<Comment> {
 
     List<Comment> getChildren(Integer parentId);
-
 }

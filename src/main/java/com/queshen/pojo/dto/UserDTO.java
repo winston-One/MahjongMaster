@@ -17,5 +17,4 @@ public class UserDTO {
     private String nickname;
 
     private String avatarUrl;
-
 }

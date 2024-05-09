@@ -11,4 +11,5 @@ import lombok.ToString;
 @Data
 @ToString
 public class CommentInfoDTO {
+
 }

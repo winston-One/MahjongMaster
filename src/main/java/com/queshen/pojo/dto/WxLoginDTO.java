@@ -25,5 +25,4 @@ public class WxLoginDTO {
 
     // ("头像url（如果是快捷登录则不传）")
     private String avatarUrl;
-
 }

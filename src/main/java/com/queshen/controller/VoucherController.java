@@ -28,8 +28,6 @@ public class VoucherController {
 
     /**
      * 新增卡券功能
-     * @Param voucher 卡券信息
-     * @return 卡券id
      */
     @PostMapping("saveVoucher")
     public Result addVoucher(@RequestBody Voucher voucher) {
@@ -40,8 +38,6 @@ public class VoucherController {
 
     /**
      * 查询所有卡券列表功能
-     * @Param voucher
-     * @return 卡券信息list
      */
     @PostMapping("/allVoucher")
     public Result queryAllVoucher(){
@@ -52,8 +48,6 @@ public class VoucherController {
 
     /**
      * 根据卡券id查询卡券功能
-     * @Param voucherId
-     * @return 卡券信息
      */
     @GetMapping("/getOneVoucher")
     public Result queryVoucherById(@RequestParam("voucherId") String voucherId){
@@ -63,8 +57,6 @@ public class VoucherController {
 
     /**
      * 根据ID修改卡券功能
-     * @Param voucher
-     * @Param 影响行数
      */
     @PostMapping("/updateVoucher")
     public Result updateVoucher(@RequestBody Voucher voucher){
@@ -75,8 +67,6 @@ public class VoucherController {
 
     /**
      * 根据卡券ID删除功能
-     * @param voucherId
-     * @Return 影响行数
      */
     @PostMapping("/deleteVoucher")
     public Result deleteVoucherById(@RequestParam("voucherId") String voucherId){

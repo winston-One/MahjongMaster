@@ -3,16 +3,12 @@ package com.queshen.utils;
 import com.queshen.pojo.bo.TimeRange;
 import com.queshen.pojo.po.Order;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * @author winston
@@ -33,7 +29,6 @@ public class TimeRangeUtil {
         List<TimeRange> timeRanges = getTimeRanges(date);
         //日期转换格式
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeRangeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         for (Order order : orders) {
             String startTime = dateFormat.format(order.getStartTime());

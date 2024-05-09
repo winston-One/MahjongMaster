@@ -2,7 +2,7 @@ package com.queshen.pojo.vo;
 
 import com.queshen.pojo.dto.VoucherSuitDTO;
 import com.queshen.pojo.po.base.BaseEntity;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,7 +12,11 @@ import java.util.Date;
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
-@Data
+@Setter
+@Getter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderSaveVo extends BaseEntity {
 
     //订单id
@@ -47,7 +51,6 @@ public class OrderSaveVo extends BaseEntity {
 
     // 该订单是否使用过优惠券
     private Integer isVoucher;
-
 }
 
 

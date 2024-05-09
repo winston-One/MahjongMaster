@@ -31,5 +31,4 @@ public class ConversationVO {
     private String lastMsg;
 
     private LocalDateTime updateTime;
-
 }

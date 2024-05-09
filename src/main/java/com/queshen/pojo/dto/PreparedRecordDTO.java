@@ -12,7 +12,8 @@ import java.util.Map;
  * @Description: Man can conquer nature
  **/
 @Data
-public class PreparemtRecordDTO {
+public class PreparedRecordDTO {
+    
     //可验证的张数
     public Integer count;
 
@@ -23,7 +24,7 @@ public class PreparemtRecordDTO {
     public Long deal_id;
 
     //团购id,团购id与套餐id是一对多的关系（若验证的券所对应的商品为团购时，该字段必返回）
-    public Long dealgroup_id;
+    public Long deal_group_id;
 
     //商品id（若验证的券所对应的商品非团购时，该字段必返回，product_item_id含义参考商品管理API）
     public Long product_item_id;
@@ -38,7 +39,7 @@ public class PreparemtRecordDTO {
     public Double deal_price;
 
     //商品市场价
-    public Double deal_marketprice;
+    public Double deal_market_price;
 
     //业务类型 0:普通团购 205:次卡
     public Integer biz_type;
@@ -54,5 +55,4 @@ public class PreparemtRecordDTO {
 
     //多团单维度券信息，如果为null则为单团单,key为product_item_id
     public Map<Long,List<ReceiptValidateResultDTO>> receipt_info_map;
-
 }

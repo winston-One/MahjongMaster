@@ -34,5 +34,4 @@ public class VoucherSuitDTO {
      * 时长
      */
     private BigDecimal duration;
-
 }

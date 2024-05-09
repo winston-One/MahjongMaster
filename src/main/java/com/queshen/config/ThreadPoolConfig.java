@@ -19,11 +19,11 @@ public class ThreadPoolConfig {
     @Bean
     public ThreadPoolExecutor getThreadPoolExecutor(){
         return new ThreadPoolExecutor(
-                4,
-                16,
-                8,
-                TimeUnit.MINUTES,
-                new LinkedBlockingQueue<>()
+            4,
+            16,
+            8,
+            TimeUnit.MINUTES,
+            new LinkedBlockingQueue<>()
         );
     }
 }

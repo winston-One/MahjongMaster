@@ -3,7 +3,6 @@ package com.queshen.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.queshen.cache.RedisCache;
-import com.queshen.config.UserOnlineListener;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.UserDTO;
 import com.queshen.pojo.dto.WxLoginDTO;
@@ -18,15 +17,10 @@ import com.queshen.pojo.vo.QuickLoginVO;
 import com.queshen.pojo.vo.UserLoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * 前端控制器
@@ -38,7 +32,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
+    @Resource
     private IUserService userService;
 
     @Resource(name = "loginCache")
@@ -49,7 +43,7 @@ public class UserController {
      * @param loginDTO 登录参数，包含微信凭证code和头像和昵称
      */
     @PostMapping("/login")
-    public Result login(@RequestBody WxLoginDTO loginDTO, HttpSession httpSession) {
+    public Result login(@RequestBody WxLoginDTO loginDTO) {
         // 对前端微信登录获得的code参数进行处理，以至于获得openid和头像和昵称信息
         WxLoginResponse loginResponse = userService.getLoginResponse(loginDTO.getCode());
         if (loginResponse == null) {
@@ -76,19 +70,7 @@ public class UserController {
         String token = JwtUtils.generate(openid);
         UserLoginVo userLoginVo = new UserLoginVo(token, openid,loginDTO.getAvatarUrl(),loginDTO.getNickname());
         // 监听用户在线，方便统计用户在线人数，将属性设置到session中存储起来
-        httpSession.setAttribute("userOnlineListener", new UserOnlineListener(userLoginVo.getOpenid()));
         return Result.ok(userLoginVo);
-    }
-
-    @PostMapping( "/getUserOnline")
-    public Result getUserOnline(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        ServletContext application = session.getServletContext();
-        List<String> userOnlineList= (List<String>) application.getAttribute("userOnlineList");
-        if(userOnlineList!=null){
-            log.info("在线用户数==={}", userOnlineList.size());
-        }
-        return Result.ok(userOnlineList);
     }
 
     @PostMapping("/quickLogin")
@@ -143,7 +125,6 @@ public class UserController {
 
     /**
      * 退出登录还需要清除前端的缓存
-     * @return
      */
     @GetMapping("/logout")
     public Result logout(@RequestParam("openid") String openid) {

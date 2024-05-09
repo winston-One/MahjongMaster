@@ -21,5 +21,4 @@ public class MahjongOrderDTO {
     private String ip;
 
     private BigDecimal realPrice;
-
 }

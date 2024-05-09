@@ -22,11 +22,11 @@ public final class JwtUtils {
     /**
      * 生成一个秘钥,防止JWT被篡改的关键，
      */
-    private final static String secretKey = "winston9790834616898adlmasdfiosalfmsdpofasdfmasdfasmmapedf54641asfd8fas654f4a6sf";
+    private static final String secretKey = "winston9790834616898adlmasdfiosalfmsdpofasdfmasdfasmmapedf54641asfd8fas654f4a6sf";
     /**
      * 过期时间目前设置成10天
      */
-    private final static Duration expiration = Duration.ofDays(10);
+    private static final Duration expiration = Duration.ofDays(10);
 
     /**
      * 生成JWT

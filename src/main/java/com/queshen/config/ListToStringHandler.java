@@ -16,7 +16,7 @@ import java.util.List;
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
  **/
-public class ListToStringHandler  extends BaseTypeHandler<List> {
+public class ListToStringHandler extends BaseTypeHandler<List> {
 
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, List list, JdbcType jdbcType) throws SQLException {
@@ -25,19 +25,16 @@ public class ListToStringHandler  extends BaseTypeHandler<List> {
 
     @Override
     public List getNullableResult(ResultSet resultSet, String s) throws SQLException {
-        JSONArray jsonArray = JSONArray.parseArray( resultSet.getString(s));
-        return jsonArray;
+        return JSONArray.parseArray( resultSet.getString(s));
     }
 
     @Override
     public List getNullableResult(ResultSet resultSet, int i) throws SQLException {
-        JSONArray jsonArray = JSONArray.parseArray( resultSet.getString(i));
-        return jsonArray;
+        return JSONArray.parseArray( resultSet.getString(i));
     }
 
     @Override
     public List getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
-        JSONArray jsonArray = JSONArray.parseArray( callableStatement.getString(i));
-        return jsonArray;
+        return JSONArray.parseArray( callableStatement.getString(i));
     }
 }

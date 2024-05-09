@@ -31,5 +31,4 @@ public class TestChildren {
 
     @TableField(exist = false)
     private List<TestChildren> children;
-
 }

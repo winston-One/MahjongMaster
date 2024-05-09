@@ -14,5 +14,6 @@ import java.util.List;
  **/
 @Mapper
 public interface RoomMapper extends BaseMapper<Room> {
+
     List<RoomVo> getData(String storeId);
 }

@@ -17,5 +17,4 @@ public class WxLoginPhoneReq {
     private String access_token;
 
     private String code;
-
 }

@@ -13,4 +13,5 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Conversation> implements IConversationService {
+
 }

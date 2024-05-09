@@ -1,9 +1,5 @@
 package com.queshen.pojo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * @author WinstonYv
  * @create 2023/4/25 18:03

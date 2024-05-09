@@ -33,5 +33,4 @@ public class DianPingSessionDTO {
 
     //提示信息
     private String msg;
-
 }

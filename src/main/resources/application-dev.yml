@@ -5,9 +5,9 @@ spring:
     username: root
     password: 123456
   redis:
-    host: localhost
-    port: 6379
-    password:
+    host: 43.143.88.250
+    port: 52515
+    password: u?5*2%e-5/r+
     # 连接池配置
     lettuce:
       pool:
@@ -21,17 +21,16 @@ spring:
       #最大传输 MultipartFile 大小 和 最大请求大小
       max-file-size: 10MB
       max-request-size: 10MB
-#小程序信息
 wechat:
-  appid: wx364a0403ee50c11b
-  secret: 14ce5cd54413a167f21b15a82ac38321
+  appid: wx9643514640a291dc
+  secret: bae673cdd211796ae622ce91732de442
 
 wx:
   pay:
-    appId: wx9localhost291dc #微信公众号或者小程序等的appid
-    mchId: 163localhost00 #微信支付商户号
-    mchKey: Mjmk152localhostiinju741f #微信支付商户密钥
+    appId: wx9643514640a291dc #微信公众号或者小程序等的appid
+    mchId: 1634252700 #微信支付商户号
+    mchKey: Mjmk1524fjuimnv74256sueiinju741f #微信支付商户密钥
     #    subAppId: #服务商模式下的子商户公众账号ID
-    #    subMchId: #服务商模式下的子商户
+    #    subMchId: #服务商模式下的子商户号
     keyPath: classpath:apiclient_cert.p12
     # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）

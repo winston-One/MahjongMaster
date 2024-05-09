@@ -1,9 +1,10 @@
 package com.queshen.config;
 
 import com.queshen.utils.TokenInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.annotation.Resource;
 
 /**
  * @author WinstonYv
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private TokenInterceptor TokenInterceptor;
 
     @Override
