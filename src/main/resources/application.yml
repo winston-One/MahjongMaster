@@ -16,9 +16,3 @@ spring:
     active: dev #默认为开发环境
   jackson:
     default-property-inclusion: non_null #json处理时忽略非空字段
-
-logging:
-  level:
-    com.queshen: debug
-  pattern:
-    dateformat: mm:ss.SSS

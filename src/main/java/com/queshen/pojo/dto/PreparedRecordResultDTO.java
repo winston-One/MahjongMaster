@@ -16,5 +16,4 @@ public class PreparedRecordResultDTO {
     public String msg;
 
     public PreparedRecordDTO Data;
-
 }
