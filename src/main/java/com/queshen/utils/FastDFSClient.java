@@ -54,10 +54,10 @@ public class FastDFSClient {
              */
             uploadResults = storageClient.upload_file(file.getContent(), file.getExt(), meta_list);
         } catch (Exception e) {
-            log.error("Exception when uploadind the file:" + file.getName(), e);
+            log.error("Exception when the file:" + file.getName(), e);
         }
 
-        if (uploadResults == null && storageClient!=null) {
+        if (uploadResults == null && storageClient != null) {
             log.error("upload file fail, error code:" + storageClient.getErrorCode());
         }
         return uploadResults;

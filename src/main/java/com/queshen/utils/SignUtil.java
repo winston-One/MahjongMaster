@@ -14,8 +14,8 @@ import java.util.Map;
  * @author WinstonYv
  * @create 2022/12/11 15:14
  * @Description: Man can conquer nature
+ * 北极星平台签名工具类
  **/
-//北极星平台签名工具类
 public class SignUtil {
 
     /**
