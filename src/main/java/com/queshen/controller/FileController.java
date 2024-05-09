@@ -1,7 +1,5 @@
 package com.queshen.controller;
 
-import com.queshen.anno.Log;
-import com.queshen.constant.BusinessType;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.bo.FastDFSFile;
 import com.queshen.utils.FastDFSClient;
@@ -23,7 +21,6 @@ public class FileController {
 
     // 上传图片
     @PostMapping("/upload")
-    @Log(content = "使用FastDFS文件系统操作上传图片到服务器", businessType = BusinessType.UPLOAD)
     public Result uploadFile(MultipartFile file) {
         try {
             //判断当前文件是否存在

@@ -6,11 +6,11 @@ import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.CommentInfoDTO;
 import com.queshen.pojo.dto.CommentLikeDTO;
 import com.queshen.pojo.po.Comment;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +20,12 @@ import java.util.List;
  * @Description: Man can conquer nature
  * 评论系统的接口
  **/
-@Log4j2
+@Slf4j
 @RequestMapping("/comment")
 @RestController
 public class CommentController {
 
-    @Autowired
+    @Resource
     private TCommentMapper commentMapper;
 
     // 获取评论
@@ -34,8 +34,9 @@ public class CommentController {
     @PostMapping("/getComment")
     public Result getStoreCommentList(@RequestParam() String storeId,
                                       @RequestParam() Integer roomId){
+        log.info("{},{}", storeId, roomId);
         // 先查出头结点，也就是parentId为-1的数据
-        QueryWrapper<Comment> queryWrapper = new QueryWrapper();
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("room_id", roomId);
         queryWrapper.eq("top_comment_id", -1);
         DFS(commentMapper.selectList(queryWrapper));
@@ -50,7 +51,7 @@ public class CommentController {
             // 查出该节点的子节点
             List<Comment> childrenList = commentMapper.getChildren(comment.getId());
             index = index + 1;
-            if (childrenList.size() == 0){
+            if (childrenList.isEmpty()){
                 continue;
             }
             // 设置当前节点的子节点数据
@@ -63,11 +64,10 @@ public class CommentController {
 
     /**
      * 发布评论
-     * @param commentInfo
-     * @return
      */
     @PostMapping("/publishComment")
     public Result publishComment(@RequestBody CommentInfoDTO commentInfo){
+        log.info("{}", commentInfo);
 
         return Result.ok();
     }
@@ -75,14 +75,7 @@ public class CommentController {
     // 删除用户自己的评论
     @DeleteMapping("/deleteUserComment")
     public Result deleteUserComment(@RequestParam("commentId") String commentId, @RequestParam(required = false) Integer secondIndex) {
-
-        return Result.ok();
-    }
-
-    // 判断这条评论是否为自己的
-    @GetMapping("/judgeCommentItself")
-    public Result judgeCommentItself(@RequestParam("commentId") String commentId, @RequestParam(required = false) Integer secondIndex) {
-
+        log.info("{}{}", commentId, secondIndex);
         return Result.ok();
     }
 
@@ -90,6 +83,7 @@ public class CommentController {
     @DeleteMapping("/comment/like")
     public Result subLikeToComment(@RequestParam String parenId,
                               @RequestParam(required = false) String childId) {
+        log.info("{}{}", parenId, childId);
         return Result.ok();
     }
 
@@ -97,6 +91,8 @@ public class CommentController {
     @Transactional(rollbackFor = Exception.class)
     @PutMapping("/comment/like")
     public Result addLikeToComment(@RequestBody CommentLikeDTO dto) {
+
+        log.info("{}", dto);
         return Result.ok();
     }
 
@@ -111,24 +107,33 @@ public class CommentController {
     public Result getCommentPage(@RequestParam String roomId,
                             @RequestParam int page,
                             @RequestParam int size){
+
+        log.info("{}", roomId);
+        log.info("{}", page);
+        log.info("{}", size);
         return Result.ok();
     }
 
     // 获取门店自己在某个房间下的点赞列表
     @GetMapping("/commentLike")
     public Result getSelfCommentLikeList(@RequestParam("storeId") String storeId){
+
+        log.info("{}", storeId);
         return Result.ok();
     }
 
     // 把评论标为已读
     @PostMapping("/readComment")
     public Result readComment(@RequestBody Integer commentId) {
+
+        log.info("{}", commentId);
         return Result.ok();
     }
 
     // 把消息标为已读
     @PostMapping("/readMessage")
     public Result readMessage(@RequestBody Integer messageId) {
+        log.info("{}", messageId);
         // todo 用户会话表里未读消息按实际减少，消息表里的对应消息标记为已读
         return Result.ok();
     }
@@ -136,22 +141,14 @@ public class CommentController {
     // 获取消息列表
     @GetMapping("/conversationList")
     public Result getConversationList(@RequestParam Integer type){
+        log.info("{}", type);
         return Result.ok();
     }
 
     // 门店管理人获取未读消息总数
     @GetMapping("/shopUnreadCount")
     public Result getUnreadCount(@RequestParam Integer storeId){
-        return Result.ok();
-    }
-
-    // 获取历史聊天记录
-    @GetMapping("/history")
-    public Result getHistoryMsg(
-                           @RequestParam(required = false) String conversationId,
-                           @RequestParam(required = false) String otherId,
-                           @RequestParam int page,
-                           @RequestParam int size){
+        log.info("{}", storeId);
         return Result.ok();
     }
 }
