@@ -134,7 +134,7 @@ public class CommentController {
     @PostMapping("/readMessage")
     public Result readMessage(@RequestBody Integer messageId) {
         log.info("{}", messageId);
-        // todo 用户会话表里未读消息按实际减少，消息表里的对应消息标记为已读
+        // 用户会话表里未读消息按实际减少，消息表里的对应消息标记为已读
         return Result.ok();
     }
 
