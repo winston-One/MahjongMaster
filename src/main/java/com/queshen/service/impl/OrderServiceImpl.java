@@ -86,27 +86,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LambdaQueryWrapper<Order> lqw = new LambdaQueryWrapper<>();
 
         lqw.eq(Order::getUserId, orderSelectByUserVO.getOpenId());
-        //是否查询该门店的订单，否的话就查询所有门店的订单
+        //是否查询该店的订单，否的话就查询所有店的订单
         if (orderSelectByUserVO.getStoreId() != null && !Objects.equals(orderSelectByUserVO.getStoreId(), ""))
             lqw.eq(Order::getStoreId, orderSelectByUserVO.getStoreId());
         //是否查询有状态的订单，否的就查询所有类型的订单
         if (orderSelectByUserVO.getOrderStatus() != 0)
             lqw.eq(Order::getStatus, orderSelectByUserVO.getOrderStatus());
         //按照时间顺序倒序
-        lqw.orderByDesc(Order::getStartTime);
+//        lqw.orderByDesc(Order::getStartTime);
 
         IPage<Order> orderPage = this.page(page, lqw);
         List<Order> records = orderPage.getRecords();
         ArrayList<Order> arrayList = new ArrayList<>(records);
         orderPage.setRecords(arrayList);
         orderPage.setTotal(arrayList.size());
-//        if (data != null) {
-//            List<Order> records = orderPage.getRecords();
-//            ArrayList<Order> arrayList=new ArrayList<>(records);
-//            arrayList.addAll(data);
-//            orderPage.setRecords(arrayList);
-//            orderPage.setTotal(arrayList.size());
-//        }
         return doSelectData(orderPage);
     }
 
@@ -186,6 +179,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return Result.ok();
     }
 
+    public static void main(String[] args) {
+        OrderServiceImpl orderService = new OrderServiceImpl();
+        System.out.println(orderService.getOrderInRedisBySelect(new OrderSelectByUserVO()));
+    }
 
     /**
      * 处理redis中的订单(查询中使用)
@@ -193,6 +190,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private Result getOrderInRedisBySelect(OrderSelectByUserVO orderSelectByUserVO){
         String keys = orderSelectByUserVO.getOpenId() + "||" + "*";
         Set<String> keysList = stringRedisTemplate.keys(keys);
+        assert keysList != null;
         List<String> strings = stringRedisTemplate.opsForValue().multiGet(keysList);
         List<Order> expireOrderList = new ArrayList<>();
         List<Order> unExpireOrderList = new ArrayList<>();

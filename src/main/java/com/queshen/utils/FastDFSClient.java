@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * 操作文件的端口
@@ -45,13 +46,6 @@ public class FastDFSClient {
         try {
             //创建StorageClient客户端对象
             storageClient = getTrackerClient();
-
-            /*
-             * 文件上传
-             * 1)文件字节数组
-             * 2)文件扩展名
-             * 3)文件作者
-             */
             uploadResults = storageClient.upload_file(file.getContent(), file.getExt(), meta_list);
         } catch (Exception e) {
             log.error("Exception when the file:" + file.getName(), e);
@@ -76,6 +70,14 @@ public class FastDFSClient {
             log.error("Exception: Get File from Fast DFS failed", e);
         }
         return null;
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(getFile("123", "123"));
+        System.out.println(downFile("123", "123"));
+        System.out.println(Arrays.toString(getFetchStorages("123", "123")));
+        deleteFile("123", "123");
+        System.out.println(Arrays.toString(getStoreStorages("123")));
     }
 
     /***
@@ -104,7 +106,7 @@ public class FastDFSClient {
         StorageClient storageClient = getTrackerClient();
 
         //删除文件
-        int i = storageClient.delete_file(groupName, remoteFileName);
+        storageClient.delete_file(groupName, remoteFileName);
     }
 
     /***
@@ -134,7 +136,7 @@ public class FastDFSClient {
      * 获取Tracker服务地址
      */
     public static String getTrackerUrl() throws IOException {
-        return "http://"+getTrackerServer().getInetSocketAddress().getHostString()+":"+ ClientGlobal.getG_tracker_http_port()+"/";
+        return "https://" +getTrackerServer().getInetSocketAddress().getHostString()+":"+ ClientGlobal.getG_tracker_http_port()+"/";
     }
 
     /***

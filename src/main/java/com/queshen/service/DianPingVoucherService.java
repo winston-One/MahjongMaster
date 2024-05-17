@@ -21,6 +21,6 @@ public interface DianPingVoucherService extends IService<DianPingVoucherOrder> {
 
     Boolean doDPOrderToRedis(DianPingVoucherOrder dianPingVoucherOrder);
 
-    Result selectCandoDPVoucherInRedis(String userid);
+    Result selectCanDoDPVoucherInRedis(String userid);
 
 }

@@ -2,6 +2,7 @@ package com.queshen.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,5 +19,10 @@ public class RequestUtil {
             sb.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
         }
         return sb.toString();
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException{
+        HashMap<String, String> map = new HashMap<>();
+        System.out.println(mapToGetParam(map));
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  **/
 @Data
 @Component
-@TableName("tb_dianpingsession")
+@TableName("tb_dianping_session")
 public class AppConstants {
 
     private static final long serialVersionUID = 1L;

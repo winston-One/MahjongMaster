@@ -6,10 +6,10 @@ import com.queshen.pojo.bo.Message;
 import com.queshen.pojo.po.UserConversation;
 import com.queshen.service.IUserConversationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServerEndpoint("/IM/online/{userID}")
 public class WebSocketServer {
 
-    @Autowired
+    @Resource
     private IUserConversationService userConversationService;
 
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -116,6 +116,10 @@ public class WebSocketServer {
      */
     public static int getOnlineCount() {
         return onlineCount.get();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getOnlineCount());
     }
 
     /**

@@ -3,10 +3,11 @@
 <mapper namespace="com.queshen.mapper.OrderMapper">
 
     <select id="isExistReserveTime" resultType="java.lang.String">
-        SELECT order_id FROM tb_order WHERE
-        (start_time &gt;= #{startTime} AND start_time &lt; #{endTime})
-        OR(start_time &lt;= #{startTime} AND end_time &gt; #{startTime})
-        and is_delete=0 and order_status &lt;&gt; 3
+        SELECT order_id
+        FROM tb_order
+        WHERE (start_time &gt;= #{startTime} AND start_time &lt; #{endTime})
+          OR(start_time &lt;= #{startTime} AND end_time &gt; #{startTime})
+          AND is_delete = 0 AND order_status &lt;&gt; 3
     </select>
 
     <resultMap type="com.queshen.pojo.admin.OrderInfoVo" id="SelectTeaResult">

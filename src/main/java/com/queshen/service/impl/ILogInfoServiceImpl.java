@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author WinstonYv
@@ -22,13 +21,8 @@ public class ILogInfoServiceImpl extends ServiceImpl<LogMapper, LogInfo> impleme
     @Resource
     LogMapper logMapper;
 
-    @Resource
-    private ThreadPoolExecutor executorService;
-
     // 异步执行，避免因为写入磁盘耗时导致响应用户超时
     public void saveOperateLog(LogInfo operateLog){
-        executorService.execute(() -> {
-            logMapper.insert(operateLog);
-        });
+        logMapper.insert(operateLog);
     }
 }

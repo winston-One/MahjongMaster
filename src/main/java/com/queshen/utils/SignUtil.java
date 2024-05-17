@@ -18,6 +18,9 @@ import java.util.Map;
  **/
 public class SignUtil {
 
+    public static void main(String[] args) {
+        System.out.println(generateSign(Collections.singletonMap("appKey", "123456"), "123456", "MD5"));
+    }
     /**
      * 生成签名
      * @param params     api请求参数

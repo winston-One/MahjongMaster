@@ -93,7 +93,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
     }
 
     /**
-     * 将销完券的订单放进reids中
+     * 将销完券的订单放进redis中
      */
     public Boolean doDPOrderToRedis(DianPingVoucherOrder dianPingVoucherOrder){
         dianPingVoucherOrder.setStatus(0);
@@ -118,7 +118,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
             voucherOrder=JSONUtil.toBean(s,DianPingVoucherOrder.class);
             voucherOrderList.add(voucherOrder);
         }
-        IPage<DianPingVoucherOrder> iPage = new Page(pageNum,voucherOrderList.size());
+        IPage<DianPingVoucherOrder> iPage = new Page<>(pageNum,voucherOrderList.size());
         iPage.setRecords(voucherOrderList);
         return Result.ok(iPage);
     }
@@ -126,7 +126,7 @@ public class DianPingVoucherServiceImpl extends ServiceImpl<DianPingVoucherOrder
     /**
      * 查询可用券——跟是一个接口的区别是返回的结果集不一样
      */
-    public Result selectCandoDPVoucherInRedis(String userid){
+    public Result selectCanDoDPVoucherInRedis(String userid){
         String key = userid + "*";
         Set<String> keysList = stringRedisTemplate.keys(key);
         log.info("keyList{}", keysList);

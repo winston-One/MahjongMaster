@@ -41,7 +41,7 @@ public class DianPingVoucherDTO {
     private Long deal_id;
 
     //团购id,团购id与套餐id是一对多的关系（若验证的券所对应的商品为团购时，该字段必返回）
-    private Long dealgroup_id;
+    private Long deal_group_id;
 
     //商品id（若验证的券所对应的商品非团购时，该字段必返回，product_item_id含义参考商品管理API）
     private Long product_item_id;
@@ -53,7 +53,7 @@ public class DianPingVoucherDTO {
     private Double deal_price;
 
     //商品市场价
-    private Double deal_marketprice;
+    private Double deal_market_price;
 
     //用户手机号，形如：185****1212
     private String mobile;

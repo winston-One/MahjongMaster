@@ -33,7 +33,7 @@ public class RedisCache<T> {
         return (T) redisTemplate.opsForValue().get(prefix+":"+key);
     }
 
-    public void put(String key,Object object){
+    public void put(String key, com.queshen.pojo.po.User object){
         if (duration != 0){
             redisTemplate.opsForValue().set(prefix+":"+key,object,duration,timeUnit);
         }else {

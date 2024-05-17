@@ -1,6 +1,6 @@
 package com.queshen.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.po.Order;
@@ -46,7 +46,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
         //1、根据storeId返回对应店铺的所有房间信息
         List<Room> rooms = roomService.list(new LambdaQueryWrapper<Room>().eq(Room::getStoreId, storeId));
         List<RoomInfoVO> results = new ArrayList<>(rooms.size());
-        //2、遍历房间信息，寻找对应订单信息
+        //2、遍历所有的room信息，寻找对应订单信息
         for (Room room : rooms) {
             //2.1通过日期查找当天订单和次日
             LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
@@ -70,7 +70,7 @@ public class ReservationInfoServiceImpl implements ReservationInfoService {
                     .pricePerHour(room.getPrice())
                     .photoAdd(room.getImage())
                     .roomName(room.getRoomName())
-                    .tag(StrUtil.split(room.getRemarks(), "/"))
+                    .tag(CharSequenceUtil.split(room.getRemarks(), "/"))
                     .roomId(room.getRoomId())
                     .timeRanges(assembly)
                     .isFree(isFree)

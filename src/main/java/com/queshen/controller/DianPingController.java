@@ -1,33 +1,17 @@
 package com.queshen.controller;
 
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.queshen.pojo.bo.Result;
 import com.queshen.pojo.dto.*;
-import com.queshen.pojo.po.DianPingVoucherOrder;
-import com.queshen.pojo.vo.DianPingVoucherVO;
 import com.queshen.pojo.vo.OrderSelectByUserVO;
 import com.queshen.service.AppConstantsService;
 import com.queshen.service.DianPingVoucherService;
 import com.queshen.pojo.po.AppConstants;
-import com.queshen.utils.RequestUtil;
-import com.queshen.utils.SignUtil;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.client.fluent.Form;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 前端控制器
@@ -63,7 +47,7 @@ public class DianPingController {
 //        requestParam.put("format","json");
 //        requestParam.put("sign_method",AppConstants.SIGN_METHOD_MD5);
 //        requestParam.put("session",sessionAndRefresh.session);
-//        requestParam.put("open_shop_uuid",AppConstants.OPEM_SHOP_UUID);
+//        requestParam.put("open_shop_uuid",AppConstants.OPEN_SHOP_UUID);
 //        requestParam.put("receipt_code",receiptCode.getReceiptCode());
 //        log.info(receiptCode);
 //        //验证签名 将请求第三方接口所需要参数和app密钥加密成一个签名
@@ -247,7 +231,7 @@ public class DianPingController {
      */
     @GetMapping("/selectCanDoDPOrderInRedis")
     public Result selectCanDoDPOrderInRedis(@RequestParam("userId") String userId){
-        return dianPingVoucherService.selectCandoDPVoucherInRedis(userId);
+        return dianPingVoucherService.selectCanDoDPVoucherInRedis(userId);
     }
 
     //获取session和refresh_session

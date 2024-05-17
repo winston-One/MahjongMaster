@@ -159,20 +159,20 @@ CREATE TABLE `t_user_conversation` (
 
 /*Data for the table `t_user_conversation` */
 
-/*Table structure for table `tb_dianpingsession` */
+/*Table structure for table `tb_dianping_session` */
 
-DROP TABLE IF EXISTS `tb_dianpingsession`;
+DROP TABLE IF EXISTS `tb_dianping_session`;
 
-CREATE TABLE `tb_dianpingsession` (
+CREATE TABLE `tb_dianping_session` (
   `dp_session` varchar(200) DEFAULT NULL,
   `dp_refresh_token` varchar(200) DEFAULT NULL,
   `dp_id` varchar(200) NOT NULL,
   PRIMARY KEY (`dp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `tb_dianpingsession` */
+/*Data for the table `tb_dianping_session` */
 
-insert  into `tb_dianpingsession`(`dp_session`,`dp_refresh_token`,`dp_id`) values ('e0379bd308d105db8c1a71103877ee40f4a7ac82','ff2d7b134da1cd10e03743e5434923c08fbcae36','1');
+insert  into `tb_dianping_session`(`dp_session`,`dp_refresh_token`,`dp_id`) values ('e0379bd308d105db8c1a71103877ee40f4a7ac82','ff2d7b134da1cd10e03743e5434923c08fbcae36','1');
 
 /*Table structure for table `tb_dpvoucherorder` */
 
